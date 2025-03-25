@@ -14,7 +14,7 @@ function draw() {
 <<<<<<< HEAD
 
   // Draw the image.
-  image(img, 0, 0);
+  image(tileset, 0, 0);
 =======
 >>>>>>> 31ec0a8883b52540f8898a3e8355b9c6203a04b9
 
