@@ -19,5 +19,5 @@ function draw() {
 	background(220);
 	rect(100, 100, 100, 100)
 
-	image(tileset, 0, 0)
+	drawTile(0, 0, 0)
 }
