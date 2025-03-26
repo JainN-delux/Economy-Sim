@@ -11,7 +11,7 @@ function setup() {
 
 /** Something like this for tile drawing */
 function drawTile(tile, x, y) {
-	image(tileset, x, y, 64, 64, 64*(tile % 9), 64*(tile / 9), 64, 64)
+	image(tileset, x, y, 64, 64, 64*(tile % 9), 64*Math.floor(tile / 9), 64, 64)
 }
 
 /** This is a draw function. */
