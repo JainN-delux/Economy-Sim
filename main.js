@@ -21,7 +21,7 @@ function setup() {
 
 /** Something like this for tile drawing */
 function drawTile(tile, x, y) {
-	image(tileset, x, y, 64, 64, 64*(tile % 9), 64*Math.floor(tile / 9), 64, 64)
+	image(tileset, x, y, 64, 32, 64*(tile % 9), 64*Math.floor(tile / 9)+32, 64, 32)
 }
 
 function drawWorld(px, py) {
@@ -35,7 +35,7 @@ function drawWorld(px, py) {
 			let tilex = x+Math.floor(px/64)-VIEWPORT_WIDTH/2
 			if (tilex < 0 || tilex >= WORLD_WIDTH)
 				continue;
-			drawTile(tiles[tiley][tilex], (x-1)*64, (y-1)*64)
+			drawTile(tiles[tiley][tilex], (x-1)*32-(y-1)*32, (x-1)*16-(y-1)*16)
 		}
 }
 
