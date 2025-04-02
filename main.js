@@ -35,7 +35,7 @@ function drawWorld(px, py) {
 			let tilex = x+Math.floor(px/64)-VIEWPORT_WIDTH/2
 			if (tilex < 0 || tilex >= WORLD_WIDTH)
 				continue;
-			drawTile(tiles[tiley][tilex], (x-1)*32-(y-1)*32, (x-1)*16-(y-1)*16)
+			drawTile(tiles[tiley][tilex], (x-1)*32-(y-1)*32, (x+y-2)*16)
 		}
 }
 
