@@ -1,8 +1,8 @@
 let tileset;
-const WORLD_WIDTH = 200;
-const WORLD_HEIGHT = 200;
+const WORLD_WIDTH = 10;
+const WORLD_HEIGHT = 10;
 const Tile = {
-	GRASS: 0,
+	GRASS: 31,
 }
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.GRASS));
 
@@ -13,8 +13,8 @@ function preload() {
 const CANVAS_WIDTH = 768;
 const CANVAS_HEIGHT = 768;
 // Recalculate this
-const VIEWPORT_WIDTH = 64;
-const VIEWPORT_HEIGHT = 64;
+const VIEWPORT_WIDTH = 48;
+const VIEWPORT_HEIGHT = 48;
 /** This is a setup function. */
 function setup() {
 	createCanvas(768, 768);
@@ -30,10 +30,10 @@ function drawWorld(px, py) {
 	let y_fract = fract(py)
 	for (let y = 0; y < VIEWPORT_HEIGHT; y++)
 		for (let x = 0; x < VIEWPORT_WIDTH; x++) {
-			let tiley = y+Math.floor(py)-VIEWPORT_HEIGHT/2
+			let tiley = Math.floor(y+py-VIEWPORT_WIDTH/2)
 			if (tiley < 0 || tiley >= WORLD_HEIGHT)
 				continue;
-			let tilex = x+Math.floor(px)-VIEWPORT_WIDTH/2
+			let tilex = Math.floor(x+px-VIEWPORT_HEIGHT/2)
 			if (tilex < 0 || tilex >= WORLD_WIDTH)
 				continue;
 			drawTile(tiles[tiley][tilex], (x-x_fract-y+y_fract)*32, (x-x_fract+y-y_fract)*16)
