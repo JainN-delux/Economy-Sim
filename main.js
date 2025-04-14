@@ -63,6 +63,8 @@ function draw() {
 		player_x -= 0.1
 		player_y += 0.1
 	}
+	player_x = Math.round(player_x * 10) / 10
+	player_y = Math.round(player_y * 10) / 10
 	drawWorld(player_x, player_y)
 	let screen_x = (player_x - player_y)
 	let screen_y = (player_x + player_y)
