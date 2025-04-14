@@ -1,6 +1,6 @@
 let tileset;
-const WORLD_WIDTH = 10;
-const WORLD_HEIGHT = 10;
+const WORLD_WIDTH = 40;
+const WORLD_HEIGHT = 40;
 const Tile = {
 	GRASS: 31,
 }
@@ -51,7 +51,7 @@ function draw() {
 		player_x -= 0.1
 		player_y -= 0.1
 	}
-	if (keyIsDown(83)) {
+if (keyIsDown(83)) {
 		player_x += 0.1
 		player_y += 0.1
 	}
@@ -69,4 +69,5 @@ function draw() {
 	let screen_x = (player_x - player_y)
 	let screen_y = (player_x + player_y)
 	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
+	text(player_x + ',' + player_y, 20, 20)
 }
