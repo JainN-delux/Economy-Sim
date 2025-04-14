@@ -13,8 +13,8 @@ function preload() {
 const CANVAS_WIDTH = 768;
 const CANVAS_HEIGHT = 768;
 // Recalculate this
-const VIEWPORT_WIDTH = 32;
-const VIEWPORT_HEIGHT = 32;
+const VIEWPORT_WIDTH = 64;
+const VIEWPORT_HEIGHT = 64;
 /** This is a setup function. */
 function setup() {
 	createCanvas(768, 768);
@@ -26,6 +26,8 @@ function drawTile(tile, x, y) {
 }
 
 function drawWorld(px, py) {
+	let x_fract = fract(px)
+	let y_fract = fract(py)
 	for (let y = 0; y < VIEWPORT_HEIGHT; y++)
 		for (let x = 0; x < VIEWPORT_WIDTH; x++) {
 			let tiley = y+Math.floor(py)-VIEWPORT_HEIGHT/2
@@ -34,7 +36,7 @@ function drawWorld(px, py) {
 			let tilex = x+Math.floor(px)-VIEWPORT_WIDTH/2
 			if (tilex < 0 || tilex >= WORLD_WIDTH)
 				continue;
-			drawTile(tiles[tiley][tilex], (x-y)*32, (x+y)*16)
+			drawTile(tiles[tiley][tilex], (x+x_fract-y-y_fract)*32, (x+x_fract+y+y_fract)*16)
 		}
 }
 
@@ -46,20 +48,20 @@ function draw() {
 	background(220);
 
 	if (keyIsDown(87)) {
-		player_x -= 1
-		player_y -= 1
+		player_x -= 0.1
+		player_y -= 0.1
 	}
 	if (keyIsDown(83)) {
-		player_x += 1
-		player_y += 1
+		player_x += 0.1
+		player_y += 0.1
 	}
 	if (keyIsDown(68)) {
-		player_x += 1
-		player_y -= 1
+		player_x += 0.1
+		player_y -= 0.1
 	}
 	if (keyIsDown(65)) {
-		player_x -= 1
-		player_y += 1
+		player_x -= 0.1
+		player_y += 0.1
 	}
 	drawWorld(player_x, player_y)
 	let screen_x = (player_x - player_y)
