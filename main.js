@@ -27,6 +27,22 @@ let CANVAS_HEIGHT = 768;
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth();
+
+	// Set the noise level and scale.
+	let noiseLevel = 6;
+	let noiseScale = 0.1;
+
+	for (let y = 0; y < WORLD_HEIGHT; y++) {
+		for (let x = 0; x < WORLD_WIDTH; x++) {
+			// Scale the input coordinates.
+			let nx = noiseScale * x;
+			let ny = noiseScale * y;
+
+			// Compute the noise value.
+			let c = noiseLevel * noise(nx, ny);
+			tiles[y][x] = Math.floor(c);
+		}
+	}
 }
 
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE;
@@ -55,18 +71,17 @@ function draw() {
 	last = now;
 	background(220);
 	if (keyIsDown(87)) {
-		player_y -= 1*dt;
+		player_y -= 4*dt;
 	}
 	if (keyIsDown(83)) {
-		player_y += 1*dt;
+		player_y += 4*dt;
 	}
 	if (keyIsDown(68)) {
-		player_x += 1*dt;
+		player_x += 4*dt;
 	}
 	if (keyIsDown(65)) {
-		player_x -= 1*dt;
+		player_x -= 4*dt;
 	}
-	console.log(player_x, player_y)
 	drawWorld(player_x, player_y);
 	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
 }
