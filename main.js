@@ -1,73 +1,72 @@
+// Time Keeping Variables
+var now = 0;  // Current Time in seconds since start of program
+var last = 0; // Time since start of program for the last frame
+var dt = 0;   // Time between frames
+
 let tileset;
-const WORLD_WIDTH = 40;
-const WORLD_HEIGHT = 40;
+const WORLD_WIDTH = 256;
+const WORLD_HEIGHT = 256;
 const Tile = {
-	GRASS: 31,
+	GRASS: 0,
 }
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.GRASS));
 
 function preload() {
-	tileset = loadImage("/assets/tileset.png");
+	tileset = loadImage("/assets/tile_atlas.png");
 }
 
-const CANVAS_WIDTH = 768;
-const CANVAS_HEIGHT = 768;
-// Recalculate this
-const VIEWPORT_WIDTH = 48;
-const VIEWPORT_HEIGHT = 48;
-/** This is a setup function. */
-function setup() {
-	createCanvas(768, 768);
-}
+let TILE_SRC_SIZE = 16;
+let TILE_SIZE = 32;
 
-/** Something like this for tile drawing */
 function drawTile(tile, x, y) {
-	image(tileset, x, y, 64, 64, 64*(tile % 9), 64*Math.floor(tile / 9), 64, 64)
+	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE)
 }
 
+let CANVAS_WIDTH = 768;
+let CANVAS_HEIGHT = 768;
+function setup() {
+	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+	noSmooth();
+}
+
+let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE;
+let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
 function drawWorld(px, py) {
-	let x_fract = fract(px)
-	let y_fract = fract(py)
-	for (let y = 0; y < VIEWPORT_HEIGHT; y++)
-		for (let x = 0; x < VIEWPORT_WIDTH; x++) {
-			let tiley = Math.floor(y+py-VIEWPORT_WIDTH/2)
-			if (tiley < 0 || tiley >= WORLD_HEIGHT)
-				continue;
-			let tilex = Math.floor(x+px-VIEWPORT_HEIGHT/2)
-			if (tilex < 0 || tilex >= WORLD_WIDTH)
-				continue;
-			drawTile(tiles[tiley][tilex], (x-x_fract-y+y_fract)*32, (x-x_fract+y-y_fract)*16)
+	for (let x = 0; x < VIEWPORT_WIDTH; x++) {
+		for (let y = 0; y < VIEWPORT_HEIGHT; y++) {
+			let tile_x = Math.floor(x+px-VIEWPORT_WIDTH/2);
+			if (tile_x < 0 || tile_x >= WORLD_WIDTH)
+				continue
+			let tile_y = Math.floor(y+py-VIEWPORT_HEIGHT/2);
+			if (tile_y < 0 || tile_y >= WORLD_WIDTH)
+				continue
+			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE)
 		}
+	}
 }
 
 let player_x = 0;
 let player_y = 0;
 
-/** This is a draw function. */
 function draw() {
+	// millis() gives time in milliseconds since start of program
+	now = millis()/1000;
+	dt = now - last;
+	last = now;
 	background(220);
-
 	if (keyIsDown(87)) {
-		player_x -= 0.1
-		player_y -= 0.1
+		player_y -= 1*dt;
 	}
-if (keyIsDown(83)) {
-		player_x += 0.1
-		player_y += 0.1
+	if (keyIsDown(83)) {
+		player_y += 1*dt;
 	}
 	if (keyIsDown(68)) {
-		player_x += 0.1
-		player_y -= 0.1
+		player_x += 1*dt;
 	}
 	if (keyIsDown(65)) {
-		player_x -= 0.1
-		player_y += 0.1
+		player_x -= 1*dt;
 	}
-	player_x = Math.round(player_x * 10) / 10
-	player_y = Math.round(player_y * 10) / 10
-	drawWorld(player_x, player_y)
-	let screen_x = (player_x - player_y)
-	let screen_y = (player_x + player_y)
+	console.log(player_x, player_y)
+	drawWorld(player_x, player_y);
 	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
-	text(player_x + ',' + player_y, 20, 20)
 }
