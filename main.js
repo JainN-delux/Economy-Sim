@@ -7,7 +7,12 @@ let tileset;
 const WORLD_WIDTH = 256;
 const WORLD_HEIGHT = 256;
 const Tile = {
-	GRASS: 0,
+	WATER: 0,
+	SAND: 1,
+	GRASS: 2,
+	DIRT: 3,
+	STONE: 4,
+	SNOW: 5,
 }
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.GRASS));
 
