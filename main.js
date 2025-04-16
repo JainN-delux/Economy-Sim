@@ -36,7 +36,7 @@ function setup() {
 	noSmooth();
 
 	// Set the noise level and scale.
-	let noiseLevel = 6;
+	let noiseLevel = 1;
 	let noiseScale = 0.1;
 
 	for (let y = 0; y < WORLD_HEIGHT; y++) {
@@ -49,7 +49,18 @@ function setup() {
 			let c = noiseLevel * noise(nx, ny);
 
 			// Add a more complex formula for tile generation here
-			tiles[y][x] = Math.floor(c);
+			if (c < 0.3)
+				tiles[y][x] = Tile.WATER
+			else if (c < 0.4)
+				tiles[y][x] = Tile.SAND
+			else if (c < 0.6)
+				tiles[y][x] = Tile.GRASS
+			else if (c < 0.65)
+				tiles[y][x] = Tile.DIRT
+			else if (c < 0.80)
+				tiles[y][x] = Tile.STONE
+			else
+				tiles[y][x] = Tile.SNOW
 		}
 	}
 }
