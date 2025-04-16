@@ -15,7 +15,9 @@ function preload() {
 	tileset = loadImage("/assets/tile_atlas.png");
 }
 
+// Size of tile in tile atlas
 let TILE_SRC_SIZE = 16;
+// Rendered size of tile
 let TILE_SIZE = 32;
 
 function drawTile(tile, x, y) {
@@ -40,6 +42,8 @@ function setup() {
 
 			// Compute the noise value.
 			let c = noiseLevel * noise(nx, ny);
+
+			// Add a more complex formula for tile generation here
 			tiles[y][x] = Math.floor(c);
 		}
 	}
@@ -69,19 +73,26 @@ function draw() {
 	now = millis()/1000;
 	dt = now - last;
 	last = now;
+
 	background(220);
+
+	// Key W / UP
 	if (keyIsDown(87)) {
 		player_y -= 4*dt;
 	}
+	// Key S / DOWN
 	if (keyIsDown(83)) {
 		player_y += 4*dt;
 	}
+	// Key D / RIGHT
 	if (keyIsDown(68)) {
 		player_x += 4*dt;
 	}
+	// Key A / LEFT
 	if (keyIsDown(65)) {
 		player_x -= 4*dt;
 	}
 	drawWorld(player_x, player_y);
+	// Draw player (add sprite here later)
 	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
 }
