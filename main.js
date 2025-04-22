@@ -64,7 +64,6 @@ function setup() {
 		{ name: "Water", sprite: pickSprite() },
 		{ name: "Elven rope", sprite: pickSprite() },
 	  ];
-
 	
 
 	// Set the noise level and scale.
@@ -96,6 +95,12 @@ function setup() {
 		}
 	}
 }
+
+function pickSprite() {
+	let s = Math.floor(random(sprites.length));
+	//console.log(s);
+	return sprites[s];
+  }
 
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE;
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
