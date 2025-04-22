@@ -3,30 +3,35 @@ var now = 0;  // Current Time in seconds since start of program
 var last = 0; // Time since start of program for the last frame
 var dt = 0;   // Time between frames
 
-
 let inventory = {};
-
 let sprites = [];
-
 let bag = {};
-
-
 
 let tileset;
 const WORLD_WIDTH = 256;
 const WORLD_HEIGHT = 256;
 const Tile = {
-	WATER: 0,
-	SAND: 1,
-	GRASS: 2,
-	DIRT: 3,
-	STONE: 4,
-	SNOW: 5,
+	WALL_FRONT: 0,
+	WALL_SIDE: 1,
+	WALL_TOP_LEFT: 2,
+	WALL_TOP_RIGHT: 3,
+	WALL_BOTTOM_LEFT: 4,
+	WALL_BOTTOM_RIGHT: 5,
+	WALL: 6,
+	FLOOR_TOP_LEFT: 7,
+	FLOOR_TOP: 8,
+	FLOOR_TOP_RIGHT: 9,
+	FLOOR_LEFT: 10,
+	FLOOR: 11,
+	FLOOR_RIGHT: 12,
+	FLOOR_BOTTOM_LEFT: 13,
+	FLOOR_BOTTOM: 14,
+	FLOOR_BOTTOM_RIGHT: 15,
 }
-let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.GRASS));
+let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.FLOOR));
 
 function preload() {
-	tileset = loadImage("/assets/tile_atlas.png");
+	tileset = loadImage("/assets/tileset.png");
 }
 
 // Size of tile in tile atlas
@@ -44,16 +49,16 @@ function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth();
 
-	sprites = ["@", "#", "$", "%", "&", "*", "?"]
+	/*sprites = ["@", "#", "$", "%", "&", "*", "?"]
 
 	// width of the bag area
-	bag.w = 192;  
+	bag.w = 192;
 	// height of the bag area
-	bag.h = 200;  
+	bag.h = 200;
 	// columns of items based on bag width (without padding)
-	bag.cols = Math.floor(bag.w / 32);  
+	bag.cols = Math.floor(bag.w / 32);
 	// which item is currently selected
-	bag.active_item = 0; 
+	bag.active_item = 0;
 
 	bag.contents = [
 		{ name: "Sting", sprite: pickSprite() },
@@ -63,38 +68,7 @@ function setup() {
 		{ name: "Mithril vest", sprite: pickSprite() },
 		{ name: "Water", sprite: pickSprite() },
 		{ name: "Elven rope", sprite: pickSprite() },
-	  ];
-
-	
-
-	// Set the noise level and scale.
-	let noiseLevel = 1;
-	let noiseScale = 0.1;
-
-	for (let y = 0; y < WORLD_HEIGHT; y++) {
-		for (let x = 0; x < WORLD_WIDTH; x++) {
-			// Scale the input coordinates.
-			let nx = noiseScale * x;
-			let ny = noiseScale * y;
-
-			// Compute the noise value.
-			let c = noiseLevel * noise(nx, ny);
-
-			// Add a more complex formula for tile generation here
-			if (c < 0.3)
-				tiles[y][x] = Tile.WATER
-			else if (c < 0.4)
-				tiles[y][x] = Tile.SAND
-			else if (c < 0.6)
-				tiles[y][x] = Tile.GRASS
-			else if (c < 0.65)
-				tiles[y][x] = Tile.DIRT
-			else if (c < 0.80)
-				tiles[y][x] = Tile.STONE
-			else
-				tiles[y][x] = Tile.SNOW
-		}
-	}
+	];*/
 }
 
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE;
