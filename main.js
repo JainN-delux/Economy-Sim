@@ -3,6 +3,15 @@ var now = 0;  // Current Time in seconds since start of program
 var last = 0; // Time since start of program for the last frame
 var dt = 0;   // Time between frames
 
+
+let inventory = {};
+
+let sprites = [];
+
+let bag = {};
+
+
+
 let tileset;
 const WORLD_WIDTH = 256;
 const WORLD_HEIGHT = 256;
