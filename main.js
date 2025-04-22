@@ -44,6 +44,29 @@ function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth();
 
+	sprites = ["@", "#", "$", "%", "&", "*", "?"]
+
+	// width of the bag area
+	bag.w = 192;  
+	// height of the bag area
+	bag.h = 200;  
+	// columns of items based on bag width (without padding)
+	bag.cols = Math.floor(bag.w / 32);  
+	// which item is currently selected
+	bag.active_item = 0; 
+
+	bag.contents = [
+		{ name: "Sting", sprite: pickSprite() },
+		{ name: "Elven cape", sprite: pickSprite() },
+		{ name: "Sauron's ring", sprite: pickSprite() },
+		{ name: "Lembas", sprite: pickSprite() },
+		{ name: "Mithril vest", sprite: pickSprite() },
+		{ name: "Water", sprite: pickSprite() },
+		{ name: "Elven rope", sprite: pickSprite() },
+	  ];
+
+	
+
 	// Set the noise level and scale.
 	let noiseLevel = 1;
 	let noiseScale = 0.1;
