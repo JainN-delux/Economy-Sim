@@ -7,6 +7,10 @@ let inventory = {};
 let sprites = [];
 let bag = {};
 
+let inventoryOpen = false
+
+
+
 let tileset;
 const WORLD_WIDTH = 256;
 const WORLD_HEIGHT = 256;
@@ -75,7 +79,14 @@ function pickSprite() {
 	let s = Math.floor(random(sprites.length));
 	//console.log(s);
 	return sprites[s];
-  }
+}
+
+function drawInvent() {
+	if (inventoryOpen) {
+		rect(100, 100, 200, 200)
+	}
+}
+
 
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE;
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
@@ -120,7 +131,29 @@ function draw() {
 	if (keyIsDown(65)) {
 		player_x -= 4*dt;
 	}
+	// Key X / Inventory
+	// if x is pressed and the inventory is not open 
+	if (keyIsDown(LEFT_ARROW)) {
+		inventoryOpen = true
+		
+	}
+
+
+	// if (keyIsDown(58) && !inventoryOpen) {
+	// 	inventoryOpen = true
+		
+
+	// // if x is pressed and the inventory is open
+	// } else if (keyIsDown(58) && inventoryOpen) {
+	// 	inventoryOpen = false
+	// } 
+
+
+
+	// drawing the world
 	drawWorld(player_x, player_y);
+	// drawing a window that is the inventory 
+	drawInvent()
 	// Draw player (add sprite here later)
 	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
 }
