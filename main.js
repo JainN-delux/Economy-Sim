@@ -83,7 +83,7 @@ function pickSprite() {
 
 function drawInvent() {
 	if (inventoryOpen) {
-		rect(100, 100, 200, 200)
+		rect(50, 50, 300, 300)
 	}
 }
 
@@ -135,7 +135,6 @@ function draw() {
 	// if x is pressed and the inventory is not open 
 	if (keyIsDown(88)) {
 		inventoryOpen = inventoryOpen ? false : true;
-		
 		
 	} 
 
