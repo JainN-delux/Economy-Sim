@@ -133,10 +133,11 @@ function draw() {
 	}
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
-	if (keyIsDown(LEFT_ARROW)) {
-		inventoryOpen = true
+	if (keyIsDown(88)) {
+		inventoryOpen = inventoryOpen ? false : true;
 		
-	}
+		
+	} 
 
 
 	// if (keyIsDown(58) && !inventoryOpen) {
