@@ -84,6 +84,13 @@ function drawWorld(px, py) {
 	}
 }
 
+function keyPressed() {
+	// Key X / Inventory
+	// if x is pressed and the inventory is not open 
+	if (key === 'x')
+		inventoryOpen = !inventoryOpen;
+}
+
 let player_x = 0;
 let player_y = 0;
 
@@ -111,25 +118,10 @@ function draw() {
 	if (keyIsDown(65)) {
 		player_x -= 4*dt;
 	}
-	// Key X / Inventory
-	// if x is pressed and the inventory is not open 
 	if (keyIsDown(88)) {
-		inventoryOpen = inventoryOpen ? false : true;
 		
 		
 	} 
-
-
-	// if (keyIsDown(58) && !inventoryOpen) {
-	// 	inventoryOpen = true
-		
-
-	// // if x is pressed and the inventory is open
-	// } else if (keyIsDown(58) && inventoryOpen) {
-	// 	inventoryOpen = false
-	// } 
-
-
 
 	// drawing the world
 	drawWorld(player_x, player_y);
