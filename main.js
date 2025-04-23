@@ -11,6 +11,7 @@ let tileset;              // Stores our tileset image
 const WORLD_WIDTH = 256;  // The width in tiles in size
 const WORLD_HEIGHT = 256; // THe height in tiles in size
 // Enums for the different tiles
+let inventoryOpen = false
 const Tile = {
 	WALL_FRONT: 0,
 	WALL_SIDE: 1,
@@ -58,7 +59,14 @@ function pickSprite() {
 	let s = Math.floor(random(sprites.length));
 	//console.log(s);
 	return sprites[s];
-  }
+}
+
+function drawInvent() {
+	if (inventoryOpen) {
+		rect(100, 100, 200, 200)
+	}
+}
+
 
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
@@ -103,7 +111,30 @@ function draw() {
 	if (keyIsDown(65)) {
 		player_x -= 4*dt;
 	}
+	// Key X / Inventory
+	// if x is pressed and the inventory is not open 
+	if (keyIsDown(88)) {
+		inventoryOpen = inventoryOpen ? false : true;
+		
+		
+	} 
+
+
+	// if (keyIsDown(58) && !inventoryOpen) {
+	// 	inventoryOpen = true
+		
+
+	// // if x is pressed and the inventory is open
+	// } else if (keyIsDown(58) && inventoryOpen) {
+	// 	inventoryOpen = false
+	// } 
+
+
+
+	// drawing the world
 	drawWorld(player_x, player_y);
+	// drawing a window that is the inventory 
+	drawInvent()
 	// Draw player (add sprite here later)
 	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
 }
