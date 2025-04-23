@@ -7,9 +7,10 @@ let inventory = {};
 let sprites = [];
 let bag = {};
 
-let tileset;
-const WORLD_WIDTH = 256;
-const WORLD_HEIGHT = 256;
+let tileset;              // Stores our tileset image
+const WORLD_WIDTH = 256;  // The width in tiles in size
+const WORLD_HEIGHT = 256; // THe height in tiles in size
+// Enums for the different tiles
 const Tile = {
 	WALL_FRONT: 0,
 	WALL_SIDE: 1,
@@ -28,8 +29,10 @@ const Tile = {
 	FLOOR_BOTTOM: 14,
 	FLOOR_BOTTOM_RIGHT: 15,
 }
+// Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.FLOOR));
 
+// Preloads our images
 function preload() {
 	tileset = loadImage("/assets/tileset.png");
 }
@@ -39,36 +42,16 @@ let TILE_SRC_SIZE = 16;
 // Rendered size of tile
 let TILE_SIZE = 32;
 
+// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
 function drawTile(tile, x, y) {
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE)
 }
 
-let CANVAS_WIDTH = 768;
-let CANVAS_HEIGHT = 768;
+let CANVAS_WIDTH = 768;  // Width of p5 canvas
+let CANVAS_HEIGHT = 768; // Height of p5 canvas
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-	noSmooth();
-
-	/*sprites = ["@", "#", "$", "%", "&", "*", "?"]
-
-	// width of the bag area
-	bag.w = 192;
-	// height of the bag area
-	bag.h = 200;
-	// columns of items based on bag width (without padding)
-	bag.cols = Math.floor(bag.w / 32);
-	// which item is currently selected
-	bag.active_item = 0;
-
-	bag.contents = [
-		{ name: "Sting", sprite: pickSprite() },
-		{ name: "Elven cape", sprite: pickSprite() },
-		{ name: "Sauron's ring", sprite: pickSprite() },
-		{ name: "Lembas", sprite: pickSprite() },
-		{ name: "Mithril vest", sprite: pickSprite() },
-		{ name: "Water", sprite: pickSprite() },
-		{ name: "Elven rope", sprite: pickSprite() },
-	];*/
+	noSmooth(); // Turns off filter on images because we want clear pixel art
 }
 
 function pickSprite() {
@@ -77,7 +60,7 @@ function pickSprite() {
 	return sprites[s];
   }
 
-let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE;
+let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
 function drawWorld(px, py) {
 	for (let x = 0; x < VIEWPORT_WIDTH; x++) {
