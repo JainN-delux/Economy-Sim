@@ -50,10 +50,6 @@ function drawTile(tile, x, y) {
 
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
-function setup() {
-	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-	noSmooth(); // Turns off filter on images because we want clear pixel art
-}
 
 function pickSprite() {
 	let s = Math.floor(random(sprites.length));
@@ -84,6 +80,42 @@ function drawWorld(px, py) {
 	}
 }
 
+function drawRoom(rx, ry, w, h) {
+	// Draw top and bottom walls and floors
+	for (let x = 1; x < w-1; x++) {
+		tiles[ry][rx + x] = Tile.WALL_FRONT;
+		tiles[ry + h-1][rx + x] = Tile.WALL_FRONT;
+		tiles[ry + 1][rx + x] = Tile.FLOOR_TOP;
+		tiles[ry + h-2][rx + x] = Tile.FLOOR_BOTTOM;
+	}
+
+	// Draw corners
+	tiles[ry][rx] = Tile.WALL_TOP_LEFT;
+	tiles[ry + 1][rx + 1] = Tile.FLOOR_TOP_LEFT;
+	tiles[ry + h-1][rx] = Tile.WALL_BOTTOM_LEFT;
+	tiles[ry + h-2][rx + 1] = Tile.FLOOR_BOTTOM_LEFT;
+
+	tiles[ry][rx + w-1] = Tile.WALL_TOP_RIGHT;
+	tiles[ry + 1][rx + w-2] = Tile.FLOOR_TOP_RIGHT;
+	tiles[ry + h-1][rx + w-1] = Tile.WALL_BOTTOM_RIGHT;
+	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
+
+	// Draw top and bottom walls and floors
+	for (let y = 1; y < h-1; y++) {
+		tiles[ry + y][rx] = Tile.WALL_SIDE;
+		tiles[ry + y][rx + w-1] = Tile.WALL_SIDE;
+		tiles[ry + y][rx + 1] = Tile.FLOOR_LEFT;
+		tiles[ry + y][rx + w-2] = Tile.FLOOR_RIGHT;
+	}
+
+	// Draw middle floor space
+	for (let y = 2; y < h-2; y++) {
+		for (let x = 2; x < w-2; x++) {
+			tiles[ry + y][rx + x] = Tile.FLOOR;
+		}
+	}
+}
+
 function keyPressed() {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
@@ -93,6 +125,12 @@ function keyPressed() {
 
 let player_x = 0;
 let player_y = 0;
+
+function setup() {
+	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+	noSmooth(); // Turns off filter on images because we want clear pixel art
+	drawRoom(0, 0, 10, 10);
+}
 
 function draw() {
 	// millis() gives time in milliseconds since start of program
