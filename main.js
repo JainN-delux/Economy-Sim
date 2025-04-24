@@ -89,18 +89,7 @@ function drawRoom(rx, ry, w, h) {
 		tiles[ry + h-2][rx + x] = Tile.FLOOR_BOTTOM;
 	}
 
-	// Draw corners
-	tiles[ry][rx] = Tile.WALL_TOP_LEFT;
-	tiles[ry + 1][rx + 1] = Tile.FLOOR_TOP_LEFT;
-	tiles[ry + h-1][rx] = Tile.WALL_BOTTOM_LEFT;
-	tiles[ry + h-2][rx + 1] = Tile.FLOOR_BOTTOM_LEFT;
-
-	tiles[ry][rx + w-1] = Tile.WALL_TOP_RIGHT;
-	tiles[ry + 1][rx + w-2] = Tile.FLOOR_TOP_RIGHT;
-	tiles[ry + h-1][rx + w-1] = Tile.WALL_BOTTOM_RIGHT;
-	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
-
-	// Draw top and bottom walls and floors
+	// Draw left and right walls and floors
 	for (let y = 1; y < h-1; y++) {
 		tiles[ry + y][rx] = Tile.WALL_SIDE;
 		tiles[ry + y][rx + w-1] = Tile.WALL_SIDE;
@@ -114,6 +103,17 @@ function drawRoom(rx, ry, w, h) {
 			tiles[ry + y][rx + x] = Tile.FLOOR;
 		}
 	}
+
+	// Draw corners
+	tiles[ry][rx] = Tile.WALL_TOP_LEFT;
+	tiles[ry + 1][rx + 1] = Tile.FLOOR_TOP_LEFT;
+	tiles[ry + h-1][rx] = Tile.WALL_BOTTOM_LEFT;
+	tiles[ry + h-2][rx + 1] = Tile.FLOOR_BOTTOM_LEFT;
+
+	tiles[ry][rx + w-1] = Tile.WALL_TOP_RIGHT;
+	tiles[ry + 1][rx + w-2] = Tile.FLOOR_TOP_RIGHT;
+	tiles[ry + h-1][rx + w-1] = Tile.WALL_BOTTOM_RIGHT;
+	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
 }
 
 function keyPressed() {
