@@ -4,7 +4,7 @@ var last = 0; // Time since start of program for the last frame
 var dt = 0;   // Time between frames
 
 let inventory = {};
-let sprites = ["%", "&", "@", "^", "()"];
+let sprites = ["%", "&", "@", "^", "()", "*", "#"];
 let bag = {};
 
 let tileset;              // Stores our tileset image
@@ -61,8 +61,8 @@ function drawInvent() {
 	if (inventoryOpen) {
 		rect(20, 20, 300, 300)
 		for (let i = 0; i < sprites.length; i++) {
-			rect(50 + i*50, 30, 30, 30)
-			text(sprites[i], 60 + i*50, 50);
+			rect(30 + i*40, 30, 30, 30)
+			text(sprites[i], 40 + i*40, 50);
 		}
 
 	}
