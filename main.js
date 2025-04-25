@@ -116,6 +116,44 @@ function drawRoom(rx, ry, w, h) {
 	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
 }
 
+function randint(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function drawRoomInsideSpace(rx, ry, w, h) {
+	let x0 = randint(1, w/2-1);
+	let y0 = randint(1, h/2-1);
+	let x1 = randint(0, w/2-1);
+	let y1 = randint(0, h/2-1);
+	drawRoom(rx+x0, ry+y0, w-x0-x1, h-y0-y1);
+}
+
+const SplitDir = {
+	HORIZONTAL: 0,
+	VERTICAL: 1,
+};
+
+function generateRooms(rx, ry, w, h) {
+	if (w <= 16 && h <= 16) {
+		drawRoomInsideSpace(rx, ry, w, h)
+		return;
+	}
+	let splitDir = randint(0, 2);
+	if ((splitDir == SplitDir.HORIZONTAL || h <= 16) && w > 16) {
+		let pos = randint(4, w-8);
+		generateRooms(rx, ry, pos, h);
+		generateRooms(rx+pos, ry, w-pos, h);
+		return;
+	}
+	if ((splitDir == SplitDir.VERTICAL || w <= 16) && h > 16) {
+		let pos = randint(4, h-8);
+		generateRooms(rx, ry, w, pos);
+		generateRooms(rx, ry+pos, w, h-pos);
+		return;
+	}
+	drawRoomInsideSpace(rx, ry, w, h);
+}
+
 function keyPressed() {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
@@ -129,7 +167,7 @@ let player_y = 0;
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
-	drawRoom(0, 0, 10, 10);
+	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 }
 
 function draw() {
