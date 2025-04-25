@@ -36,6 +36,7 @@ let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fi
 // Preloads our images
 function preload() {
 	tileset = loadImage("/assets/tileset.png");
+	itemset = loadImage("/assets/Items/potion.png");
 }
 
 // Size of tile in tile atlas
@@ -69,6 +70,22 @@ function drawInvent() {
 }
 
 
+//ENTITIES
+let ITEM_SRC_SIZE = 16;
+function drawItems(tile, x, y) {
+	image(itemset, x, y, TILE_SIZE, TILE_SIZE, tile*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+}
+const items = {
+	POTION_RED: 1,
+	POTION_PINK: 2,
+	POTION_ORANGE: 3,
+	POTION_YELLOW: 4,
+	POTION_GREEN: 5,
+}
+let entities = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
+
+
+
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
 function drawWorld(px, py) {
@@ -80,7 +97,12 @@ function drawWorld(px, py) {
 			let tile_y = Math.floor(y+py-VIEWPORT_HEIGHT/2);
 			if (tile_y < 0 || tile_y >= WORLD_WIDTH)
 				continue
-			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE)
+			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
+			//draw entites onto the screen
+			const entity = entities[tile_y][tile_x];
+			if (entity !== null) {
+  				drawItems(entity, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
+			}
 		}
 	}
 }
@@ -159,6 +181,8 @@ function generateRooms(rx, ry, w, h) {
 	drawRoomInsideSpace(rx, ry, w, h);
 }
 
+
+ 
 function keyPressed() {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
@@ -173,7 +197,10 @@ function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+	//position on entities
+	entities[10][10] = items.POTION_GREEN
 }
+
 
 function draw() {
 	// millis() gives time in milliseconds since start of program
