@@ -58,18 +58,6 @@ function pickSprite() {
 	return sprites[s];
 }
 
-function drawInvent() {
-	if (inventoryOpen) {
-		rect(20, 20, 300, 300)
-		for (let i = 0; i < sprites.length; i++) {
-			rect(30 + i*40, 30, 30, 30)
-			text(sprites[i], 40 + i*40, 50);
-		}
-
-	}
-}
-
-
 //ENTITIES
 let ITEM_SRC_SIZE = 16;
 function drawItems(tile, x, y) {
@@ -83,6 +71,19 @@ const items = {
 	POTION_GREEN: 5,
 }
 let entities = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
+
+
+function drawInvent() {
+	if (inventoryOpen) {
+		rect(20, 20, 300, 300)
+		for (let i = 0; i < sprites.length; i++) {
+			rect(30 + i*40, 30, 30, 30)
+			//text(i, 40 + i*40, 50);
+			drawItems(i,40 + i*40, 50)
+		}
+	}
+}
+
 
 
 
