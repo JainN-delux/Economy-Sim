@@ -223,9 +223,6 @@ function draw() {
 	if (keyIsDown(65)) {
 		player_x -= 4*dt;
 	}
-	if (keyIsDown(88)) {
-		
-	} 
 
 	// drawing the world
 	drawWorld(player_x, player_y);
