@@ -29,6 +29,7 @@ const Tile = {
 	FLOOR_BOTTOM_LEFT: 13,
 	FLOOR_BOTTOM: 14,
 	FLOOR_BOTTOM_RIGHT: 15,
+	EMPTY: 16
 }
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.FLOOR));
