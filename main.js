@@ -33,7 +33,7 @@ const Tile = {
 	EMPTY: 16
 }
 // Our 2D array that stores tile data. This is initially filled with floors
-let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.FLOOR));
+let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
 
 // Preloads our images
 function preload() {
