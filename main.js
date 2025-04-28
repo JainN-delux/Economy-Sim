@@ -79,7 +79,7 @@ function drawInvent() {
 		for (let i = 0; i < sprites.length; i++) {
 			rect(30 + i*40, 30, 30, 30)
 			//text(i, 40 + i*40, 50);
-			drawItems(i,40 + i*40, 50)
+			drawItems(i, i*40, 27)
 		}
 	}
 }
