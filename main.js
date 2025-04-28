@@ -53,11 +53,6 @@ function drawTile(tile, x, y) {
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
-function pickSprite() {
-	let s = Math.floor(random(sprites.length));
-	//console.log(s);
-	return sprites[s];
-}
 
 //ENTITIES
 let ITEM_SRC_SIZE = 16;
