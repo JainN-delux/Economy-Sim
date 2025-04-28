@@ -8,6 +8,7 @@ let sprites = ["%", "&", "@", "^", "()", "*", "#"];
 let bag = {};
 
 let tileset;              // Stores our tileset image
+let entitysheet;
 const WORLD_WIDTH = 256;  // The width in tiles in size
 const WORLD_HEIGHT = 256; // THe height in tiles in size
 // Enums for the different tiles
@@ -36,7 +37,8 @@ let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fi
 // Preloads our images
 function preload() {
 	tileset = loadImage("/assets/tileset.png");
-	itemset = loadImage("/assets/Items/potion.png");
+	itemset = loadImage("/assets/Items/Potion.png");
+	entitysheet = loadImage("/assets/Player sheet.png");
 }
 
 // Size of tile in tile atlas
@@ -58,19 +60,36 @@ function pickSprite() {
 	return sprites[s];
 }
 
-//ENTITIES
 let ITEM_SRC_SIZE = 16;
-function drawItems(tile, x, y) {
+function drawItem(tile, x, y) {
 	image(itemset, x, y, TILE_SIZE, TILE_SIZE, tile*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 }
-const items = {
+const Item = {
 	POTION_RED: 1,
 	POTION_PINK: 2,
 	POTION_ORANGE: 3,
 	POTION_YELLOW: 4,
 	POTION_GREEN: 5,
 }
-let entities = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
+let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
+
+let ENTITY_SRC_SIZE = 16;
+let player;
+class Entity {
+	constructor(x, y, type) {
+		this.x = x;
+		this.y = y;
+		this.type = type;
+	}
+
+	draw() {
+		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+	}
+}
+let entities = [new Entity(0, 0, 0), new Entity(4, 4, 1)];
+player = entities[0]
 
 
 function drawInvent() {
@@ -79,13 +98,10 @@ function drawInvent() {
 		for (let i = 0; i < sprites.length; i++) {
 			rect(30 + i*40, 30, 30, 30)
 			//text(i, 40 + i*40, 50);
-			drawItems(i,40 + i*40, 50)
+			drawItem(i,40 + i*40, 50)
 		}
 	}
 }
-
-
-
 
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
@@ -99,13 +115,15 @@ function drawWorld(px, py) {
 			if (tile_y < 0 || tile_y >= WORLD_WIDTH)
 				continue
 			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
-			//draw entites onto the screen
-			const entity = entities[tile_y][tile_x];
-			if (entity !== null) {
-  				drawItems(entity, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
+			const item = items[tile_y][tile_x];
+			if (item !== null) {
+				drawItem(item, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
 			}
 		}
 	}
+
+	for (let i = 0; i < entities.length; i++)
+		entities[i].draw();
 }
 
 function drawRoom(rx, ry, w, h) {
@@ -189,17 +207,23 @@ function keyPressed() {
 	// if x is pressed and the inventory is not open 
 	if (key === 'x')
 		inventoryOpen = !inventoryOpen;
-}
 
-let player_x = 0;
-let player_y = 0;
+	if (key == 'w')
+		player.y -= 1
+	if (key == 's')
+		player.y += 1
+	if (key == 'a')
+		player.x -= 1
+	if (key == 'd')
+		player.x += 1
+}
 
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	//position on entities
-	entities[10][10] = items.POTION_GREEN
+	items[10][10] = items.POTION_GREEN
 }
 
 
@@ -211,30 +235,8 @@ function draw() {
 
 	background(220);
 
-	// Key W / UP
-	if (keyIsDown(87)) {
-		player_y -= 4*dt;
-	}
-	// Key S / DOWN
-	if (keyIsDown(83)) {
-		player_y += 4*dt;
-	}
-	// Key D / RIGHT
-	if (keyIsDown(68)) {
-		player_x += 4*dt;
-	}
-	// Key A / LEFT
-	if (keyIsDown(65)) {
-		player_x -= 4*dt;
-	}
-	if (keyIsDown(88)) {
-		
-	} 
-
 	// drawing the world
-	drawWorld(player_x, player_y);
+	drawWorld(player.x, player.y);
 	// drawing a window that is the inventory 
 	drawInvent()
-	// Draw player (add sprite here later)
-	rect(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 10, 10)
 }
