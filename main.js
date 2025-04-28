@@ -30,6 +30,7 @@ const Tile = {
 	FLOOR_BOTTOM_LEFT: 13,
 	FLOOR_BOTTOM: 14,
 	FLOOR_BOTTOM_RIGHT: 15,
+	EMPTY: 16
 }
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.FLOOR));
@@ -54,11 +55,6 @@ function drawTile(tile, x, y) {
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
-function pickSprite() {
-	let s = Math.floor(random(sprites.length));
-	//console.log(s);
-	return sprites[s];
-}
 
 let ITEM_SRC_SIZE = 16;
 function drawItem(tile, x, y) {
@@ -234,8 +230,6 @@ function draw() {
 	last = now;
 
 	background(220);
-
-	// drawing the world
 	drawWorld(player.x, player.y);
 	// drawing a window that is the inventory 
 	drawInvent()
