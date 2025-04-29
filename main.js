@@ -177,31 +177,41 @@ const SplitDir = {
 };
 
 function connectRooms(room0, room1) {
-	room0.x++;
-	room0.y++;
-	room0.w--;
-	room0.h--;
-	room1.x++;
-	room1.y++;
-	room1.w--;
-	room1.h--;
 	let x0 = Math.floor(room0.x + room0.w / 2);
 	let y0 = Math.floor(room0.y + room0.h / 2);
 	let x1 = Math.floor(room1.x + room1.w / 2);
 	let y1 = Math.floor(room1.y + room1.h / 2);
 
+	let touching = room0.x < room1.x + room1.w && room0.x + room0.w > room1.x;
+
 	// Draw horizontal first, then vertical
-	if (x0 != x1) {
-		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
-		for (let x = startX; x <= endX; x++)
-			if (tiles[y0][x] == Tile.EMPTY)
-				tiles[y0][x] = Tile.FLOOR;
+	if (touching) {
+		if (x0 != x1) {
+			let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
+			for (let x = startX; x <= endX; x++)
+				if (tiles[y0][x] == Tile.EMPTY)
+					tiles[y0][x] = Tile.FLOOR;
+		}
+		if (y0 != y1) {
+			let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
+			for (let y = startY; y <= endY; y++)
+				if (tiles[y][x1] == Tile.EMPTY)
+					tiles[y][x1] = Tile.FLOOR;
+		}
 	}
-	if (y0 != y1) {
-		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
-		for (let y = startY; y <= endY; y++)
-			if (tiles[y][x1] == Tile.EMPTY)
-				tiles[y][x1] = Tile.FLOOR;
+	else {
+		if (y0 != y1) {
+			let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
+			for (let y = startY; y <= endY; y++)
+				if (tiles[y][x1] == Tile.EMPTY)
+					tiles[y][x1] = Tile.FLOOR;
+		}
+		if (x0 != x1) {
+			let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
+			for (let x = startX; x <= endX; x++)
+				if (tiles[y0][x] == Tile.EMPTY)
+					tiles[y0][x] = Tile.FLOOR;
+		}
 	}
 }
 
