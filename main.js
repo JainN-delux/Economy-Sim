@@ -7,7 +7,11 @@ let inventory = {};
 let sprites = ["%", "&", "@", "^", "()", "*", "#"];
 let bag = {};
 
-let tileset;              // Stores our tileset image
+let tileset;              
+// Stores our tileset image
+
+let walkset; // array with all walkable tiles
+
 let entitysheet;
 const WORLD_WIDTH = 256;  // The width in tiles in size
 const WORLD_HEIGHT = 256; // THe height in tiles in size
@@ -52,6 +56,11 @@ function drawTile(tile, x, y) {
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE)
 }
 
+
+function walkableTile(walkableSet) {
+
+}
+
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
@@ -93,7 +102,7 @@ function drawInvent() {
 		rect(20, 20, 300, 300)
 		for (let i = 0; i < sprites.length; i++) {
 			rect(30 + i*40, 30, 30, 30)
-			//text(i, 40 + i*40, 50);
+			
 			drawItem(i,40 + i*40, 50)
 		}
 	}
