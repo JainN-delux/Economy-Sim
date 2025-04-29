@@ -168,6 +168,7 @@ function drawRoomInsideSpace(rx, ry, w, h) {
 	let x1 = randint(0, w/2-1);
 	let y1 = randint(0, h/2-1);
 	drawRoom(rx+x0, ry+y0, w-x0-x1, h-y0-y1);
+	return { x: rx+x0, y: ry+y0, w: w-x0-x1, h: h-y0-y1 }
 }
 
 const SplitDir = {
@@ -175,25 +176,60 @@ const SplitDir = {
 	VERTICAL: 1,
 };
 
-function generateRooms(rx, ry, w, h) {
+function connectRooms(room0, room1) {
+	room0.x++;
+	room0.y++;
+	room0.w--;
+	room0.h--;
+	room1.x++;
+	room1.y++;
+	room1.w--;
+	room1.h--;
+	let x0 = Math.floor(room0.x + room0.w / 2);
+	let y0 = Math.floor(room0.y + room0.h / 2);
+	let x1 = Math.floor(room1.x + room1.w / 2);
+	let y1 = Math.floor(room1.y + room1.h / 2);
+
+	// Draw horizontal first, then vertical
+	if (x0 != x1) {
+		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
+		for (let x = startX; x <= endX; x++)
+			if (tiles[y0][x] == Tile.EMPTY)
+				tiles[y0][x] = Tile.FLOOR;
+	}
+	if (y0 != y1) {
+		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
+		for (let y = startY; y <= endY; y++)
+			if (tiles[y][x1] == Tile.EMPTY)
+				tiles[y][x1] = Tile.FLOOR;
+	}
+}
+
+
+function generateRooms(rx, ry, w, h, oldSplitDir, child) {
 	if (w <= 16 && h <= 16) {
-		drawRoomInsideSpace(rx, ry, w, h)
-		return;
+		return drawRoomInsideSpace(rx, ry, w, h)
 	}
 	let splitDir = randint(0, 2);
 	if ((splitDir == SplitDir.HORIZONTAL || h <= 16) && w > 16) {
 		let pos = randint(4, w-8);
-		generateRooms(rx, ry, pos, h);
-		generateRooms(rx+pos, ry, w-pos, h);
-		return;
+		let room0 = generateRooms(rx, ry, pos, h, SplitDir.HORIZONTAL, 0);
+		let room1 = generateRooms(rx+pos, ry, w-pos, h, SplitDir.HORIZONTAL, 1);
+		connectRooms(room0, room1);
+		if (oldSplitDir == SplitDir.HORIZONTAL)
+			return child == 0 ? room1 : room0;
+		return randint(0, 2) == 0 ? room0 : room1;
 	}
 	if ((splitDir == SplitDir.VERTICAL || w <= 16) && h > 16) {
 		let pos = randint(4, h-8);
-		generateRooms(rx, ry, w, pos);
-		generateRooms(rx, ry+pos, w, h-pos);
-		return;
+		let room0 = generateRooms(rx, ry, w, pos, SplitDir.VERTICAL, 0);
+		let room1 = generateRooms(rx, ry+pos, w, h-pos, SplitDir.VERTICAL, 1);
+		connectRooms(room0, room1);
+		if (oldSplitDir == SplitDir.VERTICAL)
+			return child == 0 ? room1 : room0;
+		return randint(0, 2) == 0 ? room0 : room1;
 	}
-	drawRoomInsideSpace(rx, ry, w, h);
+	return drawRoomInsideSpace(rx, ry, w, h);
 }
 
 
@@ -217,7 +253,7 @@ function keyPressed() {
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
-	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT, SplitDir.HORIZONTAL, 0);
 	//position on entities
 	items[10][10] = items.POTION_GREEN
 }
