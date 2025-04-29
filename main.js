@@ -36,6 +36,25 @@ const Tile = {
 	FLOOR_BOTTOM_RIGHT: 15,
 	EMPTY: 16
 }
+const isWalkable = [
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	false,
+]
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
 
@@ -186,41 +205,55 @@ const SplitDir = {
 };
 
 function connectRooms(room0, room1) {
+	room0.x++;
+	room0.y++;
+	room0.w -= 2;
+	room0.h -= 2;
+	room1.x++;
+	room1.y++;
+	room1.w -= 2;
+	room1.h -= 2;
+	let Xtouching = room0.x < room1.x + room1.w && room0.x + room0.w > room1.x;
+	let Ytouching = room0.y < room1.y + room1.y && room0.y + room0.y > room1.y;
+
 	let x0 = Math.floor(room0.x + room0.w / 2);
 	let y0 = Math.floor(room0.y + room0.h / 2);
 	let x1 = Math.floor(room1.x + room1.w / 2);
 	let y1 = Math.floor(room1.y + room1.h / 2);
 
-	let touching = room0.x < room1.x + room1.w && room0.x + room0.w > room1.x;
+	if (Xtouching) {
+		if (room0.x < room1.x)
+			x0 = randint(room1.x, room0.x + room0.w - 1);
+		else
+			x0 = randint(room0.x, room1.x + room1.w - 1);
+		x1 = x0;
+		y0 = room0.y + room0.h;
+		y1 = room1.y;
+	}
+	else if (Ytouching) {
+		if (room0.y < room1.y)
+			y0 = randint(room1.y, room0.y + room0.h - 1);
+		else
+			y0 = randint(room0.y, room1.y + room1.h - 1);
+		y1 = y0;
+		x0 = room0.x + room0.w - 1;
+		x1 = room1.x;
+	}
+	else
+		return;
 
 	// Draw horizontal first, then vertical
-	if (touching) {
-		if (x0 != x1) {
-			let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
-			for (let x = startX; x <= endX; x++)
-				if (tiles[y0][x] == Tile.EMPTY)
-					tiles[y0][x] = Tile.FLOOR;
-		}
-		if (y0 != y1) {
-			let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
-			for (let y = startY; y <= endY; y++)
-				if (tiles[y][x1] == Tile.EMPTY)
-					tiles[y][x1] = Tile.FLOOR;
-		}
+	if (x0 != x1) {
+		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
+		for (let x = startX; x <= endX; x++)
+			if (tiles[y0][x] == Tile.EMPTY)
+				tiles[y0][x] = Tile.FLOOR;
 	}
-	else {
-		if (y0 != y1) {
-			let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
-			for (let y = startY; y <= endY; y++)
-				if (tiles[y][x1] == Tile.EMPTY)
-					tiles[y][x1] = Tile.FLOOR;
-		}
-		if (x0 != x1) {
-			let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
-			for (let x = startX; x <= endX; x++)
-				if (tiles[y0][x] == Tile.EMPTY)
-					tiles[y0][x] = Tile.FLOOR;
-		}
+	if (y0 != y1) {
+		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
+		for (let y = startY; y <= endY; y++)
+			if (tiles[y][x1] == Tile.EMPTY)
+				tiles[y][x1] = Tile.FLOOR;
 	}
 }
 
