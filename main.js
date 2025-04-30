@@ -227,13 +227,19 @@ function connectRooms(roomA, roomB) {
 	// Draw horizontal first, then vertical
 	if (x0 != x1) {
 		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
-		for (let x = startX; x <= endX; x++)
+		for (let x = startX; x <= endX; x++) {
+			tiles[y0-1][x] = Tile.WALL_FRONT;
 			tiles[y0][x] = Tile.FLOOR;
+			tiles[y0+1][x] = Tile.WALL_FRONT;
+		}
 	}
 	if (y0 != y1) {
 		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
-		for (let y = startY; y <= endY; y++)
+		for (let y = startY; y <= endY; y++) {
+			tiles[y][x1-1] = Tile.WALL_SIDE;
 			tiles[y][x1] = Tile.FLOOR;
+			tiles[y][x1+1] = Tile.WALL_SIDE;
+		}
 	}
 }
 
