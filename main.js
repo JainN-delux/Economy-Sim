@@ -308,7 +308,7 @@ function keyPressed() {
 
 let temp;
 function generateEnemies() {
-	for (let i = 0; i < rooms.length; i++) {
+	for (let i = 1; i < rooms.length; i++) {
 		temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y , rooms[i].y + rooms[i].w ), 1)
 		entities.push(temp)
 
@@ -327,8 +327,6 @@ function setup() {
 	player.y = rooms[0].y + 1;
 	//position on entities
 	items[10][10] = items.POTION_GREEN
-
-	
 
 }
 
