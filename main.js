@@ -76,10 +76,6 @@ function drawTile(tile, x, y) {
 }
 
 
-function walkableTile(walkableSet) {
-
-}
-
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
@@ -96,6 +92,8 @@ const Item = {
 	POTION_GREEN: 5,
 }
 let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
+
+let rooms = []
 
 let ENTITY_SRC_SIZE = 16;
 let player;
@@ -151,6 +149,7 @@ function drawWorld(px, py) {
 }
 
 function drawRoom(rx, ry, w, h) {
+	rooms.push({ x: rx, y: ry, w: w, h: h});
 	// Draw top and bottom walls and floors
 	for (let x = 1; x < w-1; x++) {
 		tiles[ry][rx + x] = Tile.WALL_FRONT;
@@ -292,13 +291,13 @@ function keyPressed() {
 	if (key === 'x')
 		inventoryOpen = !inventoryOpen;
 
-	if (key == 'w')
+	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]])
 		player.y -= 1
-	if (key == 's')
+	if (key == 's' && isWalkable[tiles[player.y+1][player.x]])
 		player.y += 1
-	if (key == 'a')
+	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]])
 		player.x -= 1
-	if (key == 'd')
+	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]])
 		player.x += 1
 }
 
@@ -306,6 +305,8 @@ function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT, SplitDir.HORIZONTAL, 0);
+	player.x = rooms[0].x + 1;
+	player.y = rooms[0].y + 1;
 	//position on entities
 	items[10][10] = items.POTION_GREEN
 }
