@@ -79,25 +79,10 @@ function drawTile(tile, x, y) {
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
-
-let ITEM_SRC_SIZE = 16;
-function drawItem(tile, x, y) {
-	image(itemset, x, y, TILE_SIZE, TILE_SIZE, tile*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
-}
-const Item = {
-	POTION_RED: 1,
-	POTION_PINK: 2,
-	POTION_ORANGE: 3,
-	POTION_YELLOW: 4,
-	POTION_GREEN: 5,
-}
-let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
-
 let rooms = []
 
 let ENTITY_SRC_SIZE = 16;
 let player;
-
 
 
 class Entity {
@@ -123,7 +108,8 @@ function drawInvent() {
 		for (let i = 0; i < sprites.length; i++) {
 			rect(30 + i*40, 30, 30, 30)
 			
-			drawItem(i,40 + i*40, 50)
+		
+		
 		}
 	}
 }
@@ -140,10 +126,7 @@ function drawWorld(px, py) {
 			if (tile_y < 0 || tile_y >= WORLD_WIDTH)
 				continue
 			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
-			const item = items[tile_y][tile_x];
-			if (item !== null) {
-				drawItem(item, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
-			}
+			
 		}
 	}
 
@@ -311,7 +294,6 @@ function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
 		temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y , rooms[i].y + rooms[i].w ), 1)
 		entities.push(temp)
-
 	}
 }
 
@@ -326,7 +308,7 @@ function setup() {
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
 	//position on entities
-	items[10][10] = items.POTION_GREEN
+	
 
 }
 
