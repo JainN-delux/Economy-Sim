@@ -53,7 +53,7 @@ const isWalkable = [
 	true,
 	true,
 	true,
-	false,
+	true,
 ]
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
@@ -94,6 +94,7 @@ const Item = {
 let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
 
 let rooms = []
+let spaces = []
 
 let ENTITY_SRC_SIZE = 16;
 let player;
@@ -190,12 +191,12 @@ function randint(min, max) {
 }
 
 function drawRoomInsideSpace(rx, ry, w, h) {
+	spaces.push({ x: rx, y: ry, w: w, h: h});
 	let x0 = randint(1, w/2-1);
 	let y0 = randint(1, h/2-1);
 	let x1 = randint(0, w/2-1);
 	let y1 = randint(0, h/2-1);
 	drawRoom(rx+x0, ry+y0, w-x0-x1, h-y0-y1);
-	return { x: rx+x0, y: ry+y0, w: w-x0-x1, h: h-y0-y1 }
 }
 
 const SplitDir = {
@@ -203,17 +204,12 @@ const SplitDir = {
 	VERTICAL: 1,
 };
 
-function connectRooms(room0, room1) {
-	room0.x++;
-	room0.y++;
-	room0.w -= 2;
-	room0.h -= 2;
-	room1.x++;
-	room1.y++;
-	room1.w -= 2;
-	room1.h -= 2;
+function connectRooms(roomA, roomB) {
+	let room0 = { x: roomA.x + 1, y: roomA.y + 1, w: roomA.w - 2, h: roomA.h - 2 };
+	let room1 = { x: roomB.x + 1, y: roomB.y + 1, w: roomB.w - 2, h: roomB.h - 2 };
+
 	let Xtouching = room0.x < room1.x + room1.w && room0.x + room0.w > room1.x;
-	let Ytouching = room0.y < room1.y + room1.y && room0.y + room0.y > room1.y;
+	let Ytouching = room0.y < room1.y + room1.h && room0.y + room0.h > room1.y;
 
 	let x0 = Math.floor(room0.x + room0.w / 2);
 	let y0 = Math.floor(room0.y + room0.h / 2);
@@ -226,7 +222,7 @@ function connectRooms(room0, room1) {
 		else
 			x0 = randint(room0.x, room1.x + room1.w - 1);
 		x1 = x0;
-		y0 = room0.y + room0.h;
+		y0 = room0.y + room0.h - 1;
 		y1 = room1.y;
 	}
 	else if (Ytouching) {
@@ -245,42 +241,35 @@ function connectRooms(room0, room1) {
 	if (x0 != x1) {
 		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
 		for (let x = startX; x <= endX; x++)
-			if (tiles[y0][x] == Tile.EMPTY)
-				tiles[y0][x] = Tile.FLOOR;
+			tiles[y0][x] = Tile.FLOOR;
 	}
 	if (y0 != y1) {
 		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
 		for (let y = startY; y <= endY; y++)
-			if (tiles[y][x1] == Tile.EMPTY)
-				tiles[y][x1] = Tile.FLOOR;
+			tiles[y][x1] = Tile.FLOOR;
 	}
 }
 
 
-function generateRooms(rx, ry, w, h, oldSplitDir, child) {
+function generateRooms(rx, ry, w, h) {
 	if (w <= 16 && h <= 16) {
-		return drawRoomInsideSpace(rx, ry, w, h)
+		drawRoomInsideSpace(rx, ry, w, h);
+		return;
 	}
 	let splitDir = randint(0, 2);
 	if ((splitDir == SplitDir.HORIZONTAL || h <= 16) && w > 16) {
 		let pos = randint(4, w-8);
-		let room0 = generateRooms(rx, ry, pos, h, SplitDir.HORIZONTAL, 0);
-		let room1 = generateRooms(rx+pos, ry, w-pos, h, SplitDir.HORIZONTAL, 1);
-		connectRooms(room0, room1);
-		if (oldSplitDir == SplitDir.HORIZONTAL)
-			return child == 0 ? room1 : room0;
-		return randint(0, 2) == 0 ? room0 : room1;
+		generateRooms(rx, ry, pos, h);
+		generateRooms(rx+pos, ry, w-pos, h);
+		return;
 	}
 	if ((splitDir == SplitDir.VERTICAL || w <= 16) && h > 16) {
 		let pos = randint(4, h-8);
-		let room0 = generateRooms(rx, ry, w, pos, SplitDir.VERTICAL, 0);
-		let room1 = generateRooms(rx, ry+pos, w, h-pos, SplitDir.VERTICAL, 1);
-		connectRooms(room0, room1);
-		if (oldSplitDir == SplitDir.VERTICAL)
-			return child == 0 ? room1 : room0;
-		return randint(0, 2) == 0 ? room0 : room1;
+		generateRooms(rx, ry, w, pos);
+		generateRooms(rx, ry+pos, w, h-pos);
+		return;
 	}
-	return drawRoomInsideSpace(rx, ry, w, h);
+	drawRoomInsideSpace(rx, ry, w, h);
 }
 
 
@@ -301,14 +290,29 @@ function keyPressed() {
 		player.x += 1
 }
 
+function AABB_collide(rect1, rect2) {
+	return (rect1.x < rect2.x + rect2.w &&
+		rect1.x + rect1.w > rect2.x &&
+		rect1.y < rect2.y + rect2.h &&
+		rect1.y + rect1.h > rect2.y);
+}
+
+function spaceAdjacent(space1, space2) {
+	return AABB_collide({x: space1.x - 1, y: space1.y - 1, w: space1.w + 2, h: space1.h + 2}, {x: space2.x - 1, y: space2.y - 1, w: space2.w + 2, h: space2.h + 2});
+}
+
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
-	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT, SplitDir.HORIZONTAL, 0);
+	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
+	for (let i = 0; i < spaces.length; i++)
+		for (let j = i + 1; j < spaces.length; j++)
+			if (spaceAdjacent(spaces[i], spaces[j]))
+				connectRooms(rooms[i], rooms[j]);
 	//position on entities
-	items[10][10] = items.POTION_GREEN
+	items[10][10] = items.POTION_GREEN;
 }
 
 
