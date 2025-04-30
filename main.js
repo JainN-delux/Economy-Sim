@@ -79,25 +79,13 @@ function drawTile(tile, x, y) {
 let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
-
-let ITEM_SRC_SIZE = 16;
-function drawItem(tile, x, y) {
-	image(itemset, x, y, TILE_SIZE, TILE_SIZE, tile*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
-}
-const Item = {
-	POTION_RED: 1,
-	POTION_PINK: 2,
-	POTION_ORANGE: 3,
-	POTION_YELLOW: 4,
-	POTION_GREEN: 5,
-}
-let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
-
 let rooms = []
 let spaces = []
 
 let ENTITY_SRC_SIZE = 16;
 let player;
+
+
 class Entity {
 	constructor(x, y, type) {
 		this.x = x;
@@ -111,7 +99,7 @@ class Entity {
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
 	}
 }
-let entities = [new Entity(0, 0, 0), new Entity(4, 4, 1)];
+let entities = [new Entity(0, 0, 0)];
 player = entities[0]
 
 
@@ -121,7 +109,8 @@ function drawInvent() {
 		for (let i = 0; i < sprites.length; i++) {
 			rect(30 + i*40, 30, 30, 30)
 			
-			drawItem(i,40 + i*40, 50)
+		
+		
 		}
 	}
 }
@@ -138,10 +127,7 @@ function drawWorld(px, py) {
 			if (tile_y < 0 || tile_y >= WORLD_WIDTH)
 				continue
 			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
-			const item = items[tile_y][tile_x];
-			if (item !== null) {
-				drawItem(item, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
-			}
+			
 		}
 	}
 
@@ -151,6 +137,7 @@ function drawWorld(px, py) {
 
 function drawRoom(rx, ry, w, h) {
 	rooms.push({ x: rx, y: ry, w: w, h: h});
+
 	// Draw top and bottom walls and floors
 	for (let x = 1; x < w-1; x++) {
 		tiles[ry][rx + x] = Tile.WALL_FRONT;
@@ -301,18 +288,28 @@ function spaceAdjacent(space1, space2) {
 	return AABB_collide({x: space1.x - 1, y: space1.y - 1, w: space1.w + 2, h: space1.h + 2}, {x: space2.x - 1, y: space2.y - 1, w: space2.w + 2, h: space2.h + 2});
 }
 
+let temp;
+function generateEnemies() {
+	for (let i = 1; i < rooms.length; i++) {
+		temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y , rooms[i].y + rooms[i].w ), 1)
+		entities.push(temp)
+	}
+}
+
+
+
+
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+	generateEnemies()
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))
 				connectRooms(rooms[i], rooms[j]);
-	//position on entities
-	items[10][10] = items.POTION_GREEN;
 }
 
 
