@@ -1,4 +1,4 @@
-//CONSTANTS
+//-------- CONSTANTS --------
 const WORLD_WIDTH = 256;  // The width in tiles in size
 const WORLD_HEIGHT = 256; // THe height in tiles in size
 
@@ -6,7 +6,10 @@ let CANVAS_WIDTH = 768;  // Width of p5 canvas
 let CANVAS_HEIGHT = 768; // Height of p5 canvas
 
 const ENTITY_SRC_SIZE = 16;
-// VARIABLES 
+const TILE_SRC_SIZE = 16;		// Size of tile in tile atlas
+const TILE_SIZE = 32;			// Rendered size of tile
+
+//---------- VARIABLES ----------
 //time keeping
 var now = 0;  // Current Time in seconds since start of program
 var last = 0; // Time since start of program for the last frame
@@ -68,21 +71,21 @@ const isWalkable = [
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
 
+
+// -------- FUNCTIONS ---------
+function drawTile(tile, x, y) {				// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
+	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
+}
+function randint(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
 // Preloads our images
 function preload() {
 	tileset = loadImage("/assets/tileset.png");
 	entitysheet = loadImage("/assets/Player sheet.png");
 }
 
-// Size of tile in tile atlas
-let TILE_SRC_SIZE = 16;
-// Rendered size of tile
-let TILE_SIZE = 32;
-
-// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
-function drawTile(tile, x, y) {
-	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
-}
 
 //------------- ENTITY --------------
 class Entity {
@@ -101,7 +104,7 @@ class Entity {
 let entities = [new Entity(0, 0, 0)];
 player = entities[0]
 
-//-------------INTVENTORY---------------
+//-------------INVENTORY---------------
 let inventoryOpen = false;
 function drawInvent() {
 	if (inventoryOpen) {
@@ -180,9 +183,7 @@ function drawRoom(rx, ry, w, h) {
 	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
 }
 
-function randint(min, max) {
-	return Math.floor(Math.random() * (max - min)) + min;
-}
+
 
 function drawRoomInsideSpace(rx, ry, w, h) {
 	spaces.push({ x: rx, y: ry, w: w, h: h});
