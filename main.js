@@ -60,9 +60,9 @@ let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fi
 
 // Preloads our images
 function preload() {
-	tileset = loadImage("/assets/tileset.png");
-	itemset = loadImage("/assets/Items/Potion.png");
-	entitysheet = loadImage("/assets/Player sheet.png");
+	tileset = loadImage("./assets/tileset.png");
+	itemset = loadImage("./assets/Items/Potion.png");
+	entitysheet = loadImage("./assets/Player sheet.png");
 }
 
 // Size of tile in tile atlas
