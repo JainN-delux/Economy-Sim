@@ -85,7 +85,7 @@ let spaces = []
 let ENTITY_SRC_SIZE = 16;
 let player;
 
-
+//------------- ENTITY --------------
 class Entity {
 	constructor(x, y, type) {
 		this.x = x;
@@ -102,19 +102,25 @@ class Entity {
 let entities = [new Entity(0, 0, 0)];
 player = entities[0]
 
-
+//-------------INTVENTORY---------------
 function drawInvent() {
 	if (inventoryOpen) {
-		rect(20, 20, 300, 300)
-		for (let i = 0; i < sprites.length; i++) {
-			rect(30 + i*40, 30, 30, 30)
-			
-		
-		
+		let i_x = 250
+		let i_y = 250
+		fill(219, 174, 125)
+		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5)
+		fill(255)
+		textSize(40)
+		for (let i = 0; i < 6; i++) {
+			text("InventorY", i_x + 50 , i_y + 50)
+			for (let j = 0; j < 3; j++) {
+				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE)
+			}	
 		}
 	}
 }
 
+//-------------- DRAWING WORLD ------------------
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
 let VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
 function drawWorld(px, py) {
@@ -135,6 +141,7 @@ function drawWorld(px, py) {
 		entities[i].draw();
 }
 
+// --------------------- ROOMS ------------------------
 function drawRoom(rx, ry, w, h) {
 	rooms.push({ x: rx, y: ry, w: w, h: h});
 
@@ -191,7 +198,7 @@ const SplitDir = {
 	VERTICAL: 1,
 };
 
-// Connects two rooms
+// -------------- CORRIDORS ------------------
 function connectRooms(roomA, roomB) {
 	// Room floor tiles
 	let room0 = { x: roomA.x + 1, y: roomA.y + 1, w: roomA.w - 2, h: roomA.h - 2 };
@@ -267,7 +274,7 @@ function connectRooms(roomA, roomB) {
 	//tiles[y1][x1] = Tile.FLOOR;
 }
 
-
+// ---ROOMS GENERATION---
 function generateRooms(rx, ry, w, h) {
 	if (w <= 16 && h <= 16) {
 		drawRoomInsideSpace(rx, ry, w, h);
@@ -290,7 +297,7 @@ function generateRooms(rx, ry, w, h) {
 }
 
 
- 
+ // ---------- KEY PRESS ---------------
 function keyPressed() {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
@@ -307,6 +314,7 @@ function keyPressed() {
 		player.x += 1
 }
 
+//COLLISION
 function AABB_collide(rect1, rect2) {
 	return (rect1.x < rect2.x + rect2.w &&
 		rect1.x + rect1.w > rect2.x &&
@@ -318,6 +326,7 @@ function spaceAdjacent(space1, space2) {
 	return AABB_collide({x: space1.x - 1, y: space1.y - 1, w: space1.w + 2, h: space1.h + 2}, {x: space2.x - 1, y: space2.y - 1, w: space2.w + 2, h: space2.h + 2});
 }
 
+// ----------------- ENEMY --------------------
 let temp;
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
