@@ -191,24 +191,31 @@ const SplitDir = {
 	VERTICAL: 1,
 };
 
+// Connects two rooms
 function connectRooms(roomA, roomB) {
+	// Room floor tiles
 	let room0 = { x: roomA.x + 1, y: roomA.y + 1, w: roomA.w - 2, h: roomA.h - 2 };
 	let room1 = { x: roomB.x + 1, y: roomB.y + 1, w: roomB.w - 2, h: roomB.h - 2 };
 
+	// Check if they align together and there can be a straight path connecting them
 	let Xtouching = room0.x < room1.x + room1.w && room0.x + room0.w > room1.x;
 	let Ytouching = room0.y < room1.y + room1.h && room0.y + room0.h > room1.y;
 
-	let x0 = Math.floor(room0.x + room0.w / 2);
-	let y0 = Math.floor(room0.y + room0.h / 2);
-	let x1 = Math.floor(room1.x + room1.w / 2);
-	let y1 = Math.floor(room1.y + room1.h / 2);
+	// The two points to connect
+	let x0;
+	let y0;
+	let x1;
+	let y1;
 
+	// Find the two points on the walls
 	if (Xtouching) {
+		// Pick random possible x position
 		if (roomA.x < roomB.x)
-			x0 = randint(roomB.x, roomA.x + roomA.w - 1);
+			x0 = randint(roomB.x + 1, roomA.x + roomA.w - 2);
 		else
-			x0 = randint(roomA.x, roomB.x + roomB.w - 1);
+			x0 = randint(roomA.x + 1, roomB.x + roomB.w - 2);
 		x1 = x0;
+		// Get the bottom of one room and the top of the other
 		if (roomA.y < roomB.y) {
 			y0 = roomA.y + roomA.h - 1;
 			y1 = roomB.y;
@@ -219,11 +226,13 @@ function connectRooms(roomA, roomB) {
 		}
 	}
 	else if (Ytouching) {
+		// Pick random possible y position
 		if (roomA.y < roomB.y)
-			y0 = randint(roomB.y, roomA.y + roomA.h - 1);
+			y0 = randint(roomB.y + 1, roomA.y + roomA.h - 2);
 		else
-			y0 = randint(roomA.y, roomB.y + roomB.h - 1);
+			y0 = randint(roomA.y + 1, roomB.y + roomB.h - 2);
 		y1 = y0;
+		// Get the right side of one room and the left of the other
 		if (roomA.x < roomB.x) {
 			x0 = roomA.x + roomA.w - 1;
 			x1 = roomB.x;
@@ -233,24 +242,29 @@ function connectRooms(roomA, roomB) {
 			x1 = roomA.x;
 		}
 	}
+	else
+		return
 
 	// Draw horizontal first, then vertical
 	if (x0 != x1) {
 		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
 		for (let x = startX; x <= endX; x++) {
-			tiles[y0-1][x] = Tile.WALL_FRONT;
+			//tiles[y0-1][x] = Tile.WALL_FRONT;
 			tiles[y0][x] = Tile.FLOOR;
-			tiles[y0+1][x] = Tile.WALL_FRONT;
+			//tiles[y0+1][x] = Tile.WALL_FRONT;
 		}
 	}
 	if (y0 != y1) {
 		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
 		for (let y = startY; y <= endY; y++) {
-			tiles[y][x1-1] = Tile.WALL_SIDE;
+			//tiles[y][x1-1] = Tile.WALL_SIDE;
 			tiles[y][x1] = Tile.FLOOR;
-			tiles[y][x1+1] = Tile.WALL_SIDE;
+			//tiles[y][x1+1] = Tile.WALL_SIDE;
 		}
 	}
+	// Mark doors
+	tiles[y0][x0] = Tile.EMPTY;
+	tiles[y1][x1] = Tile.EMPTY;
 }
 
 
