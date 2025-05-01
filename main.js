@@ -105,12 +105,17 @@ player = entities[0]
 //-------------INTVENTORY---------------
 function drawInvent() {
 	if (inventoryOpen) {
-		rect(20, 20, 300, 300)
-		for (let i = 0; i < sprites.length; i++) {
-			rect(30 + i*40, 30, 30, 30)
-			
-		
-		
+		let i_x = 250
+		let i_y = 250
+		fill(219, 174, 125)
+		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5)
+		fill(255)
+		textSize(40)
+		for (let i = 0; i < 6; i++) {
+			text("InventorY", i_x + 50 , i_y + 50)
+			for (let j = 0; j < 3; j++) {
+				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE)
+			}	
 		}
 	}
 }
