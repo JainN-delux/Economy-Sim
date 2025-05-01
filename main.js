@@ -204,25 +204,35 @@ function connectRooms(roomA, roomB) {
 	let y1 = Math.floor(room1.y + room1.h / 2);
 
 	if (Xtouching) {
-		if (room0.x < room1.x)
-			x0 = randint(room1.x, room0.x + room0.w - 1);
+		if (roomA.x < roomB.x)
+			x0 = randint(roomB.x, roomA.x + roomA.w - 1);
 		else
-			x0 = randint(room0.x, room1.x + room1.w - 1);
+			x0 = randint(roomA.x, roomB.x + roomB.w - 1);
 		x1 = x0;
-		y0 = room0.y + room0.h - 1;
-		y1 = room1.y;
+		if (roomA.y < roomB.y) {
+			y0 = roomA.y + roomA.h - 1;
+			y1 = roomB.y;
+		}
+		else {
+			y0 = roomB.y + roomB.h - 1;
+			y1 = roomA.y;
+		}
 	}
 	else if (Ytouching) {
-		if (room0.y < room1.y)
-			y0 = randint(room1.y, room0.y + room0.h - 1);
+		if (roomA.y < roomB.y)
+			y0 = randint(roomB.y, roomA.y + roomA.h - 1);
 		else
-			y0 = randint(room0.y, room1.y + room1.h - 1);
+			y0 = randint(roomA.y, roomB.y + roomB.h - 1);
 		y1 = y0;
-		x0 = room0.x + room0.w - 1;
-		x1 = room1.x;
+		if (roomA.x < roomB.x) {
+			x0 = roomA.x + roomA.w - 1;
+			x1 = roomB.x;
+		}
+		else {
+			x0 = roomB.x + roomB.w - 1;
+			x1 = roomA.x;
+		}
 	}
-	else
-		return;
 
 	// Draw horizontal first, then vertical
 	if (x0 != x1) {
