@@ -211,9 +211,9 @@ function connectRooms(roomA, roomB) {
 	if (Xtouching) {
 		// Pick random possible x position
 		if (roomA.x < roomB.x)
-			x0 = randint(roomB.x + 1, roomA.x + roomA.w - 2);
+			x0 = randint(roomB.x + 1, Math.min(roomA.x + roomA.w - 2, roomB.x + roomB.w - 2));
 		else
-			x0 = randint(roomA.x + 1, roomB.x + roomB.w - 2);
+			x0 = randint(roomA.x + 1, Math.min(roomA.x + roomA.w - 2, roomB.x + roomB.w - 2));
 		x1 = x0;
 		// Get the bottom of one room and the top of the other
 		if (roomA.y < roomB.y) {
@@ -228,9 +228,9 @@ function connectRooms(roomA, roomB) {
 	else if (Ytouching) {
 		// Pick random possible y position
 		if (roomA.y < roomB.y)
-			y0 = randint(roomB.y + 1, roomA.y + roomA.h - 2);
+			y0 = randint(roomB.y + 1, Math.min(roomA.y + roomA.h - 2, roomB.y + roomB.h - 2));
 		else
-			y0 = randint(roomA.y + 1, roomB.y + roomB.h - 2);
+			y0 = randint(roomA.y + 1, Math.min(roomA.y + roomA.h - 2, roomB.y + roomB.h - 2));
 		y1 = y0;
 		// Get the right side of one room and the left of the other
 		if (roomA.x < roomB.x) {
@@ -249,22 +249,22 @@ function connectRooms(roomA, roomB) {
 	if (x0 != x1) {
 		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
 		for (let x = startX; x <= endX; x++) {
-			//tiles[y0-1][x] = Tile.WALL_FRONT;
+			tiles[y0-1][x] = Tile.WALL_FRONT;
 			tiles[y0][x] = Tile.FLOOR;
-			//tiles[y0+1][x] = Tile.WALL_FRONT;
+			tiles[y0+1][x] = Tile.WALL_FRONT;
 		}
 	}
 	if (y0 != y1) {
 		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
 		for (let y = startY; y <= endY; y++) {
-			//tiles[y][x1-1] = Tile.WALL_SIDE;
+			tiles[y][x1-1] = Tile.WALL_SIDE;
 			tiles[y][x1] = Tile.FLOOR;
-			//tiles[y][x1+1] = Tile.WALL_SIDE;
+			tiles[y][x1+1] = Tile.WALL_SIDE;
 		}
 	}
 	// Mark doors
-	tiles[y0][x0] = Tile.EMPTY;
-	tiles[y1][x1] = Tile.EMPTY;
+	//tiles[y0][x0] = Tile.FLOOR;
+	//tiles[y1][x1] = Tile.FLOOR;
 }
 
 
