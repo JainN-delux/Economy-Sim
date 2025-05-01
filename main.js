@@ -1,22 +1,32 @@
-// Time Keeping Variables
+//CONSTANTS
+const WORLD_WIDTH = 256;  // The width in tiles in size
+const WORLD_HEIGHT = 256; // THe height in tiles in size
+
+let CANVAS_WIDTH = 768;  // Width of p5 canvas
+let CANVAS_HEIGHT = 768; // Height of p5 canvas
+
+const ENTITY_SRC_SIZE = 16;
+// VARIABLES 
+//time keeping
 var now = 0;  // Current Time in seconds since start of program
 var last = 0; // Time since start of program for the last frame
 var dt = 0;   // Time between frames
 
+//player
+let player;
+
+//sprite sheets
+let tileset;              // Stores our tileset image
+let entitysheet;			//array with entities
+
+//arrays
+let walkset; 				// array with all walkable tiles
 let inventory = {};
-let sprites = ["%", "&", "@", "^", "()", "*", "#"];
 let bag = {};
+let rooms = []
+let spaces = []
 
-let tileset;              
-// Stores our tileset image
-
-let walkset; // array with all walkable tiles
-
-let entitysheet;
-const WORLD_WIDTH = 256;  // The width in tiles in size
-const WORLD_HEIGHT = 256; // THe height in tiles in size
 // Enums for the different tiles
-let inventoryOpen = false
 const Tile = {
 	WALL_FRONT: 0,
 	WALL_SIDE: 1,
@@ -61,7 +71,6 @@ let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fi
 // Preloads our images
 function preload() {
 	tileset = loadImage("/assets/tileset.png");
-	itemset = loadImage("/assets/Items/Potion.png");
 	entitysheet = loadImage("/assets/Player sheet.png");
 }
 
@@ -72,18 +81,8 @@ let TILE_SIZE = 32;
 
 // Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
 function drawTile(tile, x, y) {
-	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE)
+	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 }
-
-
-let CANVAS_WIDTH = 768;  // Width of p5 canvas
-let CANVAS_HEIGHT = 768; // Height of p5 canvas
-
-let rooms = []
-let spaces = []
-
-let ENTITY_SRC_SIZE = 16;
-let player;
 
 //------------- ENTITY --------------
 class Entity {
@@ -103,18 +102,19 @@ let entities = [new Entity(0, 0, 0)];
 player = entities[0]
 
 //-------------INTVENTORY---------------
+let inventoryOpen = false;
 function drawInvent() {
 	if (inventoryOpen) {
-		let i_x = 250
-		let i_y = 250
-		fill(219, 174, 125)
-		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5)
-		fill(255)
-		textSize(40)
+		let i_x = 250;
+		let i_y = 250;
+		fill(219, 174, 125);
+		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
+		fill(255);
+		textSize(40);
 		for (let i = 0; i < 6; i++) {
-			text("InventorY", i_x + 50 , i_y + 50)
+			text("InventorY", i_x + 50 , i_y + 50);
 			for (let j = 0; j < 3; j++) {
-				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE)
+				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
 			}	
 		}
 	}
