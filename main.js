@@ -186,10 +186,10 @@ function randint(min, max) {
 
 function drawRoomInsideSpace(rx, ry, w, h) {
 	spaces.push({ x: rx, y: ry, w: w, h: h});
-	let x0 = randint(1, w/2-1);
-	let y0 = randint(1, h/2-1);
-	let x1 = randint(0, w/2-1);
-	let y1 = randint(0, h/2-1);
+	let x0 = randint(1, w/2-2);
+	let y0 = randint(1, h/2-2);
+	let x1 = randint(0, w/2-2);
+	let y1 = randint(0, h/2-2);
 	drawRoom(rx+x0, ry+y0, w-x0-x1, h-y0-y1);
 }
 
@@ -276,18 +276,18 @@ function connectRooms(roomA, roomB) {
 
 // ---ROOMS GENERATION---
 function generateRooms(rx, ry, w, h) {
-	if (w <= 16 && h <= 16) {
+	if (w <= 32 && h <= 32) {
 		drawRoomInsideSpace(rx, ry, w, h);
 		return;
 	}
 	let splitDir = randint(0, 2);
-	if ((splitDir == SplitDir.HORIZONTAL || h <= 16) && w > 16) {
+	if ((splitDir == SplitDir.HORIZONTAL || h <= 32) && w > 32) {
 		let pos = randint(4, w-8);
 		generateRooms(rx, ry, pos, h);
 		generateRooms(rx+pos, ry, w-pos, h);
 		return;
 	}
-	if ((splitDir == SplitDir.VERTICAL || w <= 16) && h > 16) {
+	if ((splitDir == SplitDir.VERTICAL || w <= 32) && h > 32) {
 		let pos = randint(4, h-8);
 		generateRooms(rx, ry, w, pos);
 		generateRooms(rx, ry+pos, w, h-pos);
