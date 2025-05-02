@@ -111,7 +111,7 @@ function drawInvent() {
 	if (inventoryOpen) {
 		let i_x = 250;
 		let i_y = 250;
-		fill(219, 174, 125);
+		fill("red");
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
 		textSize(40);
@@ -276,7 +276,7 @@ function connectRooms(roomA, roomB) {
 	//tiles[y1][x1] = Tile.FLOOR;
 }
 
-// ---ROOMS GENERATION---
+// -------------ROOMS GENERATION--------------
 function generateRooms(rx, ry, w, h) {
 	if (w <= 32 && h <= 32) {
 		drawRoomInsideSpace(rx, ry, w, h);
