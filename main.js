@@ -130,14 +130,28 @@ function drawInvent() {
 	}
 }
 
+
+function drawQuickslot() {
+	fill(0)
+	rect(0, CANVAS_HEIGHT-70, 250, 70)
+	for (let i = 0; i < 4; i++) {
+		fill(255)
+		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
+	}
+
+}
+
+
 function drawHealthbar () {
+	noStroke()
+	fill(255, 0, 0)
+	rect(0, 675, (entities[0].health/entities[0].max_health) * 200, 15)
 	stroke(0)
 	strokeWeight(4)
 	noFill()
-	rect(100, 380, 200, 15)
+	rect(0, 675, 200, 15)
 	noStroke()
-	fill(255, 0, 0)
-	rect(100, 380, entities[0].health, 15)
+	
 } 
 
 //-------------- DRAWING WORLD ------------------
@@ -379,6 +393,8 @@ function draw() {
 	background(220);
 	drawWorld(player.x, player.y);
 	// drawing a window that is the inventory 
-	drawInvent()
+	
 	drawHealthbar()
+	drawQuickslot()
+	drawInvent()
 }
