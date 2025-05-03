@@ -89,20 +89,26 @@ function preload() {
 
 
 //------------- ENTITY --------------
+
+
 class Entity {
-	constructor(x, y, type) {
+	constructor(x, y, type, health, max_health) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		this.health = health;
+		this.max_health = max_health
 	}
-
+ 
+ 
 	draw() {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
 	}
-}
-let entities = [new Entity(0, 0, 0)];
+ }
+ 
+let entities = [new Entity(0, 0, 0, 100, 100)];
 player = entities[0]
 
 //-------------INVENTORY---------------
@@ -123,6 +129,16 @@ function drawInvent() {
 		}
 	}
 }
+
+function drawHealthbar () {
+	stroke(0)
+	strokeWeight(4)
+	noFill()
+	rect(100, 380, 200, 15)
+	noStroke()
+	fill(255, 0, 0)
+	rect(100, 380, entities[0].health, 15)
+} 
 
 //-------------- DRAWING WORLD ------------------
 let VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
@@ -331,11 +347,13 @@ function spaceAdjacent(space1, space2) {
 // ----------------- ENEMY --------------------
 let temp;
 function generateEnemies() {
-	for (let i = 1; i < rooms.length; i++) {
-		temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h -1), randint(0, 3))
-		entities.push(temp)
-	}
+   for (let i = 1; i < rooms.length; i++) {
+
+       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y , rooms[i].y + rooms[i].h ), 1, 100, 100)
+       entities.push(temp)
+   }
 }
+
 
 
 function setup() {
@@ -362,4 +380,5 @@ function draw() {
 	drawWorld(player.x, player.y);
 	// drawing a window that is the inventory 
 	drawInvent()
+	drawHealthbar()
 }
