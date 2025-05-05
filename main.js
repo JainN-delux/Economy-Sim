@@ -105,6 +105,10 @@ class Entity {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		fill(255, 0, 0);
+		rect(x, y-15, 32, 10);
+		fill(0, 255, 0);
+		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
  }
  
