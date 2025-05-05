@@ -109,8 +109,14 @@ class Entity {
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
 
-	turn() {
+	attack(entity) {
+		entity.health -= 10;
+		console.log(entity.health)
+		if (entity.health <= 0)
+			entities.splice(entities.indexOf(entity), 1)
+	}
 
+	turn() {
 	}
  }
  
@@ -335,11 +341,25 @@ function generateRooms(rx, ry, w, h) {
 	drawRoomInsideSpace(rx, ry, w, h);
 }
 
+function entityAtTile(x, y) {
+	for (let i = 0; i < entities.length; i++)
+		if (x == entities[i].x && y == entities[i].y)
+			return entities[i];
+
+	return null;
+}
+
 function updateWorld() {
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
 }
 
+const Direction = {
+	NORTH: 0,
+	EAST: 1,
+	SOUTH: 2,
+	WEST: 3,
+}
 
  // ---------- KEY PRESS ---------------
 function keyPressed() {
@@ -348,18 +368,38 @@ function keyPressed() {
 	if (key === 'x')
 		inventoryOpen = !inventoryOpen;
 
-	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]])
-		player.y -= 1
+	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {
+		let e = entityAtTile(player.x, player.y-1);
+		if (e == null)
+			player.y -= 1
+		else
+			player.attack(e);
 		updateWorld();
-	if (key == 's' && isWalkable[tiles[player.y+1][player.x]])
-		player.y += 1
+	}
+	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
+		let e = entityAtTile(player.x, player.y+1);
+		if (e == null)
+			player.y += 1
+		else
+			player.attack(e);
 		updateWorld();
-	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]])
-		player.x -= 1
+	}
+	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]]) {
+		let e = entityAtTile(player.x-1, player.y);
+		if (e == null)
+			player.x -= 1
+		else
+			player.attack(e);
 		updateWorld();
-	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]])
-		player.x += 1
+	}
+	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]]) {
+		let e = entityAtTile(player.x+1, player.y);
+		if (e == null)
+			player.x += 1
+		else
+			player.attack(e);
 		updateWorld();
+	}
 }
 
 //COLLISION
@@ -379,7 +419,7 @@ let temp;
 function generateEnemies() {
    for (let i = 1; i < rooms.length; i++) {
 
-       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y , rooms[i].y + rooms[i].h ), 1, 100, 100)
+       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), randint(0, 4), 100, 100)
        entities.push(temp)
    }
 }
