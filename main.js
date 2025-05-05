@@ -20,10 +20,9 @@ let player;
 
 //sprite sheets
 let tileset;              // Stores our tileset image
-let entitysheet;			//array with entities
+let entitysheet;          // Stores our entity tilesheet image
 
 //arrays
-let walkset; 				// array with all walkable tiles
 let inventory = {};
 let bag = {};
 let rooms = []
@@ -232,6 +231,7 @@ function drawRoomInsideSpace(rx, ry, w, h) {
 const SplitDir = {
 	HORIZONTAL: 0,
 	VERTICAL: 1,
+	MAX: 2,
 };
 
 // -------------- CORRIDORS ------------------
@@ -316,7 +316,7 @@ function generateRooms(rx, ry, w, h) {
 		drawRoomInsideSpace(rx, ry, w, h);
 		return;
 	}
-	let splitDir = randint(0, 2);
+	let splitDir = randint(0, SplitDir.MAX);
 	if ((splitDir == SplitDir.HORIZONTAL || h <= 32) && w > 32) {
 		let pos = randint(4, w-8);
 		generateRooms(rx, ry, pos, h);
