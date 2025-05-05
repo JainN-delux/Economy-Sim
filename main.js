@@ -111,12 +111,19 @@ class Entity {
 
 	attack(entity) {
 		entity.health -= 10;
-		console.log(entity.health)
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)
 	}
 
 	turn() {
+		if (player.x == this.x && player.y == this.y-1)
+			this.attack(player);
+		if (player.x == this.x && player.y == this.y+1)
+			this.attack(player);
+		if (player.x == this.x-1 && player.y == this.y)
+			this.attack(player);
+		if (player.x == this.x+1 && player.y == this.y+1)
+			this.attack(player);
 	}
  }
  
@@ -419,7 +426,7 @@ let temp;
 function generateEnemies() {
    for (let i = 1; i < rooms.length; i++) {
 
-       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), randint(0, 4), 100, 100)
+       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), randint(0, 3), 100, 100)
        entities.push(temp)
    }
 }
