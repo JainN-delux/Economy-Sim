@@ -98,8 +98,7 @@ class Entity {
 		this.health = health;
 		this.max_health = max_health
 	}
- 
- 
+
 	draw() {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
@@ -108,6 +107,10 @@ class Entity {
 		rect(x, y-15, 32, 10);
 		fill(0, 255, 0);
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
+	}
+
+	turn() {
+
 	}
  }
  
@@ -332,6 +335,11 @@ function generateRooms(rx, ry, w, h) {
 	drawRoomInsideSpace(rx, ry, w, h);
 }
 
+function updateWorld() {
+	for (let i = 1; i < entities.length; i++)
+		entities[i].turn();
+}
+
 
  // ---------- KEY PRESS ---------------
 function keyPressed() {
@@ -342,12 +350,16 @@ function keyPressed() {
 
 	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]])
 		player.y -= 1
+		updateWorld();
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]])
 		player.y += 1
+		updateWorld();
 	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]])
 		player.x -= 1
+		updateWorld();
 	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]])
 		player.x += 1
+		updateWorld();
 }
 
 //COLLISION
