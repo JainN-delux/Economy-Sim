@@ -419,7 +419,7 @@ let temp;
 function generateEnemies() {
    for (let i = 1; i < rooms.length; i++) {
 
-       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y , rooms[i].y + rooms[i].h ), 1, 100, 100)
+       temp = new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), randint(0, 4), 100, 100)
        entities.push(temp)
    }
 }
