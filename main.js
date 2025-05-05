@@ -126,7 +126,7 @@ function drawInvent() {
 		fill(255);
 		textSize(40);
 		for (let i = 0; i < 6; i++) {
-			text("InventorY", i_x + 50 , i_y + 50);
+			text("Inventory", i_x + 50 , i_y + 50);
 			for (let j = 0; j < 3; j++) {
 				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
 			}	
