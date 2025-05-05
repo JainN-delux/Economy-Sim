@@ -431,7 +431,19 @@ function generateEnemies() {
    }
 }
 
+let temph = 0;
+let tempw = 0;
+let bossRoom;
 
+function generateBossroom() {
+	for (let i = 1; i < rooms.length; i++) {
+		if ((rooms[i].h * rooms[i].w) > (temph*tempw)) {
+			temph = rooms[i].h
+			tempw = rooms[i].w
+			bossRoom = rooms[i]
+		} 
+	}
+}
 
 function setup() {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -460,4 +472,7 @@ function draw() {
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
+
+
+	console.log(temph +","+ tempw)
 }
