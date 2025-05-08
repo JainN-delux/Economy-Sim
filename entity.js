@@ -1,3 +1,4 @@
+import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet } from "./render.js";
 let player;
 
@@ -31,12 +32,23 @@ class Entity {
 	turn() {
 		if (player.x == this.x && player.y == this.y-1)
 			this.attack(player);
-		if (player.x == this.x && player.y == this.y+1)
+		else if (player.x == this.x && player.y == this.y+1)
 			this.attack(player);
-		if (player.x == this.x-1 && player.y == this.y)
+		else if (player.x == this.x-1 && player.y == this.y)
 			this.attack(player);
-		if (player.x == this.x+1 && player.y == this.y+1)
+		else if (player.x == this.x+1 && player.y == this.y+1)
 			this.attack(player);
+		else if (Math.abs(player.x-this.x) + Math.abs(player.y-this.y) < 8) {
+			if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]])
+				this.x--;
+			else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]])
+				this.x++;
+			else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]])
+				this.y--;
+			else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]])
+				this.y++;
+		}
+
 	}
 }
 
