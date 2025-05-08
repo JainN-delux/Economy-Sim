@@ -220,23 +220,37 @@ function spaceAdjacent(space1, space2) {
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
 		if (rooms[i] == bossRoom) {
-			
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), 4, 20, 20))
 		}
 		entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), randint(0, 3), 20, 20))
 	}
 }
 
 let bossRoom = 0;
-let temph = 0;
-let tempw = 0;
+let temph ;
+let tempw ;
 
 function generateBossroom() {
+	temph = 0
+	tempw = 0
 	for (let i = 1; i < rooms.length; i++) {
 		if ((rooms[i].h * rooms[i].w) > (temph*tempw)) {
 			bossRoom = rooms[i] 
 		} 
 	}
-	console.log(bossRoom)
+}
+
+let merchantRooms = []
+
+function generateMerchant() {
+	temph = 1000
+	tempw = 1000
+	for (let i = 1; i < rooms.length; i++) {
+		if ((rooms[i].h * rooms[i].w) < (temph*tempw)) {
+			merchantRooms.push(rooms[i]) 
+		} 
+	}
+	console.log(merchantRooms)
 }
 
 
@@ -245,6 +259,7 @@ function generateWorld() {
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	generateEnemies()
 	generateBossroom()
+	generateMerchant()
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
