@@ -223,19 +223,23 @@ function generateEnemies() {
 	}
 }
 
-let bossRoom;
+let bossRoom = 0;
+let temph = 0;
+let tempw = 0;
 
 function generateBossroom() {
 	for (let i = 1; i < rooms.length; i++) {
 		if ((rooms[i].h * rooms[i].w) > (temph*tempw)) {
-			bossRoom = rooms[i]
+			bossRoom = rooms[i] 
 		} 
 	}
+	console.log(bossRoom)
 }
 
 function generateWorld() {
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	generateEnemies()
+	generateBossroom()
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
