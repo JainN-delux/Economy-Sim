@@ -30,6 +30,8 @@ class Entity {
 	}
 
 	turn() {
+		let xdist = Math.abs(player.x-this.x);
+		let ydist = Math.abs(player.y-this.y);
 		if (player.x == this.x && player.y == this.y-1)
 			this.attack(player);
 		else if (player.x == this.x && player.y == this.y+1)
@@ -38,17 +40,28 @@ class Entity {
 			this.attack(player);
 		else if (player.x == this.x+1 && player.y == this.y+1)
 			this.attack(player);
-		else if (Math.abs(player.x-this.x) + Math.abs(player.y-this.y) < 8) {
-			if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]])
-				this.x--;
-			else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]])
-				this.x++;
-			else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]])
-				this.y--;
-			else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]])
-				this.y++;
+		else if (xdist + ydist < 8) {
+			if (xdist < ydist) {
+				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
+					this.x--;
+				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
+					this.x++;
+				else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
+					this.y--;
+				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
+					this.y++;
+			}
+			else {
+				if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
+					this.y--;
+				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
+					this.y++;
+				else if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
+					this.x--;
+				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
+					this.x++;
+			}
 		}
-
 	}
 }
 
