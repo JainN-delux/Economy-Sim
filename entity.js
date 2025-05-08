@@ -1,7 +1,6 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet } from "./render.js";
 let player;
-let turnCount = 0;
 
 const ENTITY_SRC_SIZE = 16;
 
@@ -77,4 +76,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, turnCount };
+export { entityAtTile, player, entities, Entity };

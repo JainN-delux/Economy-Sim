@@ -1,6 +1,8 @@
 import { isWalkable, generateWorld, tiles } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, inventoryOpen, drawWorld } from "./render.js";
-import { entityAtTile, player, entities, turnCount } from "./entity.js";
+import { entityAtTile, player, entities } from "./entity.js";
+
+let turnCount = 0;
 
 function updateWorld() {
 	for (let i = 1; i < entities.length; i++)
@@ -60,8 +62,6 @@ window.setup = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
-	textSize(32);
-	fill(255);
-	stroke(0);
-	text(turnCount, 32, 32);
 }
+
+export { turnCount };
