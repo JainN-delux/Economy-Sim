@@ -242,13 +242,16 @@ function generateBossroom() {
 
 let merchantRooms = []
 
+// broken merchant gen
 function generateMerchant() {
 	temph = 1000
 	tempw = 1000
 	for (let i = 1; i < rooms.length; i++) {
-		if ((rooms[i].h * rooms[i].w) < (temph*tempw)) {
-			merchantRooms.push(rooms[i]) 
-		} 
+		for (let j =0; j < 2; j++) {
+			if ((rooms[i].h * rooms[i].w) < (temph*tempw)) {
+				merchantRooms.push(rooms[i]) 
+			} 
+		}
 	}
 	console.log(merchantRooms)
 }
