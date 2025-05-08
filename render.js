@@ -68,7 +68,7 @@ function drawWorld(px, py) {
 			if (tile_x < 0 || tile_x >= WORLD_WIDTH)
 				continue
 			let tile_y = Math.floor(y+py-VIEWPORT_HEIGHT/2);
-			if (tile_y < 0 || tile_y >= WORLD_WIDTH)
+			if (tile_y < 0 || tile_y >= WORLD_HEIGHT)
 				continue
 			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
 			
