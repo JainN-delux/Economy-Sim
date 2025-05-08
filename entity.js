@@ -3,6 +3,12 @@ import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet } from "./rende
 let player;
 
 const ENTITY_SRC_SIZE = 16;
+const EntityType = {
+	WARRIOR: 0,
+	ARCHER: 1,
+	WIZARD: 2,
+	BOSS: 3,
+}
 
 class Entity {
 	constructor(x, y, type, health, max_health) {
@@ -65,7 +71,7 @@ class Entity {
 	}
 }
 
-let entities = [new Entity(0, 0, 0, 100, 100)];
+let entities = [new Entity(0, 0, EntityType.BOSS, 100, 100)];
 player = entities[0]
 
 function entityAtTile(x, y) {
@@ -76,4 +82,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity };
+export { entityAtTile, player, entities, Entity, EntityType };

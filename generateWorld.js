@@ -1,4 +1,4 @@
-import { Entity, entities, player } from "./entity.js";
+import { Entity, EntityType, entities, player } from "./entity.js";
 const WORLD_WIDTH = 256;   // The width in tiles in size
 const WORLD_HEIGHT = 256;  // The height in tiles in size
 
@@ -222,7 +222,7 @@ function generateEnemies() {
 		if (rooms[i] == bossRoom) {
 			
 		}
-		entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(0, 3), 20, 20))
+		entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR, EntityType.WIZARD+1), 20, 20))
 	}
 }
 
