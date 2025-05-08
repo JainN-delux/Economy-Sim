@@ -12,7 +12,8 @@ let itemset;
 window.preload = () => {
 	tileset = loadImage("./assets/tileset.png");
 	itemset = loadImage("./assets/Items/Potion.png");
-	entitysheet = loadImage("./assets/Player sheet.png");
+	entitysheet = loadImage("./assets/Entity sheet.png");
+	
 }
 
 let inventory = {};
