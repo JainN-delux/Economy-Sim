@@ -1,5 +1,6 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities } from "./entity.js";
+import { turnCount } from "./main.js"
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
 const TILE_SRC_SIZE = 16;  // Size of tile in tile atlas
@@ -82,6 +83,11 @@ function drawWorld(px, py) {
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
+	textSize(32);
+	fill(255);
+	stroke(0);
+	text(turnCount, 32, 32);
+	noStroke()
 }
 
 export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, tileset, entitysheet, inventoryOpen, drawWorld };
