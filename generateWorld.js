@@ -244,15 +244,13 @@ let merchantRooms = []
 
 // broken merchant gen
 function generateMerchant() {
-	temph = 1000
-	tempw = 1000
+	let smallestRoom = {w: Infinity, h: Infinity };
 	for (let i = 1; i < rooms.length; i++) {
-		for (let j =0; j < 2; j++) {
-			if ((rooms[i].h * rooms[i].w) < (temph*tempw)) {
-				merchantRooms.push(rooms[i]) 
-			} 
+		if ((rooms[i].h * rooms[i].w) < (smallestRoom.w*smallestRoom.h)) {
+			smallestRoom = rooms[i];
 		}
 	}
+	merchantRooms.push(smallestRoom);
 	console.log(merchantRooms)
 }
 
