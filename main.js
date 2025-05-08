@@ -1,6 +1,6 @@
 import { isWalkable, generateWorld, tiles } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, inventoryOpen, drawWorld } from "./render.js";
-import { entityAtTile, player, entities } from "./entity.js";
+import { entityAtTile, player, entities, turnCount } from "./entity.js";
 
 function updateWorld() {
 	for (let i = 1; i < entities.length; i++)
@@ -20,6 +20,7 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
+		turnCount++;
 	}
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
@@ -28,6 +29,7 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
+		turnCount++;
 	}
 	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]]) {
 		let e = entityAtTile(player.x-1, player.y);
@@ -36,6 +38,7 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
+		turnCount++;
 	}
 	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]]) {
 		let e = entityAtTile(player.x+1, player.y);
@@ -44,6 +47,7 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
+		turnCount++;
 	}
 }
 
@@ -56,4 +60,8 @@ window.setup = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
+	textSize(32);
+	fill(255);
+	stroke(0);
+	text(turnCount, 32, 32);
 }
