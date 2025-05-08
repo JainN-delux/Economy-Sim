@@ -263,11 +263,11 @@ const Item = {
 	POTION_GREEN: 5,
 }
 let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
-//ITEM SPAWN 
+//ITEM SPAWN (UPTO FIVE IN EACH ROOM)
 function itemInRoom() {
-	const number = randint(1, 5); 
-	for (let i = 0; i < number; i++) {
-		for (let i = 1; i < rooms.length; i++) {
+	for (let i = 1; i < rooms.length; i++) {
+		const number = randint(1, 5); 
+		for (let k = 0; k < number; k++) {
 			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
 			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h -1);
 			items[y][x] = randint(1, 5);
