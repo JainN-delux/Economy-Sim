@@ -254,12 +254,33 @@ function generateMerchant() {
 	console.log(merchantRooms)
 }
 
+//items
+const Item = {
+	POTION_RED: 1,
+	POTION_PINK: 2,
+	POTION_ORANGE: 3,
+	POTION_YELLOW: 4,
+	POTION_GREEN: 5,
+}
+let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
+//ITEM SPAWN 
+function itemInRoom() {
+	const number = randint(1, 5); 
+	for (let i = 0; i < number; i++) {
+		for (let i = 1; i < rooms.length; i++) {
+			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
+			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h -1);
+			items[y][x] = randint(1, 5);
+		}
+	}
+}
 
 
 function generateWorld() {
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	generateEnemies()
 	generateBossroom()
+	itemInRoom()
 	generateMerchant()
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
@@ -269,4 +290,6 @@ function generateWorld() {
 				connectRooms(rooms[i], rooms[j]);
 }
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, tiles };
+
+
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, tiles ,items};
