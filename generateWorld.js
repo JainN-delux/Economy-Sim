@@ -220,7 +220,7 @@ function spaceAdjacent(space1, space2) {
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
 		if (rooms[i] == bossRoom) {
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), 4, 20, 20))
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, 20, 20))
 		}
 		entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR, EntityType.WIZARD+1), 20, 20))
 	}
