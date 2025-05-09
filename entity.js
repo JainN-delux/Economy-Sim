@@ -1,5 +1,6 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet } from "./render.js";
+import { Item } from "./item.js";
 let player;
 
 const ENTITY_SRC_SIZE = 16;
@@ -17,6 +18,8 @@ class Entity {
 		this.type = type;
 		this.health = health;
 		this.max_health = max_health
+		this.attack_base = 10;
+		this.attack_mult = 1;
 	}
 
 	draw() {
@@ -30,9 +33,20 @@ class Entity {
 	}
 
 	attack(entity) {
-		entity.health -= 10;
+		entity.health -= this.attack_base * this.attack_mult;
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)
+	}
+
+	use(item) {
+		switch (item) {
+			case Item.POTION_RED:
+				this.max_health += 10;
+			case Item.POTION_GREEN:
+				this.health = min(this.health + 20, this.max_health);
+			case Item.POTION_ORANGE:
+				this.attack_mult *= 1.5;
+		}
 	}
 
 	turn() {
