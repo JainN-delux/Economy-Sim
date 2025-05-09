@@ -60,8 +60,8 @@ class Entity {
 			this.attack(player);
 		else if (player.x == this.x+1 && player.y == this.y+1)
 			this.attack(player);
-		else if (xdist + ydist < 8) {
-			if (xdist < ydist) {
+		else if (xdist + ydist < 10) {
+			if (xdist > ydist) {
 				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
 					this.x--;
 				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
