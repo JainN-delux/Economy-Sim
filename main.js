@@ -1,6 +1,7 @@
 import { isWalkable, generateWorld, tiles } from "./generateWorld.js";
-import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, inventoryOpen, drawWorld } from "./render.js";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 import { entityAtTile, player, entities } from "./entity.js";
+import { inventory } from "./item.js";
 
 let turnCount = 0;
 
@@ -13,7 +14,7 @@ window.keyPressed = () => {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
 	if (key === 'x')
-		inventoryOpen = !inventoryOpen;
+		inventory.toggle();
 
 	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);

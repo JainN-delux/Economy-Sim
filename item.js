@@ -21,4 +21,21 @@ function itemInRoom() {
 	}
 }
 
-export {itemInRoom, items,Item}
+class Inventory {
+	constructor() {
+		this.items = {};
+		this.open = false;
+	}
+
+	toggle() {
+		this.open = !this.open;
+	}
+
+	add(item) {
+		this.items.push(item);
+	}
+}
+
+let inventory = new Inventory();
+
+export { itemInRoom, items, Item, Inventory, inventory }
