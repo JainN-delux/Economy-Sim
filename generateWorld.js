@@ -1,4 +1,6 @@
 import { Entity, EntityType, entities, player } from "./entity.js";
+import { itemInRoom } from "./item.js";
+
 const WORLD_WIDTH = 256;   // The width in tiles in size
 const WORLD_HEIGHT = 256;  // The height in tiles in size
 
@@ -254,26 +256,7 @@ function generateMerchant() {
 	console.log(merchantRooms)
 }
 
-//items
-const Item = {
-	POTION_RED: 1,
-	POTION_PINK: 2,
-	POTION_ORANGE: 3,
-	POTION_YELLOW: 4,
-	POTION_GREEN: 5,
-}
-let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
-//ITEM SPAWN (UPTO FIVE IN EACH ROOM)
-function itemInRoom() {
-	for (let i = 1; i < rooms.length; i++) {
-		const number = randint(1, 5); 
-		for (let k = 0; k < number; k++) {
-			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
-			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h -1);
-			items[y][x] = randint(1, 5);
-		}
-	}
-}
+
 
 
 function generateWorld() {
@@ -292,4 +275,4 @@ function generateWorld() {
 
 
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, tiles ,items};
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, tiles ,randint,rooms};
