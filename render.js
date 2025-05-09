@@ -1,6 +1,7 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles, items} from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities } from "./entity.js";
 import { turnCount } from "./main.js";
+import { items,Item,itemInRoom } from "./item.js"
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
