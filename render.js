@@ -28,10 +28,12 @@ function drawInvent() {
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
 		textSize(40);
-		for (let i = 0; i < 6; i++) {
-			text("Inventory", i_x + 50 , i_y + 50);
-			for (let j = 0; j < 3; j++) {
-				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+		text("Inventory", i_x + 50 , i_y + 50);
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 6; j++) {
+				rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+				if (inventory.items[i*6 + j] != null)
+					drawItems(inventory.items[i*6 + j], i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5));
 			}
 		}
 	}
@@ -62,8 +64,8 @@ function drawTile(tile, x, y) {				// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 }
 
-function drawItems(tile, x, y) {
-	image(itemset, x, y, TILE_SIZE, TILE_SIZE, tile*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+function drawItems(item, x, y) {
+	image(itemset, x, y, TILE_SIZE, TILE_SIZE, item*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 }
 
 
