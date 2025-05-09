@@ -23,7 +23,7 @@ function itemInRoom() {
 
 class Inventory {
 	constructor() {
-		this.items = {};
+		this.items = [];
 		this.open = false;
 	}
 

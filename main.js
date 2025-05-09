@@ -1,11 +1,15 @@
 import { isWalkable, generateWorld, tiles } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 import { entityAtTile, player, entities } from "./entity.js";
-import { inventory } from "./item.js";
+import { inventory, items } from "./item.js";
 
 let turnCount = 0;
 
 function updateWorld() {
+	if (items[player.y][player.x] != null) {
+		inventory.add(items[player.y][player.x]);
+		items[player.y][player.x] = null;
+	}
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
 }
