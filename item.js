@@ -14,7 +14,7 @@ const Item = {
 let items = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(null));
 //ITEM SPAWN 
 function itemInRoom() {
-    const number = randint(1, 5); 
+	const number = randint(1, 5); 
 	for (let i = 0; i < number; i++) {
 		for (let i = 1; i < rooms.length; i++) {
 			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
