@@ -1,6 +1,6 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles, items} from "./generateWorld.js";
 import { entities } from "./entity.js";
-import { turnCount } from "./main.js"
+import { turnCount } from "./main.js";
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
@@ -33,7 +33,7 @@ function drawInvent() {
 			text("Inventory", i_x + 50 , i_y + 50);
 			for (let j = 0; j < 3; j++) {
 				rect(i_x + 7.5 +(i*TILE_SIZE*1.5), i_y + 65 +(j*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
-			}	
+			}
 		}
 	}
 }
@@ -82,7 +82,7 @@ function drawWorld(px, py) {
 			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
 			const item = items[tile_y][tile_x];
 			if (item !== null) {
-  				drawItems(item, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
+				drawItems(item, (x - fract(px) - 1) * TILE_SIZE, (y - fract(py) - 1) * TILE_SIZE);
 			}
 		}
 	}
