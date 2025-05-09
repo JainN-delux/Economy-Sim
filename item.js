@@ -32,7 +32,8 @@ class Inventory {
 	}
 
 	add(item) {
-		this.items.push(item);
+		if (this.items.length <= 6*3)
+			this.items.push(item);
 	}
 }
 
