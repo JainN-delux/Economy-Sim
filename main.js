@@ -54,6 +54,10 @@ window.keyPressed = () => {
 		updateWorld();
 	}
 
+	if (key == "r" ) {
+		window.location.reload()
+	}
+
 	if (keyCode == UP_ARROW)
 		inventory.selection_up();
 	else if (keyCode == DOWN_ARROW)
@@ -66,6 +70,7 @@ window.keyPressed = () => {
 		player.use(inventory.items[inventory.selected]);
 		inventory.remove_selected();
 		updateWorld();
+
 	}
 }
 
@@ -73,6 +78,13 @@ window.setup = () => {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
 	generateWorld();
+
+}
+
+window.mouseClicked = () => {
+	if (mouseX >= CANVAS_WIDTH-50 && mouseY <= 50) {
+		window.location.reload()
+	}
 }
 
 window.draw = () => {

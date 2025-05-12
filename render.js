@@ -69,6 +69,15 @@ function drawHealthbar() {
 	noStroke()
 }
 
+function drawRestart() {
+	fill (255)
+	stroke (0)
+	strokeWeight(2)
+	rect(CANVAS_WIDTH-50, 0, 50, 50)
+	noStroke()
+}
+
+
 function drawTile(tile, x, y) {				// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 }
@@ -100,6 +109,7 @@ function drawWorld(px, py) {
 	for (let i = 0; i < entities.length; i++)
 		entities[i].draw();
 
+	drawRestart()
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
