@@ -62,7 +62,7 @@ window.keyPressed = () => {
 		inventory.selection_left();
 	else if (keyCode == RIGHT_ARROW)
 		inventory.selection_right();
-	else if (keyCode == ENTER) {
+	else if (keyCode == ENTER && inventory.items[inventory.selected] != null) {
 		player.use(inventory.items[inventory.selected]);
 		inventory.remove_selected();
 		updateWorld();
