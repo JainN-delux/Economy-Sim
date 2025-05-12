@@ -22,6 +22,7 @@ class Entity {
 		this.defense_base = 10;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
+		this.last_dmg = 0
 	}
 
 	draw() {
@@ -34,10 +35,15 @@ class Entity {
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
 
+	
+
 	attack(entity) {
-		entity.health -= 10 * (this.attack_base * this.attack_mult) / (entity.defense_base * entity.defense_mult);
-		if (entity.health <= 0)
+		let damage = 10 * (this.attack_base * this.attack_mult) / (entity.defense_base * entity.defense_mult)
+		entity.health -= damage;
+		this.last_dmg = damage
+		if (entity.health <= 0) 
 			entities.splice(entities.indexOf(entity), 1)
+
 	}
 
 	use(item) {

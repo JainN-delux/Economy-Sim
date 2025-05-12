@@ -77,6 +77,12 @@ function drawRestart() {
 	noStroke()
 }
 
+function drawDamage(damage,) {
+	fill (255, 0, 0)
+	text(damage, 100, 100)
+	fill(0,0,0)
+}
+
 
 function drawTile(tile, x, y) {				// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
@@ -108,6 +114,8 @@ function drawWorld(px, py) {
 
 	for (let i = 0; i < entities.length; i++)
 		entities[i].draw();
+		drawDamage(entities[i].last_dmg)
+
 
 	drawRestart()
 	drawHealthbar()
