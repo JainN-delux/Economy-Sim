@@ -1,5 +1,5 @@
 import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
-
+import { CANVAS_WIDTH, CANVAS_HEIGHT, } from "./render.js";
 //items
 const Item = {
 	POTION_RED: 0,
@@ -33,6 +33,17 @@ function itemInRoom() {
 			items[y][x] = randint(Item.POTION_RED, Item.POTION_GREEN+1);
 		}
 	}
+}
+
+
+function drawQuickslot() {
+	fill(0)
+	rect(0, CANVAS_HEIGHT-70, 250, 70)
+	for (let i = 0; i < 4; i++) {
+		fill(255)
+		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
+	}
+
 }
 
 class Inventory {
@@ -78,4 +89,4 @@ class Inventory {
 
 let inventory = new Inventory();
 
-export { itemInRoom, items, Item, Inventory, inventory }
+export { itemInRoom, items, Item, Inventory, inventory,drawQuickslot }

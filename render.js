@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount } from "./main.js";
-import { items,Item,itemInRoom, inventory } from "./item.js"
+import { items,Item,itemInRoom, inventory, drawQuickslot } from "./item.js"
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
@@ -57,15 +57,6 @@ function drawInvent() {
 	}
 }
 
-function drawQuickslot() {
-	fill(0)
-	rect(0, CANVAS_HEIGHT-70, 250, 70)
-	for (let i = 0; i < 4; i++) {
-		fill(255)
-		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
-	}
-
-}
 
 function drawHealthbar() {
 	noStroke()
@@ -77,6 +68,15 @@ function drawHealthbar() {
 	rect(0, 675, 200, 15)
 	noStroke()
 }
+
+function drawRestart() {
+	fill (255)
+	stroke (0)
+	strokeWeight(2)
+	rect(CANVAS_WIDTH-50, 0, 50, 50)
+	noStroke()
+}
+
 
 function drawTile(tile, x, y) {				// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
@@ -109,6 +109,7 @@ function drawWorld(px, py) {
 	for (let i = 0; i < entities.length; i++)
 		entities[i].draw();
 
+	drawRestart()
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
