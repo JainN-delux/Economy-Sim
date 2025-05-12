@@ -9,14 +9,13 @@ const Item = {
 	POTION_GREEN: 4,
 }
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
-//ITEM SPAWN (UPTO FIVE IN EACH ROOM)
 function itemInRoom() {
-	for (let i = 1; i < rooms.length; i++) {
-		const number = randint(1, 5); 
+	for (let i = 0; i < rooms.length; i++) {
+		const number = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 61)); 
 		for (let k = 0; k < number; k++) {
 			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
-			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h -1);
-			items[y][x] = randint(1, 5);
+			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h-1);
+			items[y][x] = randint(Item.POTION_RED, Item.POTION_GREEN+1);
 		}
 	}
 }
