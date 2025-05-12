@@ -1,9 +1,12 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet } from "./render.js";
 import { Item } from "./item.js";
-let player;
 
+//defining variables
+let player;
 const ENTITY_SRC_SIZE = 16;
+
+// enum for entity types
 const EntityType = {
 	WARRIOR: 0,
 	ARCHER: 1,
@@ -11,6 +14,10 @@ const EntityType = {
 	BOSS: 3,
 }
 
+/* entity class 
+	 - input: position, type,health
+	 - functions: draw, attack, using items, turn system
+*/
 class Entity {
 	constructor(x, y, type, health, max_health) {
 		this.x = x;
@@ -23,7 +30,7 @@ class Entity {
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 	}
-
+	// draw from sprite
 	draw() {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
@@ -33,13 +40,14 @@ class Entity {
 		fill(0, 255, 0);
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
-
+	//attack by calculatinf attack and defense power
 	attack(entity) {
 		entity.health -= 10 * (this.attack_base * this.attack_mult) / (entity.defense_base * entity.defense_mult);
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)
 	}
 
+	//Item type and stats
 	use(item) {
 		switch (item) {
 			case Item.POTION_RED:
@@ -62,6 +70,7 @@ class Entity {
 		}
 	}
 
+	//turn based system
 	turn() {
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
@@ -98,9 +107,11 @@ class Entity {
 	}
 }
 
+//array to store entities
 let entities = [new Entity(0, 0, EntityType.BOSS, 100, 100)];
 player = entities[0]
 
+//check is entity is at position
 function entityAtTile(x, y) {
 	for (let i = 0; i < entities.length; i++)
 		if (x == entities[i].x && y == entities[i].y)
