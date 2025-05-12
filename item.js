@@ -2,11 +2,11 @@ import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
 
 //items
 const Item = {
-	POTION_RED: 1,
-	POTION_PINK: 2,
-	POTION_ORANGE: 3,
-	POTION_YELLOW: 4,
-	POTION_GREEN: 5,
+	POTION_RED: 0,
+	POTION_PINK: 1,
+	POTION_ORANGE: 2,
+	POTION_YELLOW: 3,
+	POTION_GREEN: 4,
 }
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
 //ITEM SPAWN (UPTO FIVE IN EACH ROOM)
@@ -25,6 +25,7 @@ class Inventory {
 	constructor() {
 		this.items = [];
 		this.open = false;
+		this.selected = 0;
 	}
 
 	toggle() {
@@ -34,6 +35,30 @@ class Inventory {
 	add(item) {
 		if (this.items.length <= 6*3)
 			this.items.push(item);
+	}
+
+	remove_selected() {
+		inventory.items.splice(inventory.selected, 1);
+	}
+
+	selection_up() {
+		if (this.selected > 5)
+			this.selected -= 6;
+	}
+
+	selection_down() {
+		if (this.selected < 12)
+			this.selected += 6;
+	}
+	
+	selection_left() {
+		if (this.selected > 0)
+			this.selected -= 1;
+	}
+
+	selection_right() {
+		if (this.selected < 17)
+			this.selected += 1;
 	}
 }
 

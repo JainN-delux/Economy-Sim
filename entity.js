@@ -19,7 +19,9 @@ class Entity {
 		this.health = health;
 		this.max_health = max_health
 		this.attack_base = 10;
+		this.defense_base = 10;
 		this.attack_mult = 1;
+		this.defense_mult = 1;
 	}
 
 	draw() {
@@ -33,7 +35,7 @@ class Entity {
 	}
 
 	attack(entity) {
-		entity.health -= this.attack_base * this.attack_mult;
+		entity.health -= 10 * (this.attack_base * this.attack_mult) / (this.defense_base * this.defense_mult);
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)
 	}
@@ -42,10 +44,21 @@ class Entity {
 		switch (item) {
 			case Item.POTION_RED:
 				this.max_health += 10;
+				break;
 			case Item.POTION_GREEN:
-				this.health = min(this.health + 20, this.max_health);
+				this.health = min(this.health + 0.2*this.max_health, this.max_health);
+				break;
 			case Item.POTION_ORANGE:
-				this.attack_mult *= 1.5;
+				this.attack_mult *= 1.25;
+				break;
+			case Item.POTION_PINK:
+				this.defense_mult *= 1.25;
+				break;
+			case Item.POTION_YELLOW:
+				this.defense_base += 5;
+				this.attack_base += 5;
+				this.health = this.health/2;
+				break;
 		}
 	}
 
@@ -58,7 +71,7 @@ class Entity {
 			this.attack(player);
 		else if (player.x == this.x-1 && player.y == this.y)
 			this.attack(player);
-		else if (player.x == this.x+1 && player.y == this.y+1)
+		else if (player.x == this.x+1 && player.y == this.y)
 			this.attack(player);
 		else if (xdist + ydist < 10) {
 			if (xdist > ydist) {

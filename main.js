@@ -12,6 +12,7 @@ function updateWorld() {
 	}
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
+	turnCount++;
 }
 
 window.keyPressed = () => {
@@ -27,7 +28,6 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
-		turnCount++;
 	}
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
@@ -36,7 +36,6 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
-		turnCount++;
 	}
 	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]]) {
 		let e = entityAtTile(player.x-1, player.y);
@@ -45,7 +44,6 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
-		turnCount++;
 	}
 	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]]) {
 		let e = entityAtTile(player.x+1, player.y);
@@ -54,7 +52,20 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
-		turnCount++;
+	}
+
+	if (keyCode == UP_ARROW)
+		inventory.selection_up();
+	else if (keyCode == DOWN_ARROW)
+		inventory.selection_down();
+	else if (keyCode == LEFT_ARROW)
+		inventory.selection_left();
+	else if (keyCode == RIGHT_ARROW)
+		inventory.selection_right();
+	else if (keyCode == ENTER) {
+		player.use(inventory.items[inventory.selected]);
+		inventory.remove_selected();
+		updateWorld();
 	}
 }
 

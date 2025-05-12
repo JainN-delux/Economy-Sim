@@ -1,5 +1,5 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
-import { entities } from "./entity.js";
+import { entities, player } from "./entity.js";
 import { turnCount } from "./main.js";
 import { items,Item,itemInRoom, inventory } from "./item.js"
 
@@ -24,18 +24,36 @@ function drawInvent() {
 	if (inventory.open) {
 		let i_x = 250;
 		let i_y = 250;
-		fill("red");
+		fill(255, 0, 0);
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
 		textSize(40);
 		text("Inventory", i_x + 50 , i_y + 50);
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 6; j++) {
-				rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+				if (i*6 + j == inventory.selected) {
+					fill(40, 60, 255);
+					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+				}
+				else {
+					fill(255);
+					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+				}
 				if (inventory.items[i*6 + j] != null)
 					drawItems(inventory.items[i*6 + j], i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5));
 			}
 		}
+		fill(0);
+		const stat_x = CANVAS_WIDTH-TILE_SIZE*6;
+		rect(stat_x, 0, TILE_SIZE*6, TILE_SIZE*6);
+		fill(255);
+		textSize(20);
+		text("Health: " + player.health, stat_x, 20);
+		text("Max Health: " + player.max_health, stat_x, 40);
+		text("Attack base: " + player.attack_base, stat_x, 80);
+		text("Defense base: " + player.defense_base, stat_x, 100);
+		text("Attack mult: " + player.attack_mult, stat_x, 120);
+		text("Defense mult: " + player.defense_mult, stat_x, 140);
 	}
 }
 
