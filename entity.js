@@ -35,7 +35,7 @@ class Entity {
 	}
 
 	attack(entity) {
-		entity.health -= 10 * (this.attack_base * this.attack_mult) / (this.defense_base * this.defense_mult);
+		entity.health -= 10 * (this.attack_base * this.attack_mult) / (entity.defense_base * entity.defense_mult);
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)
 	}
