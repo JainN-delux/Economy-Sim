@@ -23,11 +23,11 @@ const entityStats = [
 	new EntityStats(100, 10, 10),
 	new EntityStats(100, 13, 7),
 	new EntityStats(80, 15, 5),
-	new EntityStats(1000, 40, 200),
+	new EntityStats(1000, 80, 500),
 ];
 
 class Entity {
-	constructor(x, y, type, health, max_health) {
+	constructor(x, y, type, health, max_health, quickslot=[]) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -37,6 +37,7 @@ class Entity {
 		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
+		this.quickslot = quickslot;
 	}
 
 	draw() {

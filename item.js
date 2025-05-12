@@ -8,6 +8,21 @@ const Item = {
 	POTION_YELLOW: 3,
 	POTION_GREEN: 4,
 }
+
+class ItemStats {
+	constructor(damage) {
+		this.damage = damage;
+	}
+}
+
+const itemStats = [
+	new ItemStats(0),
+	new ItemStats(0),
+	new ItemStats(0),
+	new ItemStats(0),
+	new ItemStats(0),
+]
+
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
 function itemInRoom() {
 	for (let i = 0; i < rooms.length; i++) {

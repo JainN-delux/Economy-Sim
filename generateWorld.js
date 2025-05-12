@@ -263,8 +263,8 @@ function generateMerchant() {
 
 function generateWorld() {
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-	generateEnemies()
 	generateBossroom()
+	generateEnemies()
 	itemInRoom()
 	generateMerchant()
 	player.x = rooms[0].x + 1;
