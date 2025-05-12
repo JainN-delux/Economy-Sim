@@ -11,6 +11,21 @@ const EntityType = {
 	BOSS: 3,
 }
 
+class EntityStats {
+	constructor(max_health, attack_base, defense_base) {
+		this.max_health = max_health;
+		this.attack_base = attack_base;
+		this.defense_base = defense_base;
+	}
+}
+
+const entityStats = [
+	new EntityStats(100, 10, 10),
+	new EntityStats(100, 13, 7),
+	new EntityStats(80, 15, 5),
+	new EntityStats(1000, 40, 200),
+];
+
 class Entity {
 	constructor(x, y, type, health, max_health) {
 		this.x = x;
@@ -18,8 +33,8 @@ class Entity {
 		this.type = type;
 		this.health = health;
 		this.max_health = max_health
-		this.attack_base = 10;
-		this.defense_base = 10;
+		this.attack_base = entityStats[type].attack_base;
+		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 	}
@@ -98,7 +113,7 @@ class Entity {
 	}
 }
 
-let entities = [new Entity(0, 0, EntityType.BOSS, 100, 100)];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 100, 100)];
 player = entities[0]
 
 function entityAtTile(x, y) {
