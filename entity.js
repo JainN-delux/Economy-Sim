@@ -55,8 +55,8 @@ class Entity {
 				this.defense_mult *= 1.25;
 				break;
 			case Item.POTION_YELLOW:
-				this.defense_base += 5;
-				this.attack_base += 5;
+				this.defense_base += 10;
+				this.attack_base += 10;
 				this.health = this.health/2;
 				break;
 		}
