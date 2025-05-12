@@ -43,7 +43,7 @@ class Entity {
 	use(item) {
 		switch (item) {
 			case Item.POTION_RED:
-				this.max_health += 10;
+				this.max_health += 20;
 				break;
 			case Item.POTION_GREEN:
 				this.health = min(this.health + 0.2*this.max_health, this.max_health);
