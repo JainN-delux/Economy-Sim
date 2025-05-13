@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount } from "./main.js";
-import { items,Item,itemInRoom, inventory, drawQuickslot } from "./item.js"
+import { items,Item,itemInRoom, inventory } from "./item.js"
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
@@ -15,7 +15,7 @@ let itemset;
 // Preloads our images
 window.preload = () => {
 	tileset = loadImage("./assets/tileset.png");
-	itemset = loadImage("./assets/Items/Potion.png");
+	itemset = loadImage("./assets/items.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
 	
 }
@@ -75,6 +75,18 @@ function drawRestart() {
 	strokeWeight(2)
 	rect(CANVAS_WIDTH-50, 0, 50, 50)
 	noStroke()
+}
+
+function drawQuickslot() {
+	fill(0)
+	rect(0, CANVAS_HEIGHT-70, 250, 70)
+	for (let i = 0; i < 4; i++) {
+		fill(255)
+		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
+		if (player.quickslot[i])
+			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE, TILE_SIZE, player.quickslot[i]*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+	}
+
 }
 
 

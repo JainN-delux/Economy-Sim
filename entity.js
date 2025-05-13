@@ -1,6 +1,6 @@
 import { isWalkable, tiles } from "./generateWorld.js";
-import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet } from "./render.js";
-import { Item } from "./item.js";
+import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset } from "./render.js";
+import { Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
 let player;
 
 const ENTITY_SRC_SIZE = 16;
@@ -27,31 +27,44 @@ const entityStats = [
 ];
 
 class Entity {
-	constructor(x, y, type, health, max_health, quickslot=[]) {
+	constructor(x, y, type, quickslot=[]) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
-		this.health = health;
-		this.max_health = max_health
+		this.health = entityStats[type].max_health;
+		this.max_health = entityStats[type].max_health;
 		this.attack_base = entityStats[type].attack_base;
 		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 		this.quickslot = quickslot;
+		this.selected = 0;
 	}
 
 	draw() {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		if (this.quickslot[this.selected])
+			image(itemset, x, y + TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE/2, this.quickslot[this.selected]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE);
 		fill(255, 0, 0);
 		rect(x, y-15, 32, 10);
 		fill(0, 255, 0);
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
 
+	heldItemAttack() {
+		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].damage : 1);
+	}
+
+	heldItemShield() {
+		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].shield : 1);
+	}
+
 	attack(entity) {
-		entity.health -= 10 * (this.attack_base * this.attack_mult) / (entity.defense_base * entity.defense_mult);
+		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult)
+		console.log(damage);
+		entity.health -= damage;
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)
 	}
@@ -114,7 +127,7 @@ class Entity {
 	}
 }
 
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 100, 100)];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
 player = entities[0]
 
 function entityAtTile(x, y) {

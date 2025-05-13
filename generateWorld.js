@@ -1,5 +1,5 @@
 import { Entity, EntityType, entities, player } from "./entity.js";
-import { itemInRoom } from "./item.js";
+import { itemInRoom, Item } from "./item.js";
 
 const WORLD_WIDTH = 256;   // The width in tiles in size
 const WORLD_HEIGHT = 256;  // The height in tiles in size
@@ -222,11 +222,11 @@ function spaceAdjacent(space1, space2) {
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
 		if (rooms[i] == bossRoom) {
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, 100, 100))
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
 		}
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR, EntityType.WIZARD+1), 100, 100))
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR, EntityType.WIZARD+1), [Item.AXE]))
 	}
 }
 

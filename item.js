@@ -1,5 +1,8 @@
 import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, } from "./render.js";
+
+const ITEM_SRC_SIZE = 16;
+
 //items
 const Item = {
 	POTION_RED: 0,
@@ -7,21 +10,38 @@ const Item = {
 	POTION_ORANGE: 2,
 	POTION_YELLOW: 3,
 	POTION_GREEN: 4,
+	SWORD: 5,
+	POISON_SWORD: 6,
+	HATCHET: 7,
+	AXE: 8,
+	STEEL_SHIELD: 9,
+	WOODEN_SHIELD: 10,
+	BOW: 11,
+	ARROW: 12,
 }
 
 class ItemStats {
-	constructor(damage) {
+	constructor(damage, shield) {
 		this.damage = damage;
+		this.shield = shield;
 	}
 }
 
 const itemStats = [
-	new ItemStats(0),
-	new ItemStats(0),
-	new ItemStats(0),
-	new ItemStats(0),
-	new ItemStats(0),
-]
+	new ItemStats(1, 1),
+	new ItemStats(1, 1),
+	new ItemStats(1, 1),
+	new ItemStats(1, 1),
+	new ItemStats(1, 1),
+	new ItemStats(10, 2),
+	new ItemStats(10, 2),
+	new ItemStats(12, 1),
+	new ItemStats(15, 1),
+	new ItemStats(4, 20),
+	new ItemStats(2, 10),
+	new ItemStats(10, 1),
+	new ItemStats(2, 1),
+];
 
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
 function itemInRoom() {
@@ -33,17 +53,6 @@ function itemInRoom() {
 			items[y][x] = randint(Item.POTION_RED, Item.POTION_GREEN+1);
 		}
 	}
-}
-
-
-function drawQuickslot() {
-	fill(0)
-	rect(0, CANVAS_HEIGHT-70, 250, 70)
-	for (let i = 0; i < 4; i++) {
-		fill(255)
-		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
-	}
-
 }
 
 class Inventory {
@@ -89,4 +98,4 @@ class Inventory {
 
 let inventory = new Inventory();
 
-export { itemInRoom, items, Item, Inventory, inventory,drawQuickslot }
+export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE }
