@@ -63,7 +63,7 @@ function drawInvent() {
 function drawHealthbar() {
 	noStroke()
 	fill(255, 0, 0)
-	rect(0, 675, (entities[0].health/entities[0].max_health) * 200, 15)
+	rect(0, 675, (player.health/entities[0].max_health) * 200, 15)
 	stroke(0)
 	strokeWeight(4)
 	noFill()
@@ -72,11 +72,20 @@ function drawHealthbar() {
 }
 
 function drawRestart() {
-	fill (255)
-	stroke (0)
-	strokeWeight(2)
-	rect(CANVAS_WIDTH-50, 0, 50, 50)
-	noStroke()
+	if (player.health >= 0){
+		fill (255)
+		stroke (0)
+		strokeWeight(2)
+		rect(CANVAS_WIDTH-50, 0, 50, 50)
+		noStroke()
+	} else {
+		fill(255)
+		stroke(0)
+		strokeWeight(4)
+		rect(1,1,400,400)
+		noStroke()
+	}
+	
 }
 
 function drawQuickslot() {
