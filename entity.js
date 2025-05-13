@@ -1,9 +1,11 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset } from "./render.js";
 import { Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
-let player;
 
+let player;
 const ENTITY_SRC_SIZE = 16;
+
+// enum for entity types
 const EntityType = {
 	WARRIOR: 0,
 	ARCHER: 1,
@@ -26,6 +28,10 @@ const entityStats = [
 	new EntityStats(1000, 80, 500),
 ];
 
+/* entity class 
+	 - input: position, type,health
+	 - functions: draw, attack, using items, turn system
+*/
 class Entity {
 	constructor(x, y, type, quickslot=[]) {
 		this.x = x;
@@ -40,7 +46,7 @@ class Entity {
 		this.quickslot = quickslot;
 		this.selected = 0;
 	}
-
+	// draw from sprite
 	draw() {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
@@ -69,6 +75,7 @@ class Entity {
 			entities.splice(entities.indexOf(entity), 1)
 	}
 
+	//Item type and stats
 	use(item) {
 		switch (item) {
 			case Item.POTION_RED:
@@ -91,6 +98,7 @@ class Entity {
 		}
 	}
 
+	//turn based system
 	turn() {
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
@@ -130,6 +138,7 @@ class Entity {
 let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
 player = entities[0]
 
+//check is entity is at position
 function entityAtTile(x, y) {
 	for (let i = 0; i < entities.length; i++)
 		if (x == entities[i].x && y == entities[i].y)

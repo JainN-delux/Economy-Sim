@@ -94,6 +94,10 @@ class Inventory {
 		if (this.selected < 17)
 			this.selected += 1;
 	}
+
+	add_quickslot() {
+		
+	}
 }
 
 let inventory = new Inventory();

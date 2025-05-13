@@ -86,7 +86,12 @@ function drawQuickslot() {
 		if (player.quickslot[i])
 			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE, TILE_SIZE, player.quickslot[i]*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 	}
+}
 
+function drawDamage(damage,) {
+	fill (255, 0, 0)
+	text(damage, 100, 100)
+	fill(0,0,0)
 }
 
 
@@ -118,8 +123,10 @@ function drawWorld(px, py) {
 		}
 	}
 
-	for (let i = 0; i < entities.length; i++)
+	for (let i = 0; i < entities.length; i++) {
 		entities[i].draw();
+	}
+
 
 	drawRestart()
 	drawHealthbar()

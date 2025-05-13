@@ -1,11 +1,18 @@
 import { Entity, EntityType, entities, player } from "./entity.js";
 import { itemInRoom, Item } from "./item.js";
 
+//CONSTANTS
 const WORLD_WIDTH = 256;   // The width in tiles in size
 const WORLD_HEIGHT = 256;  // The height in tiles in size
 
+//arrays
 let rooms = []
 let spaces = []
+
+//fundamental functions
+function randint(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
+}
 
 // Enums for the different tiles
 const Tile = {
@@ -27,7 +34,7 @@ const Tile = {
 	FLOOR_BOTTOM_RIGHT: 15,
 	EMPTY: 16
 }
-
+// check if entities can walk on tiles or not
 const isWalkable = [
 	false,
 	false,
@@ -51,10 +58,11 @@ const isWalkable = [
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
 
-function randint(min, max) {
-	return Math.floor(Math.random() * (max - min)) + min;
-}
 
+/* function
+	- draw a rooms based on position and dimension inputs
+	- adds tiles design based on location
+*/
 function generateRoom(rx, ry, w, h) {
 	rooms.push({ x: rx, y: ry, w: w, h: h});
 
@@ -93,8 +101,10 @@ function generateRoom(rx, ry, w, h) {
 	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
 }
 
-
-
+/* function
+	- get random non-overlapping poistion and dimersion
+	- to be used in generateRoom function
+*/
 function generateRoomInsideSpace(rx, ry, w, h) {
 	spaces.push({ x: rx, y: ry, w: w, h: h});
 	let x0 = randint(1, w/2-2);
@@ -110,7 +120,7 @@ const SplitDir = {
 	MAX: 2,
 };
 
-// -------------- CORRIDORS ------------------
+
 function connectRooms(roomA, roomB) {
 	// Room floor tiles
 	let room0 = { x: roomA.x + 1, y: roomA.y + 1, w: roomA.w - 2, h: roomA.h - 2 };
