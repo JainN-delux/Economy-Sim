@@ -1,6 +1,9 @@
 import { Entity, EntityType, entities, player } from "./entity.js";
 import { itemInRoom, Item } from "./item.js";
 
+
+
+
 //CONSTANTS
 const WORLD_WIDTH = 256;   // The width in tiles in size
 const WORLD_HEIGHT = 256;  // The height in tiles in size
@@ -234,6 +237,9 @@ function generateEnemies() {
 		if (rooms[i] == bossRoom) {
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
 		}
+		if (rooms[i] == merchantRooms[0]) {
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, Item.SWORD))
+		}
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR, EntityType.WIZARD+1), [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
@@ -263,7 +269,8 @@ function generateMerchant() {
 		}
 	}
 	merchantRooms.push(smallestRoom);
-	console.log(merchantRooms)
+	console.log(merchantRooms[0])
+	
 }
 
 

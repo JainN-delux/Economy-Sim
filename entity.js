@@ -11,6 +11,7 @@ const EntityType = {
 	ARCHER: 1,
 	WIZARD: 2,
 	BOSS: 3,
+	MERCHANT: 4,
 }
 
 class EntityStats {
