@@ -22,11 +22,12 @@ class EntityStats {
 	}
 }
 
+//4types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10, 10),
-	new EntityStats(100, 13, 7),
-	new EntityStats(80, 15, 5),
-	new EntityStats(1000, 80, 500),
+	new EntityStats(10000, 1000, 10),
+	new EntityStats(1, 13, 7),
+	new EntityStats(1, 15, 5),
+	new EntityStats(1, 80, 500),
 ];
 
 /* entity class 
@@ -137,6 +138,7 @@ class Entity {
 }
 
 let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
+
 player = entities[0]
 
 //check is entity is at position
