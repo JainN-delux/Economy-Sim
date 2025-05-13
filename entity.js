@@ -147,7 +147,7 @@ let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
 
 player = entities[0]
 
-//check is entity is at position
+//check if entity is at position
 function entityAtTile(x, y) {
 	for (let i = 0; i < entities.length; i++)
 		if (x == entities[i].x && y == entities[i].y)

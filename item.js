@@ -3,7 +3,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT, } from "./render.js";
 
 const ITEM_SRC_SIZE = 16;
 
-//items
+// enum for items
 const Item = {
 	POTION_RED: 0,
 	POTION_PINK: 1,
@@ -20,6 +20,7 @@ const Item = {
 	ARROW: 12,
 }
 
+//weapon stats
 class ItemStats {
 	constructor(damage, shield) {
 		this.damage = damage;
@@ -27,6 +28,7 @@ class ItemStats {
 	}
 }
 
+//weapon stats
 const itemStats = [
 	new ItemStats(1, 1),
 	new ItemStats(1, 1),
@@ -43,7 +45,10 @@ const itemStats = [
 	new ItemStats(2, 1),
 ];
 
+//items map array
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
+
+//place 1to5 items in each room
 function itemInRoom() {
 	for (let i = 0; i < rooms.length; i++) {
 		const number = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 61)); 
