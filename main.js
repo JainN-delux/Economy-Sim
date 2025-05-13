@@ -18,8 +18,10 @@ function updateWorld() {
 window.keyPressed = () => {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
-	if (key === 'x')
+	if (key === 'x') {
 		inventory.toggle();
+		console.log(entities[0])
+	}
 
 	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);
@@ -90,6 +92,7 @@ window.mouseClicked = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
+	
 }
 
 export { turnCount };

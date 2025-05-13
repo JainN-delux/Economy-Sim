@@ -11,7 +11,7 @@ const EntityType = {
 	ARCHER: 1,
 	WIZARD: 2,
 	BOSS: 3,
-	MERCHANT: 4,
+	MERCHANT: 4
 }
 
 class EntityStats {
@@ -28,6 +28,7 @@ const entityStats = [
 	new EntityStats(1, 13, 7),
 	new EntityStats(1, 15, 5),
 	new EntityStats(1, 80, 500),
+	new EntityStats(1, 0, 10)
 ];
 
 /* entity class 
@@ -35,7 +36,7 @@ const entityStats = [
 	 - functions: draw, attack, using items, turn system
 */
 class Entity {
-	constructor(x, y, type, quickslot=[]) {
+	constructor(x, y, type, quickslot=[], hostile=true) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -47,7 +48,10 @@ class Entity {
 		this.defense_mult = 1;
 		this.quickslot = quickslot;
 		this.selected = 0;
+		this.hostility = hostile
 	}
+	
+
 	// draw from sprite
 	draw() {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
@@ -102,38 +106,40 @@ class Entity {
 
 	//turn based system
 	turn() {
-		let xdist = Math.abs(player.x-this.x);
-		let ydist = Math.abs(player.y-this.y);
-		if (player.x == this.x && player.y == this.y-1)
-			this.attack(player);
-		else if (player.x == this.x && player.y == this.y+1)
-			this.attack(player);
-		else if (player.x == this.x-1 && player.y == this.y)
-			this.attack(player);
-		else if (player.x == this.x+1 && player.y == this.y)
-			this.attack(player);
-		else if (xdist + ydist < 5) {
-			if (xdist > ydist) {
-				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
-					this.x--;
-				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
-					this.x++;
-				else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
-					this.y--;
-				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
-					this.y++;
+		if (this.hostility = true) {
+			let xdist = Math.abs(player.x-this.x);
+			let ydist = Math.abs(player.y-this.y);
+			if (player.x == this.x && player.y == this.y-1)
+				this.attack(player);
+			else if (player.x == this.x && player.y == this.y+1)
+				this.attack(player);
+			else if (player.x == this.x-1 && player.y == this.y)
+				this.attack(player);
+			else if (player.x == this.x+1 && player.y == this.y)
+				this.attack(player);
+			else if (xdist + ydist < 5) {
+				if (xdist > ydist) {
+					if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
+						this.x--;
+					else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
+						this.x++;
+					else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
+						this.y--;
+					else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
+						this.y++;
+				}
+				else {
+					if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
+						this.y--;
+					else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
+						this.y++;
+					else if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
+						this.x--;
+					else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
+						this.x++;
+				}
 			}
-			else {
-				if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
-					this.y--;
-				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
-					this.y++;
-				else if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
-					this.x--;
-				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
-					this.x++;
-			}
-		}
+		}	
 	}
 }
 
