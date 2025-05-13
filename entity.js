@@ -24,7 +24,7 @@ class EntityStats {
 
 //4types of enemies and their stats
 const entityStats = [
-	new EntityStats(10000, 1000, 10),
+	new EntityStats(2, 0.5, 10),   //toggle this to test increase player
 	new EntityStats(1, 13, 7),
 	new EntityStats(1, 15, 5),
 	new EntityStats(1, 80, 500),
