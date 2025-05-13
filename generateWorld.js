@@ -240,17 +240,15 @@ function generateEnemies() {
 	}
 }
 
-let bossRoom = 0;
-let temph ;
-let tempw ;
+let bossRoom;
 
 function generateBossroom() {
-	temph = 0
-	tempw = 0
+	let best = 0;
 	for (let i = 1; i < rooms.length; i++) {
-		if ((rooms[i].h * rooms[i].w) > (temph*tempw)) {
-			bossRoom = rooms[i] 
-		} 
+		if ((rooms[i].h * rooms[i].w) > (best)) {
+			bossRoom = rooms[i];
+			best = room[i].h * rooms[i].w;
+		}
 	}
 }
 
