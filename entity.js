@@ -1,5 +1,5 @@
 import { isWalkable, tiles } from "./generateWorld.js";
-import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset } from "./render.js";
+import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
 
 let player;
@@ -69,7 +69,7 @@ class Entity {
 
 	attack(entity) {
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult)
-		console.log(damage);
+		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
 		if (entity.health <= 0)
 			entities.splice(entities.indexOf(entity), 1)

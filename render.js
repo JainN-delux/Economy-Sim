@@ -20,6 +20,8 @@ window.preload = () => {
 	
 }
 
+let damageMarkers = [];
+
 function drawInvent() {
 	if (inventory.open) {
 		let i_x = 250;
@@ -88,9 +90,12 @@ function drawQuickslot() {
 	}
 }
 
-function drawDamage(damage,) {
-	fill (255, 0, 0)
-	text(damage, 100, 100)
+function drawDamageMarker(damageMarker) {
+	fill(255, 0, 0)
+	textSize(10);
+	let x = (damageMarker.entity.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+	let y = (damageMarker.entity.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+	text(damageMarker.damage, x, y-(millis()-damageMarker.time)/100, 100)
 	fill(0,0,0)
 }
 
@@ -123,9 +128,15 @@ function drawWorld(px, py) {
 		}
 	}
 
-	for (let i = 0; i < entities.length; i++) {
+	for (let i = 0; i < entities.length; i++)
 		entities[i].draw();
-	}
+
+	for (let i = 0; i < damageMarkers.length; i++)
+		if (millis()-damageMarkers[i].time > 1000)
+			damageMarkers.splice(i--, 1);
+		else
+			drawDamageMarker(damageMarkers[i]);
+
 
 
 	drawRestart()
@@ -139,4 +150,4 @@ function drawWorld(px, py) {
 	noStroke()
 }
 
-export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld };
+export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers };
