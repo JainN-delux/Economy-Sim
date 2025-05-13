@@ -24,8 +24,8 @@ let damageMarkers = [];
 
 function drawInvent() {
 	if (inventory.open) {
-		let i_x = 250;
-		let i_y = 250;
+		let i_x = 150;
+		let i_y = 150;
 		fill(255, 0, 0);
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
