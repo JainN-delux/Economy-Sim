@@ -95,7 +95,7 @@ function drawDamageMarker(damageMarker) {
 	textSize(10);
 	let x = (damageMarker.entity.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 	let y = (damageMarker.entity.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
-	text(damageMarker.damage, x, y-(millis()-damageMarker.time)/100, 100)
+	text(damageMarker.damage.toFixed(2), x, y-(millis()-damageMarker.time)/100, 100)
 	fill(0,0,0)
 }
 
