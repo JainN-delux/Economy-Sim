@@ -247,7 +247,7 @@ function generateBossroom() {
 	for (let i = 1; i < rooms.length; i++) {
 		if ((rooms[i].h * rooms[i].w) > (best)) {
 			bossRoom = rooms[i];
-			best = room[i].h * rooms[i].w;
+			best = rooms[i].h * rooms[i].w;
 		}
 	}
 }
