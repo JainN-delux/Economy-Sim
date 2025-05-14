@@ -239,7 +239,7 @@ function generateEnemies() {
 		}
 		if (rooms[i] == merchantRooms[0]) {
 			
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, Item.SWORD, false))
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
 		}
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
@@ -280,9 +280,10 @@ function generateMerchant() {
 function generateWorld() {
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	generateBossroom()
+	generateMerchant()
 	generateEnemies()
 	itemInRoom()
-	generateMerchant()
+	
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
