@@ -1,13 +1,12 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount } from "./main.js";
-import { items,Item,itemInRoom, inventory, itemStats } from "./item.js"
+import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE } from "./item.js"
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
 const TILE_SRC_SIZE = 16;  // Size of tile in tile atlas
 const TILE_SIZE = 32;      // Rendered size of tile
-const ITEM_SRC_SIZE = 32;
 
 let tileset;               // Stores our tileset image
 let entitysheet;           // Stores our entity tilesheet image
