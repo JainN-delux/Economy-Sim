@@ -1,6 +1,6 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
-import { Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
+import { items, Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
 
 let player;
 let debug = false;
@@ -78,8 +78,10 @@ class Entity {
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult)
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
-		if (entity.health <= 0)
+		if (entity.health <= 0) {
+			items[entity.y][entity.x] = entity.quickslot[entity.selected];
 			entities.splice(entities.indexOf(entity), 1)
+		}
 	}
 
 	//Item type and stats
@@ -101,6 +103,10 @@ class Entity {
 				this.defense_base += 10;
 				this.attack_base += 10;
 				this.health = this.health/2;
+				break;
+			default:
+				if (item >= Item.SWORD && item <= Item.WOODEN_SHIELD)
+					this.quickslot.push(item);
 				break;
 		}
 	}

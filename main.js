@@ -62,8 +62,16 @@ window.keyPressed = () => {
 			player.attack(e);
 		updateWorld();
 	}
+	if (key == '1')
+		player.selected = 0;
+	else if (key == '2')
+		player.selected = 1;
+	else if (key == '3')
+		player.selected = 2;
+	else if (key == '4')
+		player.selected = 3;
 	//reload
-	if (key == "r" ) {
+	else if (key == "r" ) {
 		window.location.reload()
 	}
 
@@ -81,7 +89,6 @@ window.keyPressed = () => {
 		player.use(inventory.items[inventory.selected]);
 		inventory.remove_selected();
 		updateWorld();
-
 	}
 }
 
