@@ -238,8 +238,8 @@ function generateEnemies() {
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
 		}
 		if (rooms[i] == merchantRooms[0]) {
-			
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
+			break
 		}
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
@@ -270,7 +270,7 @@ function generateMerchant() {
 		}
 	}
 	merchantRooms.push(smallestRoom);
-	console.log(merchantRooms[0])
+	
 	
 }
 
