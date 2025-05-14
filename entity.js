@@ -3,6 +3,7 @@ import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damag
 import { Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
 
 let player;
+let debug = false;
 const ENTITY_SRC_SIZE = 16;
 
 // enum for entity types
@@ -24,11 +25,11 @@ class EntityStats {
 
 //4types of enemies and their stats
 const entityStats = [
-	new EntityStats(2, 0.5, 10),   //toggle this to test increase player
-	new EntityStats(1, 13, 7),
-	new EntityStats(1, 15, 5),
-	new EntityStats(1, 80, 500),
-	new EntityStats(1, 0, 10)
+	new EntityStats(100, 10, 10),
+	new EntityStats(100, 13, 7),
+	new EntityStats(100, 15, 5),
+	new EntityStats(100, 80, 500),
+	new EntityStats(100, 0, 10)
 ];
 
 /* entity class 
@@ -106,7 +107,7 @@ class Entity {
 
 	//turn based system
 	turn() {
-		if (this.hostility == false)
+		if (this.hostility == false || debug)
 			return;
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
