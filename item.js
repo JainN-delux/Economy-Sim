@@ -2,7 +2,7 @@ import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, } from "./render.js";
 
 
-const ITEM_SRC_SIZE = 16;
+const ITEM_SRC_SIZE = 32;
 
 // enum for items
 const Item = {

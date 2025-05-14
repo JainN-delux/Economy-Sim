@@ -7,7 +7,7 @@ const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
 const TILE_SRC_SIZE = 16;  // Size of tile in tile atlas
 const TILE_SIZE = 32;      // Rendered size of tile
-const ITEM_SRC_SIZE = 16;
+const ITEM_SRC_SIZE = 32;
 
 let tileset;               // Stores our tileset image
 let entitysheet;           // Stores our entity tilesheet image
@@ -75,20 +75,22 @@ function drawHealthbar() {
 }
 
 function drawRestart() {
-	if (player.health >= 0){
-		fill (255)
-		stroke (0)
-		strokeWeight(2)
-		rect(CANVAS_WIDTH-50, 0, 50, 50)
-		noStroke()
+	if (player.health <= 0) {
+	fill(255)
+	stroke(0)
+	strokeWeight(4)
+	rect(CANVAS_WIDTH/3,CANVAS_HEIGHT/2,CANVAS_WIDTH/3,200)
+	noStroke()
+	fill(0)
+	textSize(32)
+	text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
 	} else {
-		fill(255)
-		stroke(0)
-		strokeWeight(4)
-		rect(1,1,400,400)
-		noStroke()
+	fill (255)
+	stroke (0)
+	strokeWeight(2)
+	rect(CANVAS_WIDTH-50, 0, 50, 50)
+	noStroke()
 	}
-	
 }
 
 function drawQuickslot() {
@@ -155,7 +157,7 @@ function drawWorld(px, py) {
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
-	//drawRestart()
+	drawRestart()
 	textSize(32);
 	fill(255);
 	stroke(0);
