@@ -14,7 +14,7 @@ let itemset;
 // Preloads our images
 window.preload = () => {
 	tileset = loadImage("./assets/tileset.png");
-	itemset = loadImage("./assets/items.png");
+	itemset = loadImage("./assets/item1.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
 	
 }
