@@ -106,41 +106,41 @@ class Entity {
 
 	//turn based system
 	turn() {
-		if (this.hostility = true) {
-			let xdist = Math.abs(player.x-this.x);
-			let ydist = Math.abs(player.y-this.y);
-			if (player.x == this.x && player.y == this.y-1)
-				this.attack(player);
-			else if (player.x == this.x && player.y == this.y+1)
-				this.attack(player);
-			else if (player.x == this.x-1 && player.y == this.y)
-				this.attack(player);
-			else if (player.x == this.x+1 && player.y == this.y)
-				this.attack(player);
-			else if (xdist + ydist < 5) {
-				if (xdist > ydist) {
-					if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
-						this.x--;
-					else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
-						this.x++;
-					else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
-						this.y--;
-					else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
-						this.y++;
-				}
-				else {
-					if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
-						this.y--;
-					else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
-						this.y++;
-					else if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
-						this.x--;
-					else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
-						this.x++;
-				}
+		if (this.hostility == false)
+			return;
+		let xdist = Math.abs(player.x-this.x);
+		let ydist = Math.abs(player.y-this.y);
+		if (player.x == this.x && player.y == this.y-1)
+			this.attack(player);
+		else if (player.x == this.x && player.y == this.y+1)
+			this.attack(player);
+		else if (player.x == this.x-1 && player.y == this.y)
+			this.attack(player);
+		else if (player.x == this.x+1 && player.y == this.y)
+			this.attack(player);
+		else if (xdist + ydist < 5) {
+			if (xdist > ydist) {
+				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
+					this.x--;
+				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
+					this.x++;
+				else if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
+					this.y--;
+				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
+					this.y++;
 			}
-		}	
-	}
+			else {
+				if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
+					this.y--;
+				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
+					this.y++;
+				else if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
+					this.x--;
+				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
+					this.x++;
+			}
+		}
+	}	
 }
 
 let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
