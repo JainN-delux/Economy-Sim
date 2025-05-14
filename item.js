@@ -1,6 +1,7 @@
 import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, } from "./render.js";
 
+
 const ITEM_SRC_SIZE = 16;
 
 // enum for items
@@ -18,6 +19,7 @@ const Item = {
 	WOODEN_SHIELD: 10,
 	BOW: 11,
 	ARROW: 12,
+	KEY: 13
 }
 
 //weapon stats

@@ -6,6 +6,8 @@ let player;
 let debug = false;
 const ENTITY_SRC_SIZE = 16;
 
+
+
 // enum for entity types
 const EntityType = {
 	WARRIOR: 0,
