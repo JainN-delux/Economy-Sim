@@ -22,7 +22,7 @@ function updateWorld() {
 window.keyPressed = () => {
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
-	if (key === 'x')
+	if (key === 'x') {
 		inventory.toggle();
 		console.log(player.x,player.y)
 	}
