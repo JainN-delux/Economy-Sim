@@ -19,32 +19,34 @@ const Item = {
 	WOODEN_SHIELD: 10,
 	BOW: 11,
 	ARROW: 12,
-	KEY: 13
+	KEY: 13,
 }
 
 //weapon stats
 class ItemStats {
-	constructor(damage, shield) {
+	constructor(damage, shield, name) {
 		this.damage = damage;
 		this.shield = shield;
+		this.name = name;
 	}
 }
 
 //weapon stats
 const itemStats = [
-	new ItemStats(1, 1),
-	new ItemStats(1, 1),
-	new ItemStats(1, 1),
-	new ItemStats(1, 1),
-	new ItemStats(1, 1),
-	new ItemStats(10, 2),
-	new ItemStats(10, 2),
-	new ItemStats(20, 1),
-	new ItemStats(25, 1),
-	new ItemStats(4, 20),
-	new ItemStats(2, 10),
-	new ItemStats(10, 1),
-	new ItemStats(2, 1),
+	new ItemStats(1, 1, "Potion Red"),
+	new ItemStats(1, 1, "Potion Pink"),
+	new ItemStats(1, 1, "Potion Orange"),
+	new ItemStats(1, 1, "Potion Yellow"),
+	new ItemStats(1, 1, "Potion Green"),
+	new ItemStats(10, 2, "Sword"),
+	new ItemStats(10, 2, "Poison Sword"),
+	new ItemStats(20, 1, "Hatchet"),
+	new ItemStats(25, 1, "Axe"),
+	new ItemStats(4, 20, "Steel Shield"),
+	new ItemStats(2, 10, "Wooden Shield"),
+	new ItemStats(10, 1, "Bow"),
+	new ItemStats(2, 1, "Arrow"),
+	new ItemStats(1, 1, "Key"),
 ];
 
 //items map array

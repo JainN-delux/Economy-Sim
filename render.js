@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount } from "./main.js";
-import { items,Item,itemInRoom, inventory } from "./item.js"
+import { items,Item,itemInRoom, inventory, itemStats } from "./item.js"
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
@@ -26,7 +26,7 @@ function drawInvent() {
 	if (inventory.open) {
 		let i_x = 150;
 		let i_y = 150;
-		const stat_x = CANVAS_WIDTH-TILE_SIZE*6;
+		const stat_x = CANVAS_WIDTH-TILE_SIZE*9;
 		fill(255, 0, 0);
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
@@ -45,14 +45,10 @@ function drawInvent() {
 				if (inventory.items[i*6 + j] != null)
 					drawItems(inventory.items[i*6 + j], i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5));
 
-					// work in progress
-					text("Item Selected: " + Item[inventory.items[i*6 + j]], stat_x, 180);
-					fill(255); 
-					textSize(20);
 			}
 		}
 		fill(0);
-		rect(stat_x, 0, TILE_SIZE*6, TILE_SIZE*6);
+		rect(stat_x, 0, TILE_SIZE*9, TILE_SIZE*6);
 		fill(255);
 		textSize(20);
 		text("Health: " + player.health, stat_x, 20);
@@ -61,6 +57,8 @@ function drawInvent() {
 		text("Defense base: " + player.defense_base, stat_x, 100);
 		text("Attack mult: " + player.attack_mult, stat_x, 120);
 		text("Defense mult: " + player.defense_mult, stat_x, 140);
+		if (inventory.items[inventory.selected])
+			text("Item Selected: " + itemStats[inventory.items[inventory.selected]].name, stat_x, 180);
 	}
 }
 
