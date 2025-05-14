@@ -148,10 +148,11 @@ function drawWorld(px, py) {
 
 
 
-	drawRestart()
+	
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
+	//drawRestart()
 	textSize(32);
 	fill(255);
 	stroke(0);
