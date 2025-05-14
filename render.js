@@ -77,20 +77,22 @@ function drawHealthbar() {
 }
 
 function drawRestart() {
-	if (player.health >= 0){
-		fill (255)
-		stroke (0)
-		strokeWeight(2)
-		rect(CANVAS_WIDTH-50, 0, 50, 50)
-		noStroke()
+	if (player.health <= 0) {
+	fill(255)
+	stroke(0)
+	strokeWeight(4)
+	rect(CANVAS_WIDTH/3,CANVAS_HEIGHT/2,CANVAS_WIDTH/3,200)
+	noStroke()
+	fill(0)
+	textSize(32)
+	text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
 	} else {
-		fill(255)
-		stroke(0)
-		strokeWeight(4)
-		rect(1,1,400,400)
-		noStroke()
+	fill (255)
+	stroke (0)
+	strokeWeight(2)
+	rect(CANVAS_WIDTH-50, 0, 50, 50)
+	noStroke()
 	}
-	
 }
 
 function drawQuickslot() {
@@ -157,7 +159,7 @@ function drawWorld(px, py) {
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
-	//drawRestart()
+	drawRestart()
 	textSize(32);
 	fill(255);
 	stroke(0);
