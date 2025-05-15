@@ -34,10 +34,10 @@ class ItemStats {
 //weapon stats
 const itemStats = [
 	new ItemStats(1, 1, "Potion Red"),
-	new ItemStats(1, 1, "Potion Pink"),
-	new ItemStats(1, 1, "Potion Orange"),
-	new ItemStats(1, 1, "Potion Yellow"),
+	new ItemStats(1, 1, "Defense Boost"),
+	new ItemStats(1, 1, "Attack Boost"),
 	new ItemStats(1, 1, "Potion Green"),
+	new ItemStats(1, 1, "Potion Purple"),
 	new ItemStats(10, 2, "Sword"),
 	new ItemStats(10, 2, "Poison Sword"),
 	new ItemStats(20, 1, "Hatchet"),
