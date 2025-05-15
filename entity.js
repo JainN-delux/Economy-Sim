@@ -3,10 +3,10 @@ import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damag
 import { items, Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
 
 let player;
-let debug = false;
 const ENTITY_SRC_SIZE = 16;
 
-
+//DEbug mode
+let debug = false;
 
 // enum for entity types
 const EntityType = {
@@ -17,6 +17,7 @@ const EntityType = {
 	MERCHANT: 4
 }
 
+//define entity stats
 class EntityStats {
 	constructor(max_health, attack_base, defense_base) {
 		this.max_health = max_health;
@@ -25,7 +26,7 @@ class EntityStats {
 	}
 }
 
-//4types of enemies and their stats
+// assign 4types of enemies and their stats
 const entityStats = [
 	new EntityStats(100, 10, 10),
 	new EntityStats(100, 13, 7),
@@ -53,7 +54,6 @@ class Entity {
 		this.selected = 0;
 		this.hostility = hostile
 	}
-	
 
 	// draw from sprite
 	draw() {
@@ -68,25 +68,30 @@ class Entity {
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
 
+	//using attack weapons (swords)
 	heldItemAttack() {
 		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].damage : 1);
 	}
 
+	//using defense weapons (sheilds)
 	heldItemShield() {
 		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].shield : 1);
 	}
 
+	//attack and damage
 	attack(entity) {
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult)
+		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
+		//delet entity if health < 0
 		if (entity.health <= 0) {
 			items[entity.y][entity.x] = entity.quickslot[entity.selected];
 			entities.splice(entities.indexOf(entity), 1)
 		}
 	}
 
-	//Item type and stats
+	//Use item from inventory when selected
 	use(item) {
 		switch (item) {
 			case Item.POTION_RED:
@@ -95,17 +100,18 @@ class Entity {
 			case Item.POTION_GREEN:
 				this.health = min(this.health + 0.2*this.max_health, this.max_health);
 				break;
-			case Item.POTION_ORANGE:
+			case Item.POTION_ATTACK:
 				this.attack_mult *= 1.25;
 				break;
-			case Item.POTION_PINK:
+			case Item.POTION_DEFENCE:
 				this.defense_mult *= 1.25;
 				break;
-			case Item.POTION_YELLOW:
+			case Item.POTION_PURPLE:
 				this.defense_base += 10;
 				this.attack_base += 10;
 				this.health = this.health/2;
 				break;
+			//if item is WEAPON push to quickslot
 			default:
 				if (item >= Item.SWORD && item <= Item.WOODEN_SHIELD)
 					this.quickslot.push(item);
@@ -116,10 +122,13 @@ class Entity {
 
 	//turn based system
 	turn() {
+		//is enemy hostile or not
 		if (this.hostility == false || debug)
 			return;
+		//get the distance between enemu and players
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
+		//attack if enttiy will be on other entitiy next turn
 		if (player.x == this.x && player.y == this.y-1)
 			this.attack(player);
 		else if (player.x == this.x && player.y == this.y+1)
@@ -128,7 +137,9 @@ class Entity {
 			this.attack(player);
 		else if (player.x == this.x+1 && player.y == this.y)
 			this.attack(player);
+		//enemy detection range : 5 
 		else if (xdist + ydist < 5) {
+			//PATHFINDING
 			if (xdist > ydist) {
 				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
 					this.x--;
@@ -153,8 +164,8 @@ class Entity {
 	}	
 }
 
+// assigning player
 let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
-
 player = entities[0]
 
 //check if entity is at position
