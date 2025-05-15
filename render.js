@@ -26,7 +26,7 @@ function drawInvent() {
 		let i_x = 150;
 		let i_y = 150;
 		const stat_x = CANVAS_WIDTH-TILE_SIZE*9;
-		fill(255, 0, 0);
+		fill(100, 100, 100);
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
 		textSize(40);
