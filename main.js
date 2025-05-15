@@ -87,7 +87,11 @@ window.keyPressed = () => {
 	//use item in inversntory
 	else if (keyCode == ENTER && inventory.items[inventory.selected] != null) {
 		player.use(inventory.items[inventory.selected]);
-		inventory.remove_selected();
+		if (inventory.items[inventory.selected] < 5) {
+			inventory.remove_selected();
+		} else {
+			inventory.equipped.push(inventory.selected) 
+		}
 		updateWorld();
 	}
 }

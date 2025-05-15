@@ -36,11 +36,16 @@ function drawInvent() {
 				if (i*6 + j == inventory.selected) {
 					fill(40, 60, 255);
 					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+				} else if (i**6 + j == inventory.equipped) {
+					fill(56, 255, 20)
+					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
 				}
 				else {
 					fill(255);
 					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
 				}
+				
+
 				if (inventory.items[i*6 + j] != null)
 					drawItems(inventory.items[i*6 + j], i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5));
 
