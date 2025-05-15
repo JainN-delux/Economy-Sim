@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount } from "./main.js";
-import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE } from "./item.js"
+import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE } from "./item.js" 
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
@@ -12,14 +12,14 @@ let tileset;               // Stores our tileset image
 let entitysheet;           // Stores our entity tilesheet image
 let itemset;
 // Preloads our images
-window.preload = () => {
+window.preload = () => { 
 	tileset = loadImage("./assets/tileset.png");
 	itemset = loadImage("./assets/item1.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
 	
-}
+}		// all images for easy access
 
-let damageMarkers = [];
+let damageMarkers = []; // hold relivent info to make the damage float
 
 function drawInvent() {
 	if (inventory.open) {
@@ -33,17 +33,21 @@ function drawInvent() {
 		text("Inventory", i_x + 50 , i_y + 50);
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 6; j++) {
+				fill(255);
+				rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+
+				for (let e = 0; e < inventory.equipped.length; e++ ) {
+					if (i**6 + j == inventory.equipped[e]) {
+						fill(56, 255, 20)
+						rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
+					}
+				}
+
 				if (i*6 + j == inventory.selected) {
 					fill(40, 60, 255);
 					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
-				} else if (i**6 + j == inventory.equipped) {
-					fill(56, 255, 20)
-					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
-				}
-				else {
-					fill(255);
-					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
-				}
+				} 
+				
 				
 
 				if (inventory.items[i*6 + j] != null)
@@ -76,7 +80,7 @@ function drawHealthbar() {
 	noFill()
 	rect(0, 675, 200, 15)
 	noStroke()
-}
+} // draws the display for the player
 
 function drawRestart() {
 	if (player.health <= 0) {
@@ -88,14 +92,14 @@ function drawRestart() {
 	fill(0)
 	textSize(32)
 	text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
-	} else {
+	} else { // draws the restart button in the corner
 	fill (255)
 	stroke (0)
 	strokeWeight(2)
 	rect(CANVAS_WIDTH-50, 0, 50, 50)
 	noStroke()
-	}
-}
+	} // draws the "death screen"
+} // draws the restart button
 
 function drawQuickslot() {
 	fill(0)
@@ -105,8 +109,8 @@ function drawQuickslot() {
 		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
 		if (player.quickslot[i])
 			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE, TILE_SIZE, player.quickslot[i]*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
-	}
-}
+	} // draws the squares 4 times
+} // draws the quick slots in the bottom
 
 function drawDamageMarker(damageMarker) {
 	fill(255, 0, 0)
@@ -115,16 +119,16 @@ function drawDamageMarker(damageMarker) {
 	let y = (damageMarker.entity.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 	text(damageMarker.damage.toFixed(2), x, y-(millis()-damageMarker.time)/100, 100)
 	fill(0,0,0)
-}
+} // displayes the damage numbers above the player/entity
 
 
-function drawTile(tile, x, y) {				// Draws a TILE_SIZE*TILE_SIZE tile at (x, y)
+function drawTile(tile, x, y) {				
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
-}
+} // Draws a tile at (x, y)
 
 function drawItems(item, x, y) {
 	image(itemset, x, y, TILE_SIZE, TILE_SIZE, item*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
-}
+} // draws the item at the x & y
 
 
 const VIEWPORT_WIDTH = 2 + CANVAS_WIDTH / TILE_SIZE; // How many tiles that fit in the screen plus 2 since so they don't white on the edges
@@ -167,6 +171,7 @@ function drawWorld(px, py) {
 	stroke(0);
 	text(turnCount, 32, 32);
 	noStroke()
-}
+} // draws the entire map
+
 
 export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers };

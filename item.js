@@ -72,7 +72,7 @@ class Inventory {
 		this.items = [];
 		this.open = false;
 		this.selected = 0;
-		this.equipped = 0;
+		this.equipped = [];
 	}
 
 	toggle() {
