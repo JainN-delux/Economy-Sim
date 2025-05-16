@@ -5,7 +5,7 @@ import { items, Item, itemStats, ITEM_SRC_SIZE, inventory } from "./item.js";
 let player;
 const ENTITY_SRC_SIZE = 16;
 
-//DEbug mode
+// This turns off things like hostile enemies
 let debug = false;
 
 // enum for entity types
@@ -17,7 +17,7 @@ const EntityType = {
 	MERCHANT: 4
 }
 
-//define entity stats
+// Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
 	constructor(max_health, attack_base, defense_base) {
 		this.max_health = max_health;
@@ -26,7 +26,7 @@ class EntityStats {
 	}
 }
 
-// assign 4types of enemies and their stats
+// assign 4 types of enemies and their stats
 const entityStats = [
 	new EntityStats(100, 10, 10),
 	new EntityStats(100, 13, 7),
@@ -35,10 +35,9 @@ const entityStats = [
 	new EntityStats(100, 0, 10)
 ];
 
-/* entity class 
-	 - input: position, type,health
-	 - functions: draw, attack, using items, turn system
-*/
+/*
+ * An entity includes the player, enemies, merchants and bosses, basically anything that moves
+ */
 class Entity {
 	constructor(x, y, type, quickslot=[], hostile=true) {
 		this.x = x;
@@ -55,36 +54,40 @@ class Entity {
 		this.hostility = hostile
 	}
 
-	// draw from sprite
+	// Draws entity sprite, healthbar and weapon
 	draw() {
+		// Translate tile coordinates to screenspace
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		// Draw held item
 		if (this.quickslot[this.selected])
 			image(itemset, x, y + TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE/2, this.quickslot[this.selected]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE);
+		// Draw healtbar
 		fill(255, 0, 0);
 		rect(x, y-15, 32, 10);
 		fill(0, 255, 0);
 		rect(x, y-15, (this.health/this.max_health)*32, 10);
 	}
 
-	//using attack weapons (swords)
+	// Gets the attack stat of the current held item of the entity
 	heldItemAttack() {
 		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].damage : 1);
 	}
 
-	//using defense weapons (sheilds)
+	// Gets the shield stat of the current held itme of the entity
 	heldItemShield() {
 		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].shield : 1);
 	}
 
-	//attack and damage
+	// attack and damage
 	attack(entity) {
+		// Calculate damage of attack by doing attack value / defense value
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult)
 		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
-		//delet entity if health < 0
+		// Delete entity and drop held item if health < 0
 		if (entity.health <= 0) {
 			items[entity.y][entity.x] = entity.quickslot[entity.selected];
 			entities.splice(entities.indexOf(entity), 1)
@@ -124,13 +127,13 @@ class Entity {
 
 	//turn based system
 	turn() {
-		//is enemy hostile or not
+		// Don't attack or move torwards player if not hostile
 		if (this.hostility == false || debug)
 			return;
-		//get the distance between enemu and players
+		// Get the distance between enemy and players
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
-		//attack if enttiy will be on other entitiy next turn
+		// Attack if the player is within reach (adjacent)
 		if (player.x == this.x && player.y == this.y-1)
 			this.attack(player);
 		else if (player.x == this.x && player.y == this.y+1)
@@ -139,10 +142,11 @@ class Entity {
 			this.attack(player);
 		else if (player.x == this.x+1 && player.y == this.y)
 			this.attack(player);
-		//enemy detection range : 10 
+		// If enemy is detected within aggro range moves toward player
 		else if (xdist + ydist < 10) {
-			//PATHFINDING
+			// Choose axis to move in based on proximity
 			if (xdist > ydist) {
+				// If the player is the given direction and the tile is empty
 				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
 					this.x--;
 				else if (player.x > this.x && isWalkable[tiles[this.y][this.x+1]] && entityAtTile(this.x+1, this.y) == null)
@@ -153,6 +157,7 @@ class Entity {
 					this.y++;
 			}
 			else {
+				// If the player is the given direction and the tile is empty
 				if (player.y < this.y && isWalkable[tiles[this.y-1][this.x]] && entityAtTile(this.x, this.y-1) == null)
 					this.y--;
 				else if (player.y > this.y && isWalkable[tiles[this.y+1][this.x]] && entityAtTile(this.x, this.y+1) == null)
@@ -166,11 +171,11 @@ class Entity {
 	}	
 }
 
-// assigning player
+// Spawn player
 let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
 player = entities[0]
 
-//check if entity is at position
+// Returns entity at a position
 function entityAtTile(x, y) {
 	for (let i = 0; i < entities.length; i++)
 		if (x == entities[i].x && y == entities[i].y)

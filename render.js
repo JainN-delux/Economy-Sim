@@ -84,20 +84,20 @@ function drawHealthbar() {
 
 function drawRestart() {
 	if (player.health <= 0) {
-	fill(255)
-	stroke(0)
-	strokeWeight(4)
-	rect(CANVAS_WIDTH/3,CANVAS_HEIGHT/2,CANVAS_WIDTH/3,200)
-	noStroke()
-	fill(0)
-	textSize(32)
-	text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
+		fill(255)
+		stroke(0)
+		strokeWeight(4)
+		rect(CANVAS_WIDTH/3,CANVAS_HEIGHT/2,CANVAS_WIDTH/3,200)
+		noStroke()
+		fill(0)
+		textSize(32)
+		text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
 	} else { // draws the restart button in the corner
-	fill (255)
-	stroke (0)
-	strokeWeight(2)
-	rect(CANVAS_WIDTH-50, 0, 50, 50)
-	noStroke()
+		fill (255)
+		stroke (0)
+		strokeWeight(2)
+		rect(CANVAS_WIDTH-50, 0, 50, 50)
+		noStroke()
 	} // draws the "death screen"
 } // draws the restart button
 
@@ -122,7 +122,7 @@ function drawDamageMarker(damageMarker) {
 } // displayes the damage numbers above the player/entity
 
 
-function drawTile(tile, x, y) {				
+function drawTile(tile, x, y) {
 	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 } // Draws a tile at (x, y)
 
@@ -159,9 +159,6 @@ function drawWorld(px, py) {
 		else
 			drawDamageMarker(damageMarkers[i]);
 
-
-
-	
 	drawHealthbar()
 	drawQuickslot()
 	drawInvent()
