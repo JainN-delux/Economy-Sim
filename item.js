@@ -9,8 +9,8 @@ const Item = {
 	POTION_RED: 0,
 	POTION_DEFENCE: 1,
 	POTION_ATTACK: 2,
-	POTION_PURPLE: 3,
-	POTION_GREEN: 4,
+	POTION_GREEN: 3,
+	POTION_PURPLE: 4,
 	SWORD: 5,
 	POISON_SWORD: 6,
 	HATCHET: 7,
@@ -85,7 +85,7 @@ class Inventory {
 	}
 
 	remove_selected() {
-		inventory.items.splice(inventory.selected, 1);
+		return inventory.items.splice(inventory.selected, 1)[0];
 	}
 
 	selection_up() {

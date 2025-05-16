@@ -1,6 +1,6 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
-import { items, Item, itemStats, ITEM_SRC_SIZE } from "./item.js";
+import { items, Item, itemStats, ITEM_SRC_SIZE, inventory } from "./item.js";
 
 let player;
 const ENTITY_SRC_SIZE = 16;
@@ -113,8 +113,11 @@ class Entity {
 				break;
 			//if item is WEAPON push to quickslot
 			default:
-				if (item >= Item.SWORD && item <= Item.WOODEN_SHIELD)
+				if (item >= Item.SWORD && item <= Item.WOODEN_SHIELD) {
+					if (this.quickslot.length >= 4)
+						inventory.add(this.quickslot.splice(3, 1)[0]);
 					this.quickslot.push(item);
+				}
 				break;
 		}
 	}
@@ -136,8 +139,8 @@ class Entity {
 			this.attack(player);
 		else if (player.x == this.x+1 && player.y == this.y)
 			this.attack(player);
-		//enemy detection range : 5 
-		else if (xdist + ydist < 5) {
+		//enemy detection range : 10 
+		else if (xdist + ydist < 10) {
 			//PATHFINDING
 			if (xdist > ydist) {
 				if (player.x < this.x && isWalkable[tiles[this.y][this.x-1]] && entityAtTile(this.x-1, this.y) == null)
