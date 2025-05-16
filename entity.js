@@ -115,7 +115,6 @@ class Entity {
 			default:
 				if (item >= Item.SWORD && item <= Item.WOODEN_SHIELD)
 					this.quickslot.push(item);
-					
 				break;
 		}
 	}
