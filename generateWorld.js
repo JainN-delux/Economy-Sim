@@ -234,13 +234,10 @@ function spaceAdjacent(space1, space2) {
 
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
-		if (rooms[i] == bossRoom) {
+		if (rooms[i] == bossRoom)
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
-		}
-		if (rooms[i] == merchantRooms[0]) {
+		if (rooms[i] == merchantRooms[0])
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
-			break
-		}
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR+1, EntityType.WIZARD+1), [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
