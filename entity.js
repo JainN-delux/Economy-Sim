@@ -39,7 +39,7 @@ const entityStats = [
  * An entity includes the player, enemies, merchants and bosses, basically anything that moves
  */
 class Entity {
-	constructor(x, y, type, quickslot=[], hostile=true) {
+	constructor(x, y, type, lvl, quickslot=[], hostile=true) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -49,6 +49,8 @@ class Entity {
 		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
+		this.lvl = lvl;
+		this.xp = 0;
 		this.quickslot = quickslot;
 		this.selected = 0;
 		this.hostility = hostile
@@ -80,15 +82,24 @@ class Entity {
 		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].shield : 1);
 	}
 
+	gainXp(xp) {
+		this.xp += xp;
+		if (this.xp >= this.lvl*10) {
+			this.xp -= this.lvl*10;
+			this.lvl++;
+		}
+	}
+
 	// attack and damage
 	attack(entity) {
 		// Calculate damage of attack by doing attack value / defense value
-		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult)
+		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
 		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
 		// Delete entity and drop held item if health < 0
 		if (entity.health <= 0) {
+			this.gainXp(entity.lvl);
 			items[entity.y][entity.x] = entity.quickslot[entity.selected];
 			entities.splice(entities.indexOf(entity), 1)
 		}
@@ -110,8 +121,7 @@ class Entity {
 				this.defense_mult *= 1.25;
 				break;
 			case Item.POTION_PURPLE:
-				this.defense_base += 10;
-				this.attack_base += 10;
+				this.gainXp(10);
 				this.health = this.health/2;
 				break;
 			//if item is WEAPON push to quickslot
@@ -172,7 +182,7 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, [Item.SWORD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
 player = entities[0]
 
 // Returns entity at a position

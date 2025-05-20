@@ -64,9 +64,6 @@ function itemInRoom() {
 	}
 }
 
-
-
-
 class Inventory {
 	constructor() {
 		this.items = [];
