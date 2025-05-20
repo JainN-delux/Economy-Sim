@@ -112,7 +112,7 @@ class Entity {
 				this.max_health += 20;
 				break;
 			case Item.POTION_GREEN:
-				this.health = min(this.health + 0.2*this.max_health, this.max_health);
+				this.health = min(this.health + 0.30*this.max_health, this.max_health);
 				break;
 			case Item.POTION_ATTACK:
 				this.attack_mult *= 1.25;
