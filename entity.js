@@ -18,7 +18,7 @@ const EntityType = {
 }
 
 
-const = statusList = {
+const statusList = {
 	FIRE: 1, // 5 dot 5t
 	VINES: 2, // locks movement 5t
 	POISON: 3, // 1 dot 60t
