@@ -17,6 +17,22 @@ const EntityType = {
 	MERCHANT: 4
 }
 
+
+const = statusList = {
+	FIRE: 1, // 5 dot 5t
+	VINES: 2, // locks movement 5t
+	POISON: 3, // 1 dot 60t
+	BLEED: 4, // 1% health dot 1t
+	NULL: 5, // turns of magic 10t
+	STUN: 6, // skips turn 1t
+	// these buffs effect an inate value which will decay to a targetted value slowly
+	ATTACKBUFF: 7, // increases attack power 
+	DEFENCEBUFF: 8, // increases defence power
+	TIMEBUFF: 9, // gives a extra turn 
+	INVISIBLE: 10 // makes u invisible
+}
+
+
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
 	constructor(max_health, attack_base, defense_base) {
