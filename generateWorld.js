@@ -1,5 +1,6 @@
 import { Entity, EntityType, entities, player } from "./entity.js";
 import { itemInRoom, Item } from "./item.js";
+import { turnCount } from "./main.js";
 
 //CONSTANTS
 const WORLD_WIDTH = 256;   // The width in tiles in size
@@ -237,7 +238,7 @@ function generateEnemies() {
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR+1, EntityType.WIZARD+1), 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
+			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR+1, EntityType.WIZARD+1), randint(1, 1+Math.floor(turnCount/1000)), [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
 	}
 }
 

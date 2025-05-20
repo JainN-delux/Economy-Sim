@@ -59,7 +59,7 @@ function itemInRoom() {
 		for (let k = 0; k < number; k++) {
 			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
 			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h-1);
-			items[y][x] = randint(Item.POTION_RED, Item.POTION_GREEN+1);
+			items[y][x] = randint(Item.POTION_RED, Item.POTION_PURPLE+1);
 		}
 	}
 }
