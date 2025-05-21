@@ -12,6 +12,7 @@ function updateWorld() {
 		inventory.add(items[player.y][player.x]);
 		items[player.y][player.x] = null;
 	}
+	player.returnBase();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();

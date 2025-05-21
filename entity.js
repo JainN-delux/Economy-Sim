@@ -38,7 +38,7 @@ class EntityStats {
 	constructor(max_health, attack_base, defense_base) {
 		this.max_health = max_health;
 		this.attack_base = attack_base;
-		this.defence_base = defense_base;
+		this.defense_base = defense_base;
 	}
 }
 
@@ -62,7 +62,7 @@ class Entity {
 		this.health = entityStats[type].max_health;
 		this.max_health = entityStats[type].max_health;
 		this.attack_base = entityStats[type].attack_base;
-		this.defense_base = entityStats[type].defence_base;
+		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 		this.lvl = lvl;
