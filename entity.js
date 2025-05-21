@@ -173,7 +173,7 @@ class Entity {
 		
 		if (type == statusList.FIRE) {
 		// 	if (timeCount())
-		// }
+		}
 		if (type == statusList.VINES) {
 		
 		}
