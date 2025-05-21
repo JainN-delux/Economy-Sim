@@ -34,6 +34,7 @@ const Tile = {
 	FLOOR_BOTTOM: 14,
 	FLOOR_BOTTOM_RIGHT: 15,
 	EMPTY: 16
+	
 }
 // check if entities can walk on tiles or not
 const isWalkable = [

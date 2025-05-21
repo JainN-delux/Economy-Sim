@@ -61,12 +61,12 @@ function drawInvent() {
 		textSize(20);
 		text("Level: " + player.lvl, stat_x, 20);
 		text("Xp: " + player.xp, stat_x, 40);
-		text("Health: " + player.health, stat_x, 60);
+		text("Health: " + player.health.toFixed(1), stat_x, 60);
 		text("Max Health: " + player.max_health, stat_x, 80);
-		text("Attack base: " + player.attack_base*player.lvl, stat_x, 100);
-		text("Defense base: " + player.defense_base*player.lvl, stat_x, 120);
-		text("Attack mult: " + player.attack_mult, stat_x, 140);
-		text("Defense mult: " + player.defense_mult, stat_x, 160);
+		text("Attack base: " + player.attack_base*player.lvl.toFixed(1), stat_x, 100);
+		text("Defense base: " + player.defense_base*player.lvl.toFixed(1), stat_x, 120);
+		text("Attack mult: " + player.attack_mult.toFixed(1), stat_x, 140);
+		text("Defense mult: " + player.defense_mult.toFixed(1), stat_x, 160);
 		if (inventory.items[inventory.selected])
 			text("Item Selected: " + itemStats[inventory.items[inventory.selected]].name, stat_x, 180);
 	}
