@@ -38,7 +38,7 @@ class EntityStats {
 	constructor(max_health, attack_base, defense_base) {
 		this.max_health = max_health;
 		this.attack_base = attack_base;
-		this.defense_base = defense_base;
+		this.defence_base = defense_base;
 	}
 }
 
@@ -63,6 +63,8 @@ class Entity {
 		this.max_health = entityStats[type].max_health;
 		this.attack_base = entityStats[type].attack_base;
 		this.defense_base = entityStats[type].defense_base;
+		this.attack_true = 1;
+		this.defense_true = 1;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 		this.lvl = lvl;
@@ -121,6 +123,15 @@ class Entity {
 		}
 	}
 
+	returnBase() {
+		if (this.attack_mult != this.attack_true) {
+			this.attack_mult = ((this.attack_mult-this.attack_true)*0.9) + this.attack_true
+		}
+		if (this.defense_mult != this.defense_true) {
+			this.defense_mult = ((this.defense_mult-this.defense_true)*0.9) + this.defense_true
+		}
+	}
+
 	//Use item from inventory when selected
 	use(item) {
 		switch (item) {
@@ -153,6 +164,7 @@ class Entity {
 
 	//turn based system
 	turn() {
+		this.returnBase()
 		// Don't attack or move torwards player if not hostile
 		if (this.hostility == false || debug)
 			return;
