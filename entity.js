@@ -1,6 +1,7 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory } from "./item.js";
+import { turnCount } from "./main.js";
 
 let player;
 const ENTITY_SRC_SIZE = 16;
@@ -17,6 +18,15 @@ const EntityType = {
 	MERCHANT: 4
 }
 
+function countTime(limit) {
+    let previous = timeCount; 
+    if (previous + limit <= turnCount) { 
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 const statusList = {
 	FIRE: 1, // 5 dot 5t
@@ -31,6 +41,7 @@ const statusList = {
 	TIMEBUFF: 9, // gives a extra turn 
 	INVISIBLE: 10 // makes u invisible
 }
+
 
 
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
@@ -156,6 +167,42 @@ class Entity {
 				}
 				break;
 		}
+	}
+
+	activeEffects(type) {
+		
+		if (type == statusList.FIRE) {
+		// 	if (timeCount())
+		// }
+		if (type == statusList.VINES) {
+		
+		}
+		if (type == statusList.POISON) {
+			this.health 
+		}
+		if (type == statusList.BLEED) {
+		
+		}
+		if (type == statusList.NULL) {
+		
+		}
+		if (type == statusList.STUN) {
+		
+		}
+		if (type == statusList.ATTACKBUFF) {
+		
+		}
+		if (type == statusList.DEFENCEBUFF) {
+		
+		}
+		if (type == statusList.TIMEBUFF) {
+		
+			
+		}
+		if (type == statusList.INVISIBLE) {
+			this.hostility = false
+		}
+
 	}
 
 	//turn based system
