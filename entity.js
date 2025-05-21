@@ -138,10 +138,10 @@ class Entity {
 				this.health = min(this.health + 0.30*this.max_health, this.max_health);
 				break;
 			case Item.POTION_ATTACK:
-				this.attack_mult *= 1.25;
+				this.attack_mult *= 2;
 				break;
 			case Item.POTION_DEFENCE:
-				this.defense_mult *= 1.25;
+				this.defense_mult *= 2;
 				break;
 			case Item.POTION_PURPLE:
 				this.gainXp(5);
