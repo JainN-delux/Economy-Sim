@@ -18,14 +18,8 @@ const EntityType = {
 	MERCHANT: 4
 }
 
-function countTime(limit) {
-    let previous = timeCount; 
-    if (previous + limit <= turnCount) { 
-        return true;
-    } else {
-        return false;
-    }
-}
+
+
 
 
 const statusList = {
@@ -170,38 +164,40 @@ class Entity {
 	}
 
 	activeEffects(type) {
-		
-		if (type == statusList.FIRE) {
-		// 	if (timeCount())
-		// }
-		if (type == statusList.VINES) {
-		
-		}
-		if (type == statusList.POISON) {
-			this.health 
-		}
-		if (type == statusList.BLEED) {
-		
-		}
-		if (type == statusList.NULL) {
-		
-		}
-		if (type == statusList.STUN) {
-		
-		}
-		if (type == statusList.ATTACKBUFF) {
-		
-		}
-		if (type == statusList.DEFENCEBUFF) {
-		
-		}
-		if (type == statusList.TIMEBUFF) {
-		
+		lastTurn = turnCount
+		if (type == statusList.FIRE) 
 			
-		}
-		if (type == statusList.INVISIBLE) {
+			// if (currentTurn != ) (lastTurn + 5 <= turnCount ) {
+			// 	currentTurn = turnCount
+			// 	this.health -= 2 ;
+			// }
+
+		if (type == statusList.VINES) 
+
+
+		if (type == statusList.POISON) 
+
+
+		if (type == statusList.BLEED) 
+
+
+		if (type == statusList.NULL) 
+
+
+		if (type == statusList.STUN) 
+		
+
+		if (type == statusList.ATTACKBUFF) 
+
+
+		if (type == statusList.DEFENCEBUFF) 
+
+
+		if (type == statusList.TIMEBUFF) 
+
+
+		if (type == statusList.INVISIBLE) 
 			this.hostility = false
-		}
 
 	}
 
