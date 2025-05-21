@@ -63,8 +63,6 @@ class Entity {
 		this.max_health = entityStats[type].max_health;
 		this.attack_base = entityStats[type].attack_base;
 		this.defense_base = entityStats[type].defense_base;
-		this.attack_true = 1;
-		this.defense_true = 1;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 		this.lvl = lvl;
@@ -124,12 +122,10 @@ class Entity {
 	}
 
 	returnBase() {
-		if (this.attack_mult != this.attack_true) {
-			this.attack_mult = ((this.attack_mult-this.attack_true)*0.9) + this.attack_true
-		}
-		if (this.defense_mult != this.defense_true) {
-			this.defense_mult = ((this.defense_mult-this.defense_true)*0.9) + this.defense_true
-		}
+		if (this.attack_mult >= 1)
+			this.attack_mult = (this.attack_mult-1)*0.9 + 1;
+		if (this.defense_mult >= 1)
+			this.defense_mult = (this.defense_mult-1)*0.9 + 1;
 	}
 
 	//Use item from inventory when selected
