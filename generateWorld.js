@@ -233,10 +233,6 @@ function spaceAdjacent(space1, space2) {
 
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
-		if (rooms[i] == bossRoom)
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.BOSS, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
-		if (rooms[i] == merchantRooms[0])
-			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
 		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
 		for (let j = 0; j < enemies; j++)
 			entities.push(new Entity(randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1), randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1 ), randint(EntityType.WARRIOR+1, EntityType.WIZARD+1), randint(1, 1+Math.floor(turnCount/1000)), [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
@@ -253,6 +249,7 @@ function generateBossroom() {
 			best = rooms[i].h * rooms[i].w;
 		}
 	}
+	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h ), EntityType.BOSS, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)]))
 }
 
 let merchantRooms = []
@@ -266,8 +263,7 @@ function generateMerchant() {
 		}
 	}
 	merchantRooms.push(smallestRoom);
-	
-	
+	entities.push(new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
 }
 
 
@@ -290,4 +286,4 @@ function generateWorld() {
 
 
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, tiles ,randint,rooms};
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles ,randint,rooms};

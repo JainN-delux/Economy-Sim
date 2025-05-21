@@ -1,4 +1,4 @@
-import { isWalkable, generateWorld, tiles } from "./generateWorld.js";
+import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 import { entityAtTile, player, entities } from "./entity.js";
 import { inventory, items } from "./item.js";
@@ -18,6 +18,8 @@ function updateWorld() {
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
+	if (turnCount % 1000 == 0)
+		generateEnemies();
 	turnCount++;
 }
 
