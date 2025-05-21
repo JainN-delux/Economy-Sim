@@ -144,7 +144,7 @@ class Entity {
 				this.defense_mult *= 1.25;
 				break;
 			case Item.POTION_PURPLE:
-				this.gainXp(10);
+				this.gainXp(5);
 				this.health = this.health/2;
 				break;
 			//if item is WEAPON push to quickslot
