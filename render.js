@@ -1,6 +1,6 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
 import { entities, player } from "./entity.js";
-import { turnCount } from "./main.js";
+import { turnCount, attack_x, attack_y } from "./main.js";
 import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE } from "./item.js" 
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
@@ -169,6 +169,10 @@ function drawWorld(px, py) {
 	fill(255);
 	stroke(0);
 	text(turnCount, 32, 32);
+	fill(0, 0, 0, 0);
+	stroke(100, 100, 255);
+	strokeWeight(8);
+	rect((attack_x-fract(px)+VIEWPORT_WIDTH/2-1)*TILE_SIZE, (attack_y-fract(py)+VIEWPORT_HEIGHT/2-1)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
 	noStroke()
 } // draws the entire map
 

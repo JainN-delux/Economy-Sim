@@ -5,6 +5,8 @@ import { inventory, items } from "./item.js";
 
 //variables
 let turnCount = 0;
+let attack_x = 0;
+let attack_y = 0;
 
 function updateWorld() {
 	//add items to inventory when player collides
@@ -76,17 +78,28 @@ window.keyPressed = () => {
 		window.location.reload()
 	}
 
-	//toggling inventory 
-	if (keyCode == UP_ARROW)
-		inventory.selection_up();
-	else if (keyCode == DOWN_ARROW)
-		inventory.selection_down();
-	else if (keyCode == LEFT_ARROW)
-		inventory.selection_left();
-	else if (keyCode == RIGHT_ARROW)
-		inventory.selection_right();
-	//use item in inversntory
-	else if (keyCode == ENTER && inventory.items[inventory.selected] != null) {
+	if (inventory.open) {
+		if (keyCode == UP_ARROW)
+			inventory.selection_up();
+		else if (keyCode == DOWN_ARROW)
+			inventory.selection_down();
+		else if (keyCode == LEFT_ARROW)
+			inventory.selection_left();
+		else if (keyCode == RIGHT_ARROW)
+			inventory.selection_right();
+	}
+	else {
+		if (keyCode == UP_ARROW)
+			attack_y -= 1;
+		else if (keyCode == DOWN_ARROW)
+			attack_y += 1;
+		else if (keyCode == LEFT_ARROW)
+			attack_x -= 1;
+		else if (keyCode == RIGHT_ARROW)
+			attack_x += 1;
+	}
+	// use item in inversntory
+	if (keyCode == ENTER && inventory.items[inventory.selected] != null) {
 		player.use(inventory.remove_selected());
 		updateWorld();
 	}
@@ -117,7 +130,6 @@ window.mouseClicked = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
-	
 }
 
-export { turnCount };
+export { turnCount, attack_x, attack_y };
