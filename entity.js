@@ -164,40 +164,41 @@ class Entity {
 	}
 
 	activeEffects(type) {
-		lastTurn = turnCount
-		if (type == statusList.FIRE) 
+		let last_turn = turnCount;
+		let curr_turn = turnCount;
+		switch (type)  {
 			
-			// if (currentTurn != ) (lastTurn + 5 <= turnCount ) {
-			// 	currentTurn = turnCount
-			// 	this.health -= 2 ;
-			// }
+			case statusList.FIRE:
+				this.health -= 5
+				break;
+			case statusList.VINES:
+				
+				break;
+			case statusList.POISON:
+				break;
 
-		if (type == statusList.VINES) 
+			case  statusList.BLEED: 
+				break;
 
+			case  statusList.NULL: 
+				break;
 
-		if (type == statusList.POISON) 
+			case statusList.STUN: 
+				break;		
 
+			case statusList.ATTACKBUFF:
+				break;
 
-		if (type == statusList.BLEED) 
+			case statusList.DEFENCEBUFF:
+				break;
 
+			case statusList.TIMEBUFF:
+				break;
 
-		if (type == statusList.NULL) 
+			case statusList.INVISIBLE:
+				this.hostility = false
 
-
-		if (type == statusList.STUN) 
-		
-
-		if (type == statusList.ATTACKBUFF) 
-
-
-		if (type == statusList.DEFENCEBUFF) 
-
-
-		if (type == statusList.TIMEBUFF) 
-
-
-		if (type == statusList.INVISIBLE) 
-			this.hostility = false
+				break;
 
 	}
 
