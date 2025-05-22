@@ -18,10 +18,6 @@ const EntityType = {
 	MERCHANT: 4
 }
 
-
-
-
-
 const statusList = {
 	FIRE: 1, // 5 dot 5t
 	VINES: 2, // locks movement 5t
@@ -179,7 +175,7 @@ class Entity {
 		}
 	}
 
-	activeEffects(type,time) {
+	activeEffects(type) {
 		switch (type)  {	
 			case statusList.FIRE:
 				this.health -= 5
@@ -188,6 +184,7 @@ class Entity {
 				//this.turn
 				break;
 			case statusList.POISON:
+				this.health -= 1
 				break;
 
 			case  statusList.BLEED: 

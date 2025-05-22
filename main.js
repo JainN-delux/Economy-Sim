@@ -6,10 +6,14 @@ import { inventory, items} from "./item.js";
 //variables
 let turnCount = 0;
 
+let active = [] // stores active status effect on player
+
+
 function updateWorld() {
 	//add items to inventory when player collides
 	if (items[player.y][player.x] != null) {
 		inventory.add(items[player.y][player.x]);
+		
 		items[player.y][player.x] = null;
 	}
 	player.returnBase();
