@@ -36,6 +36,22 @@ const statusList = {
 	INVISIBLE: 10 // makes u invisible
 }
 
+//turn time
+const statusTime = [
+	5,// FIRE
+	4,// VINES
+	5,// POISON
+	3,// BLEED
+	3,// NULL
+	1,// STUN
+	// these buffs effect an inate value which will decay to a targetted value slowly
+	5,// ATTACKBUFF
+	6,// DEFENCEBUFF
+	3,// TIMEBUFF
+	4,// INVISIBLE
+]
+
+
 
 
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
@@ -163,16 +179,13 @@ class Entity {
 		}
 	}
 
-	activeEffects(type) {
-		let last_turn = turnCount;
-		let curr_turn = turnCount;
-		switch (type)  {
-			
+	activeEffects(type,time) {
+		switch (type)  {	
 			case statusList.FIRE:
 				this.health -= 5
 				break;
 			case statusList.VINES:
-				
+				//this.turn
 				break;
 			case statusList.POISON:
 				break;
@@ -184,12 +197,15 @@ class Entity {
 				break;
 
 			case statusList.STUN: 
+				
 				break;		
 
 			case statusList.ATTACKBUFF:
+				this.attack_mult +=0.1
 				break;
 
 			case statusList.DEFENCEBUFF:
+				this.defense_mult +=0.1
 				break;
 
 			case statusList.TIMEBUFF:
@@ -197,8 +213,8 @@ class Entity {
 
 			case statusList.INVISIBLE:
 				this.hostility = false
-
 				break;
+		}
 
 	}
 
@@ -262,4 +278,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime };

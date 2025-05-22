@@ -1,7 +1,7 @@
 import { isWalkable, generateWorld, tiles } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
-import { entityAtTile, player, entities } from "./entity.js";
-import { inventory, items } from "./item.js";
+import { entityAtTile, player, entities,statusTime}  from "./entity.js";
+import { inventory, items} from "./item.js";
 
 //variables
 let turnCount = 0;
@@ -19,6 +19,15 @@ function updateWorld() {
 	turnCount++;
 }
 
+function EffectRun(n) {
+	// curr = turnCount
+	// target = turnCount+5
+	// if (turnCount != )
+	// if (curr != target) {
+	// 	curr++
+	// }
+}
+
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
 	// Key X / Inventory
@@ -34,7 +43,6 @@ window.keyPressed = () => {
 			player.y -= 1
 		else
 			player.attack(e);
-		updateWorld();
 	}
 	//move down
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
