@@ -20,13 +20,16 @@ function updateWorld() {
 }
 
 function EffectRun(n) {
-	// curr = turnCount
-	// target = turnCount+5
-	// if (turnCount != )
-	// if (curr != target) {
-	// 	curr++
-	// }
+	curr = turnCount
+	target = turnCount+n
+	if (turnCount != curr ) {
+		if (curr != target) {
+			curr++
+			return ture
+		}
+	}
 }
+
 
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
