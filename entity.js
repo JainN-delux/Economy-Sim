@@ -188,7 +188,7 @@ class Entity {
 				break;
 
 			case statusList.NULL:
-				this.attack_mult = 1;
+				this.attack_mult = 0;
 				this.defense_mult = 1;
 				break;
 

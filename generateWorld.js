@@ -33,28 +33,41 @@ const Tile = {
 	FLOOR_BOTTOM_LEFT: 13,
 	FLOOR_BOTTOM: 14,
 	FLOOR_BOTTOM_RIGHT: 15,
-	EMPTY: 16
+	EMPTY: 16,
+	TRAP_NULL: 17,
+	TRAP_FIRE: 18,	
+	TRAP_BLEED: 19,
+	TRAP_STUN: 20,
+	TRAP_VINES: 21,
+	TRAP_POISON: 22,
+
 	
 }
 // check if entities can walk on tiles or not
 const isWalkable = [
-	false,
-	false,
-	false,
-	false,
-	false,
-	false,
-	false,
-	true,
-	true,
-	true,
-	true,
-	true,
-	true,
-	true,
-	true,
-	true,
-	true,
+	false, 	//1
+	false, 	//2
+	false, 	//3
+	false,	//4
+	false,	//5
+	false,	//6
+	false,  //7
+	true,   //8
+	true,  	//9
+	true, 	//10
+	true, 	//11
+	true, 	//12
+	true,	//13
+	true,	//14
+	true,	//15
+	true,	//16
+	true,	//17
+	true,	//18
+	true, 	//19
+	true,   //20
+	true,	//21
+	true,	//22
+	true,	//23
 ];
 
 // Our 2D array that stores tile data. This is initially filled with floors
@@ -180,6 +193,7 @@ function connectRooms(roomA, roomB) {
 	if (x0 != x1) {
 		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
 		for (let x = startX; x <= endX; x++) {
+
 			tiles[y0-1][x] = Tile.WALL_FRONT;
 			tiles[y0][x] = Tile.FLOOR;
 			tiles[y0+1][x] = Tile.WALL_FRONT;
@@ -193,9 +207,13 @@ function connectRooms(roomA, roomB) {
 			tiles[y][x1+1] = Tile.WALL_SIDE;
 		}
 	}
-	// Mark doors
-	//tiles[y0][x0] = Tile.FLOOR;
-	//tiles[y1][x1] = Tile.FLOOR;
+	
+	// Set traps
+	let randX = randint(x0,x1)
+	let randY = randint(y0,y1)
+	// 1 in 4 chance to place a trap
+	if (randint(0, 4) == 1) 
+		tiles[randY][randX] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);
 }
 
 // -------------ROOMS GENERATION--------------
