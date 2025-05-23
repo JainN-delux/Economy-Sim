@@ -36,7 +36,7 @@ const statusList = {
 const statusTime = [
 	5,// FIRE
 	4,// VINES
-	5,// POISON
+	10,// POISON
 	3,// BLEED
 	3,// NULL
 	1,// STUN
@@ -46,9 +46,6 @@ const statusTime = [
 	3,// TIMEBUFF
 	4,// INVISIBLE
 ]
-
-
-
 
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {

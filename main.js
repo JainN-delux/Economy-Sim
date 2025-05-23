@@ -32,6 +32,9 @@ function EffectRun(n) {
 			return ture
 		}
 	}
+	else {
+		return false
+	}
 }
 
 
