@@ -170,37 +170,47 @@ class Entity {
 	}
 
 	activeEffects(type) {
-		
-		if (type == statusList.FIRE) {
-		// 	if (timeCount())
-		}
-		if (type == statusList.VINES) {
-		
-		}
-		if (type == statusList.POISON) {
-			this.health 
-		}
-		if (type == statusList.BLEED) {
-		
-		}
-		if (type == statusList.NULL) {
-		
-		}
-		if (type == statusList.STUN) {
-		
-		}
-		if (type == statusList.ATTACKBUFF) {
-		
-		}
-		if (type == statusList.DEFENCEBUFF) {
-		
-		}
-		if (type == statusList.TIMEBUFF) {
-		
-			
-		}
-		if (type == statusList.INVISIBLE) {
-			this.hostility = false
+		switch(type) {
+			case statusList.FIRE:
+				this.health -= 5;
+				break;
+
+			case statusList.VINES:
+				
+				break;
+				
+			case statusList.POISON:
+				this.health -= this.max_health/100;
+				break;
+
+			case statusList.BLEED:
+				this.health -= this.max_health/100;
+				break;
+
+			case statusList.NULL:
+				this.attack_mult = 1;
+				this.defense_mult = 1;
+				break;
+
+			case statusList.STUN:
+				this.hostility = false;
+				break;
+
+			case statusList.ATTACKBUFF:
+				this.attack_mult *= 2;
+				break;
+
+			case statusList.DEFENCEBUFF:
+				this.defense_mult *= 2;
+				break;
+
+			case statusList.TIMEBUFF:
+				turnCount += 1
+				break;
+
+			case statusList.INVISIBLE:
+				this.hostility = false	
+				break;	
 		}
 
 	}
