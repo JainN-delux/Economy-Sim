@@ -7,6 +7,7 @@ import { inventory, items } from "./item.js";
 let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
+let currentEffects = [];
 
 function updateWorld() {
 	//add items to inventory when player collides
@@ -14,6 +15,18 @@ function updateWorld() {
 		inventory.add(items[player.y][player.x]);
 		items[player.y][player.x] = null;
 	}
+	if (tiles[player.y][player.x] > 18) {
+		currentEffects.push(tiles[player.y][player.x]);	
+		tiles[player.y][player.x] = 11; //reset tile to floor
+	}
+
+	for (let i = 0; i < currentEffects.length; i++) {
+		for (let j = 0; j < 3; j++) {
+		player.activeEffects(currentEffects[i]-15);
+		}
+		currentEffects.splice(i, 1);
+	}
+
 	player.returnBase();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
@@ -30,6 +43,9 @@ window.keyPressed = () => {
 	if (key === 'x') {
 		inventory.toggle();
 		console.log(player.x,player.y)
+		let a = tiles[player.y][player.x]
+		console.log(tiles)
+		
 	}
 	//move up
 	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {

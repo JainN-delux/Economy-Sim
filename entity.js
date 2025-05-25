@@ -29,8 +29,8 @@ function countTime(limit) {
 
 
 const statusList = {
-	FIRE: 1, // 5 dot 5t
-	VINES: 2, // locks movement 5t
+	VINES: 1, // 5 dot 5t
+	FIRE: 2, // locks movement 5t
 	POISON: 3, // 1 dot 60t
 	BLEED: 4, // 1% health dot 1t
 	NULL: 5, // turns of magic 10t
@@ -55,7 +55,7 @@ class EntityStats {
 
 // assign 4 types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10, 10),
+	new EntityStats(100, 10000, 8),
 	new EntityStats(100, 13, 7),
 	new EntityStats(100, 15, 5),
 	new EntityStats(100, 80, 500),
@@ -171,13 +171,14 @@ class Entity {
 
 	activeEffects(type) {
 		switch(type) {
+			case statusList.VINES:
+				this.health -= 5;
+				break;
 			case statusList.FIRE:
 				this.health -= 5;
 				break;
 
-			case statusList.VINES:
-				
-				break;
+			
 				
 			case statusList.POISON:
 				this.health -= this.max_health/100;
@@ -212,7 +213,7 @@ class Entity {
 				this.hostility = false	
 				break;	
 		}
-
+			
 	}
 
 	//turn based system

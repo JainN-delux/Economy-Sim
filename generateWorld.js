@@ -114,6 +114,11 @@ function generateRoom(rx, ry, w, h) {
 	tiles[ry + 1][rx + w-2] = Tile.FLOOR_TOP_RIGHT;
 	tiles[ry + h-1][rx + w-1] = Tile.WALL_BOTTOM_RIGHT;
 	tiles[ry + h-2][rx + w-2] = Tile.FLOOR_BOTTOM_RIGHT;
+
+	//TRAPS IN ROOMS
+	// 1 in 2 chance to place a trap
+	if (randint(0, 2) == 1) 
+		tiles[randint(ry + 1,ry + h-2)][randint(rx + 1,rx + w-2)] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);
 }
 
 /* function
@@ -127,7 +132,10 @@ function generateRoomInsideSpace(rx, ry, w, h) {
 	let x1 = randint(0, w/2-2);
 	let y1 = randint(0, h/2-2);
 	generateRoom(rx+x0, ry+y0, w-x0-x1, h-y0-y1);
+	
 }
+
+
 
 const SplitDir = {
 	HORIZONTAL: 0,
@@ -207,12 +215,11 @@ function connectRooms(roomA, roomB) {
 			tiles[y][x1+1] = Tile.WALL_SIDE;
 		}
 	}
-	
 	// Set traps
 	let randX = randint(x0,x1)
 	let randY = randint(y0,y1)
 	// 1 in 4 chance to place a trap
-	if (randint(0, 4) == 1) 
+	if (randint(0, 3) == 1) 
 		tiles[randY][randX] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);
 }
 
@@ -284,9 +291,6 @@ function generateMerchant() {
 	entities.push(new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
 }
 
-
-
-
 function generateWorld() {
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	generateBossroom()
@@ -301,7 +305,5 @@ function generateWorld() {
 			if (spaceAdjacent(spaces[i], spaces[j]))
 				connectRooms(rooms[i], rooms[j]);
 }
-
-
 
 export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles ,randint,rooms};
