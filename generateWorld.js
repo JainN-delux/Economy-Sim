@@ -219,7 +219,7 @@ function connectRooms(roomA, roomB) {
 	let randX = randint(x0,x1)
 	let randY = randint(y0,y1)
 	// 1 in 4 chance to place a trap
-	if (randint(0, 3) == 1) 
+	if (randint(0, 1) == 1) 
 		tiles[randY][randX] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);
 }
 
