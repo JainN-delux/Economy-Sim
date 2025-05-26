@@ -49,6 +49,15 @@ const itemStats = [
 	new ItemStats(1, 1, "Key"),
 ];
 
+function inRange(item, x, y) {
+	switch (item) {
+		case Item.BOW:
+			return Math.abs(x)+Math.abs(y) <= 3;
+		default:
+			return Math.abs(x)+Math.abs(y) <= 1;
+	}
+}
+
 //items map array
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
 
@@ -111,4 +120,4 @@ class Inventory {
 
 let inventory = new Inventory();
 
-export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE }
+export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange }

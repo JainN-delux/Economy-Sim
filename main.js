@@ -1,7 +1,7 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 import { entityAtTile, player, entities } from "./entity.js";
-import { inventory, items } from "./item.js";
+import { inventory, items, inRange } from "./item.js";
 
 //variables
 let turnCount = 0;
@@ -82,6 +82,15 @@ window.keyPressed = () => {
 		else
 			player.attack(e);
 		updateWorld();
+	}
+	if (key == 'e') {
+		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
+		if (e != null) {
+			if (inRange(player.quickslot[player.selected], attack_x, attack_y)) {
+				player.attack(e);
+				updateWorld();
+			}
+		}
 	}
 	if (key == '1')
 		player.selected = 0;

@@ -264,7 +264,7 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.BOW])];
 player = entities[0]
 
 // Returns entity at a position
