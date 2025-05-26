@@ -29,18 +29,33 @@ function countTime(limit) {
 
 
 const statusList = {
-	VINES: 1, // 5 dot 5t
-	FIRE: 2, // locks movement 5t
-	POISON: 3, // 1 dot 60t
-	BLEED: 4, // 1% health dot 1t
-	NULL: 5, // turns of magic 10t
-	STUN: 6, // skips turn 1t
+	NULL: 0,
+	FIRE: 1, // 5 dot 5t
+	BLEED: 2, // 5 dot 5t
+	STUN: 3, // locks movement 5t
+	VINES: 4, // 1 dot 60t
+	POSION: 5, // 1% health dot 1t
 	// these buffs effect an inate value which will decay to a targetted value slowly
 	ATTACKBUFF: 7, // increases attack power 
 	DEFENCEBUFF: 8, // increases defence power
 	TIMEBUFF: 9, // gives a extra turn 
 	INVISIBLE: 10 // makes u invisible
 }
+
+const statusTime = [
+	4,// NULL: 0,
+	5,// FIRE: 1, 
+	4,// BLEED: 2, 
+	5,// STUN: 3, 
+	2,// VINES: 4,
+	6,// POSION: 5,
+	// // these buffs effect an inate value which will decay to a targetted value slowly
+	3,// ATTACKBUFF: 7, 
+	1,// DEFENCEBUFF: 8, 
+	2,// TIMEBUFF: 9, 
+	3// INVISIBLE: 10 
+]
+
 
 
 
@@ -170,6 +185,7 @@ class Entity {
 	}
 
 	activeEffects(type) {
+
 		switch(type) {
 			case statusList.VINES:
 				this.health -= 5;
@@ -177,22 +193,16 @@ class Entity {
 			case statusList.FIRE:
 				this.health -= 5;
 				break;
-
-			
-				
 			case statusList.POISON:
 				this.health -= this.max_health/100;
 				break;
-
 			case statusList.BLEED:
 				this.health -= this.max_health/100;
 				break;
-
 			case statusList.NULL:
 				this.attack_mult = 0;
 				this.defense_mult = 1;
 				break;
-
 			case statusList.STUN:
 				this.hostility = false;
 				break;
@@ -200,19 +210,18 @@ class Entity {
 			case statusList.ATTACKBUFF:
 				this.attack_mult *= 2;
 				break;
-
 			case statusList.DEFENCEBUFF:
 				this.defense_mult *= 2;
 				break;
-
 			case statusList.TIMEBUFF:
 				turnCount += 1
 				break;
-
 			case statusList.INVISIBLE:
 				this.hostility = false	
 				break;	
+				
 		}
+		console.log("Unknown effect type: " + type);
 			
 	}
 
@@ -276,4 +285,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime };

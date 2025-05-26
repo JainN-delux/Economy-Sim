@@ -1,6 +1,6 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
-import { entityAtTile, player, entities } from "./entity.js";
+import { entityAtTile, player, entities, statusTime } from "./entity.js";
 import { inventory, items, inRange } from "./item.js";
 
 //variables
@@ -9,25 +9,33 @@ let attack_x = 0;
 let attack_y = 0;
 let currentEffects = [];
 
+
+function traps(turnCount) {
+	for (let i = 0; i < currentEffects.length; i++) {
+			player.activeEffects(currentEffects[i][0]);
+		if (currentEffects[i][1] > 0)
+			currentEffects[i][1]--;
+		else	
+		currentEffects.splice(i, 1);
+	}
+}
+
+
 function updateWorld() {
 	//add items to inventory when player collides
 	if (items[player.y][player.x] != null) {
 		inventory.add(items[player.y][player.x]);
 		items[player.y][player.x] = null;
 	}
-	if (tiles[player.y][player.x] > 18) {
-		currentEffects.push(tiles[player.y][player.x]);	
+	if (tiles[player.y][player.x] > 16) {
+		//make a 2-D list of current effects ( type, time left )
+		let list = [(tiles[player.y][player.x]-17),(statusTime[tiles[player.y][player.x]-17])]
+		console.log(list);
+		currentEffects.push(list);	
 		tiles[player.y][player.x] = 11; //reset tile to floor
 	}
-
-	for (let i = 0; i < currentEffects.length; i++) {
-		for (let j = 0; j < 3; j++) {
-		player.activeEffects(currentEffects[i]-15);
-		}
-		currentEffects.splice(i, 1);
-	}
-
 	player.returnBase();
+	traps(turnCount);
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
@@ -38,6 +46,7 @@ function updateWorld() {
 
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
+	
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
 	if (key === 'x') {
@@ -55,6 +64,7 @@ window.keyPressed = () => {
 	//move down
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
+		console.log(turnCount, currentEffects);
 		if (e == null)
 			player.y += 1
 		else
