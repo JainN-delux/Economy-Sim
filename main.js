@@ -28,6 +28,7 @@ function updateWorld() {
 	}
 
 	player.returnBase();
+	player.regen(0.01);
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();

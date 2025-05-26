@@ -1,6 +1,6 @@
 import { isWalkable, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
-import { items, Item, itemStats, ITEM_SRC_SIZE, inventory } from "./item.js";
+import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange } from "./item.js";
 import { turnCount } from "./main.js";
 
 let player;
@@ -81,6 +81,8 @@ class Entity {
 		this.quickslot = quickslot;
 		this.selected = 0;
 		this.hostility = hostile
+		this.lastPotionUsed = 0;
+		this.lastAttacked = 0;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -117,8 +119,21 @@ class Entity {
 		}
 	}
 
+	// if regen_percent = 5 then enitiy regens .5% of max hp a turn
+	regen(regenPercent){ 
+		if (this.lastAttacked + 3 <= turnCount){
+			this.health = Math.min(this.max_health , this.health + this.max_health*(regenPercent)) 
+		}
+		// add a way to prevent regen in fights
+		// use the turn counter for this
+		// check is health lowers from the last turn
+		// if its lower than last turn disable regn
+		// after 3 or more turns since hp dropped turn on regen
+	}
+
 	// attack and damage
 	attack(entity) {
+		entity.lastAttacked = turnCount;
 		// Calculate damage of attack by doing attack value / defense value
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
 		// show damage on screen
@@ -133,6 +148,8 @@ class Entity {
 	}
 
 	returnBase() {
+		if (this.lastPotionUsed == turnCount)
+			return;
 		if (this.attack_mult >= 1)
 			this.attack_mult = (this.attack_mult-1)*0.9 + 1;
 		if (this.defense_mult >= 1)
@@ -167,6 +184,8 @@ class Entity {
 				}
 				break;
 		}
+		if (item >= Item.POTION_RED && item <= Item.POTION_PURPLE)
+			this.lastPotionUsed = turnCount;
 	}
 
 	activeEffects(type) {
@@ -219,6 +238,7 @@ class Entity {
 	//turn based system
 	turn() {
 		this.returnBase()
+		this.regen(0.01) // does the entire regen part
 		// Don't attack or move torwards player if not hostile
 		if (this.hostility == false || debug)
 			return;
@@ -226,13 +246,7 @@ class Entity {
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
 		// Attack if the player is within reach (adjacent)
-		if (player.x == this.x && player.y == this.y-1)
-			this.attack(player);
-		else if (player.x == this.x && player.y == this.y+1)
-			this.attack(player);
-		else if (player.x == this.x-1 && player.y == this.y)
-			this.attack(player);
-		else if (player.x == this.x+1 && player.y == this.y)
+		if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y))
 			this.attack(player);
 		// If enemy is detected within aggro range moves toward player
 		else if (xdist + ydist < 10) {
