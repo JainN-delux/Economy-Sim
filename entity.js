@@ -55,7 +55,7 @@ class EntityStats {
 
 // assign 4 types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10000, 8),
+	new EntityStats(100, 10, 10),
 	new EntityStats(100, 13, 7),
 	new EntityStats(100, 15, 5),
 	new EntityStats(100, 80, 500),
