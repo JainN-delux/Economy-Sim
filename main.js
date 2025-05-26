@@ -42,10 +42,6 @@ window.keyPressed = () => {
 	// if x is pressed and the inventory is not open 
 	if (key === 'x') {
 		inventory.toggle();
-		console.log(player.x,player.y)
-		let a = tiles[player.y][player.x]
-		console.log(tiles)
-		
 	}
 	//move up
 	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {
