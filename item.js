@@ -91,7 +91,7 @@ class Inventory {
 	}
 
 	remove_selected() {
-		return inventory.items.splice(inventory.selected, 1)[0];
+		return this.items.splice(inventory.selected, 1)[0];
 	}
 
 	selection_up() {

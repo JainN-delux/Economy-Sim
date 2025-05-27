@@ -61,20 +61,21 @@ const statusTime = [
 
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
-	constructor(max_health, attack_base, defense_base) {
+	constructor(max_health, attack_base, defense_base, regen_max) {
 		this.max_health = max_health;
 		this.attack_base = attack_base;
 		this.defense_base = defense_base;
+		this.regen_max = regen_max;
 	}
 }
 
 // assign 4 types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10, 10),
-	new EntityStats(100, 13, 7),
-	new EntityStats(100, 15, 5),
-	new EntityStats(100, 80, 500),
-	new EntityStats(100, 0, 10)
+	new EntityStats(100, 10, 10, 0.4),
+	new EntityStats(100, 13, 7, 0.4),
+	new EntityStats(100, 15, 5, 0.4),
+	new EntityStats(100, 80, 500, 0.4),
+	new EntityStats(100, 0, 10, 0.4)
 ];
 
 /*
@@ -136,8 +137,8 @@ class Entity {
 
 	// if regen_percent = 5 then enitiy regens .5% of max hp a turn
 	regen(regenPercent){ 
-		if (this.lastAttacked + 3 <= turnCount){
-			this.health = Math.min(this.max_health , this.health + this.max_health*(regenPercent)) 
+		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max){
+			this.health = Math.min(this.max_health, this.health + this.max_health*(regenPercent)) 
 		}
 		// add a way to prevent regen in fights
 		// use the turn counter for this
@@ -178,7 +179,7 @@ class Entity {
 				this.max_health += 20;
 				break;
 			case Item.POTION_GREEN:
-				this.health = min(this.health + 0.30*this.max_health, this.max_health);
+				this.health = this.max_health;
 				break;
 			case Item.POTION_ATTACK:
 				this.attack_mult *= 2;
@@ -192,7 +193,7 @@ class Entity {
 				break;
 			//if item is WEAPON push to quickslot
 			default:
-				if (item >= Item.SWORD && item <= Item.WOODEN_SHIELD) {
+				if (item >= Item.SWORD && item <= Item.BOW) {
 					if (this.quickslot.length >= 4)
 						inventory.add(this.quickslot.splice(3, 1)[0]);
 					this.quickslot.push(item);

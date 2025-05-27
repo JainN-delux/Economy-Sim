@@ -22,11 +22,6 @@ function traps(turnCount) {
 
 
 function updateWorld() {
-	//add items to inventory when player collides
-	if (items[player.y][player.x] != null) {
-		inventory.add(items[player.y][player.x]);
-		items[player.y][player.x] = null;
-	}
 	if (tiles[player.y][player.x] > 16) {
 		//make a 2-D list of current effects ( type, time left )
 		let list = [(tiles[player.y][player.x]-17),(statusTime[tiles[player.y][player.x]-17])]
@@ -40,7 +35,7 @@ function updateWorld() {
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
-	if (turnCount % 1000 == 0)
+	if (turnCount % 250 == 0)
 		generateEnemies();
 	turnCount++;
 }
@@ -65,7 +60,6 @@ window.keyPressed = () => {
 	//move down
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
-		console.log(turnCount, currentEffects);
 		if (e == null)
 			player.y += 1
 		else
@@ -97,6 +91,13 @@ window.keyPressed = () => {
 				player.attack(e);
 				updateWorld();
 			}
+		}
+	}
+	if (key == 'o') {
+		if (items[player.y][player.x] != null) {
+			inventory.add(items[player.y][player.x]);
+			items[player.y][player.x] = null;
+			updateWorld();
 		}
 	}
 	if (key == '1')
@@ -132,9 +133,17 @@ window.keyPressed = () => {
 		else if (keyCode == RIGHT_ARROW)
 			attack_x += 1;
 	}
-	// use item in inversntory
+	// use item in inventory
 	if (keyCode == ENTER && inventory.items[inventory.selected] != null) {
 		player.use(inventory.remove_selected());
+		updateWorld();
+	}
+	if (keyCode == BACKSPACE && !inventory.open && player.quickslot[player.selected] != null) {
+		inventory.add(player.quickslot.splice(player.selected, 1)[0]);
+		updateWorld();
+	}
+	if (keyCode == BACKSPACE && inventory.open && inventory.items[inventory.selected] != null) {
+		items[player.y][player.x] = inventory.remove_selected();
 		updateWorld();
 	}
 }
