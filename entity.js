@@ -1,4 +1,4 @@
-import { isWalkable, tiles } from "./generateWorld.js";
+import { isWalkable, randint, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange } from "./item.js";
 import { turnCount } from "./main.js";
@@ -34,7 +34,7 @@ const statusList = {
 	BLEED: 2, // 5 dot 5t
 	STUN: 3, // locks movement 5t
 	VINES: 4, // 1 dot 60t
-	POSION: 5, // 1% health dot 1t
+	POISON: 5, // 1% health dot 1t
 	// these buffs effect an inate value which will decay to a targetted value slowly
 	ATTACKBUFF: 7, // increases attack power 
 	DEFENCEBUFF: 8, // increases defence power
@@ -54,7 +54,7 @@ function convertStatus(type) {
 			return "Stun";
 		case statusList.VINES:
 			return "Vines";
-		case statusList.POSION:
+		case statusList.POISON:
 			return "Poison";
 		case statusList.ATTACKBUFF:
 			return "AttackBuff";
@@ -108,7 +108,7 @@ const entityStats = [
  * An entity includes the player, enemies, merchants and bosses, basically anything that moves
  */
 class Entity {
-	constructor(x, y, type, lvl, quickslot=[], hostile=true) {
+	constructor(x, y, type, lvl, quickslot=[], hostile=true, currentEffects = []) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -118,6 +118,8 @@ class Entity {
 		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
+		this.attack_buff = 1;
+		this.defense_buff = 1;
 		this.lvl = lvl;
 		this.xp = 0;
 		this.quickslot = quickslot;
@@ -125,6 +127,7 @@ class Entity {
 		this.hostility = hostile
 		this.lastPotionUsed = 0;
 		this.lastAttacked = 0;
+		this.currentEffects = currentEffects; // array of status effects
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -177,7 +180,7 @@ class Entity {
 	attack(entity) {
 		entity.lastAttacked = turnCount;
 		// Calculate damage of attack by doing attack value / defense value
-		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
+		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * this.attack_buff * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * this.defense_buff* (entity.lvl))
 		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
@@ -234,28 +237,37 @@ class Entity {
 		switch(type) {
 			case statusList.VINES:
 				this.health -= 5;
+				// stop the player from moving
 				break;
 			case statusList.FIRE:
-				this.health -= 5;
+				if (randint(0,1) == 0) {
+					this.health -= 5;
+				}
+				else {
+					this.health -= 10;
+				}
+				
 				break;
 			case statusList.POISON:
 				this.health -= this.max_health/100;
+				
 				break;
 			case statusList.BLEED:
-				this.health -= this.max_health/100;
+				this.health -= this.max_health/50;
+				
 				break;
 			case statusList.NULL:
-				this.attack_mult = 0;
-				this.defense_mult = 1;
+				this.attack_buff = 0;
+				this.defense_buff = 1;
 				break;
 			case statusList.STUN:
 				this.hostility = false;
 				break;
 			case statusList.ATTACKBUFF:
-				this.attack_mult *= 2;
+				this.attack_buff *= 2;
 				break;
 			case statusList.DEFENCEBUFF:
-				this.defense_mult *= 2;
+				this.defense_buff *= 2;
 				break;
 			case statusList.TIMEBUFF:
 				turnCount += 1;
@@ -265,7 +277,6 @@ class Entity {
 				break;
 				
 		}
-		console.log("Unknown effect type: " + type);	
 	}
 
 	//turn based system
@@ -307,6 +318,7 @@ class Entity {
 					this.x++;
 			}
 		}
+		console.log(player.attack_buff, player.defense_buff)
 	}	
 }
 

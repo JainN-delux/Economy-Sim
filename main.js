@@ -7,28 +7,38 @@ import { inventory, items, inRange } from "./item.js";
 let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
-let currentEffects = [];
+
 
 
 function traps(turnCount) {
-	for (let i = 0; i < currentEffects.length; i++) {
-			player.activeEffects(currentEffects[i][0]);
-		if (currentEffects[i][1] > 0)
-			currentEffects[i][1]--;
-		else	
-		currentEffects.splice(i, 1);
+	for (let k = 0 ; k < entities.length; k++) {
+		for (let i = 0; i < entities[k].currentEffects.length; i++) {
+				entities[k].activeEffects(entities[k].currentEffects[i][0]);
+			if (entities[k].currentEffects[i][1] > 0)
+				entities[k].currentEffects[i][1]--;
+			else	
+			entities[k].currentEffects[i].splice(i, 1);
+		}
 	}
 }
 
-
 function updateWorld() {
-	if (tiles[player.y][player.x] > 16) {
-		//make a 2-D list of current effects ( type, time left )
-		let list = [(tiles[player.y][player.x]-17),(statusTime[tiles[player.y][player.x]-17])]
-		console.log(list);
-		currentEffects.push(list);	
-		tiles[player.y][player.x] = 11; //reset tile to floor
+	//add items to inventory when player collides
+	if (items[player.y][player.x] != null) {
+		inventory.add(items[player.y][player.x]);
+		items[player.y][player.x] = null;
 	}
+	
+	
+	//if enemy is on trap apply effect
+	for (let i = 0; i < entities.length; i++) {
+		if (tiles[entities[i].y][entities[i].x] > 16) {
+			let list = [(tiles[entities[i].y][entities[i].x]-17),(statusTime[tiles[entities[i].y][entities[i].x]-17])]
+			entities[i].currentEffects.push(list);	
+			tiles[entities[i].y][entities[i].x] = 11; //reset tile to floor
+		}
+	}
+
 	player.returnBase();
 	player.regen(0.01);
 	traps(turnCount);
@@ -60,6 +70,7 @@ window.keyPressed = () => {
 	//move down
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
+
 		if (e == null)
 			player.y += 1
 		else
@@ -174,18 +185,19 @@ window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
 	let h = 1 
-	for (let effect in currentEffects) {
-		if (currentEffects[effect][1] > 0) {
-			let type = currentEffects[effect][0];
-			let time = currentEffects[effect][1];
+	for (let effect in player.currentEffects) {
+		if (player.currentEffects[effect][1] > 0) {
+			let type = player.currentEffects[effect][0];
+			let time = player.currentEffects[effect][1];
 			fill(255, 0, 0, 50*(1/statusTime[type]))
 			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 			textSize(32);
 			fill(100)
 			textAlign(CENTER);
 			textFont('Courier New');
-			text(`Effect: ${convertStatus(type)} Time left: ${time}`, CANVAS_WIDTH/2 ,h*32);
+			text(`Effect: ${convertStatus(type)}      Time left: ${time}`, CANVAS_WIDTH/2 ,h*32);
 			h++
+
 		}
 	}
 }
