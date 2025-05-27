@@ -251,7 +251,6 @@ class Entity {
 			case statusList.STUN:
 				this.hostility = false;
 				break;
-
 			case statusList.ATTACKBUFF:
 				this.attack_mult *= 2;
 				break;
@@ -259,11 +258,11 @@ class Entity {
 				this.defense_mult *= 2;
 				break;
 			case statusList.TIMEBUFF:
-				turnCount += 1
+				turnCount += 1;
 				break;
 			case statusList.INVISIBLE:
-				this.hostility = false	
-				break;	
+				this.hostility = false;
+				break;
 				
 		}
 		console.log("Unknown effect type: " + type);	
