@@ -169,7 +169,7 @@ window.draw = () => {
 		if (currentEffects[effect][1] > 0) {
 			let type = currentEffects[effect][0];
 			let time = currentEffects[effect][1];
-			fill(255, 0, 0, 20);
+			fill(255, 0, 0, 50*(1/statusTime[type]))
 			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 			textSize(32);
 			fill(100)
