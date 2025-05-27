@@ -163,6 +163,7 @@ function drawWorld(px, py) {
 
 	drawHealthbar()
 	drawQuickslot()
+	textAlign(LEFT);
 	drawInvent()
 	drawRestart()
 	textSize(32);
