@@ -42,13 +42,39 @@ const statusList = {
 	INVISIBLE: 10 // makes u invisible
 }
 
+function convertStatus(type) {
+	switch (type) {
+		case statusList.NULL:
+			return "Null";
+		case statusList.FIRE:
+			return "Fire";
+		case statusList.BLEED:
+			return "Bleed";
+		case statusList.STUN:
+			return "Stun";
+		case statusList.VINES:
+			return "Vines";
+		case statusList.POSION:
+			return "Poison";
+		case statusList.ATTACKBUFF:
+			return "AttackBuff";
+		case statusList.DEFENCEBUFF:
+			return "DefenceBuff";
+		case statusList.TIMEBUFF:
+			return "TimeBuff";
+		case statusList.INVISIBLE:
+			return "Invisible";
+	}
+}
+	
+
 const statusTime = [
 	4,// NULL: 0,
 	5,// FIRE: 1, 
 	4,// BLEED: 2, 
 	5,// STUN: 3, 
-	2,// VINES: 4,
-	6,// POSION: 5,
+	30,// VINES: 4,
+	20,// POSION: 5,
 	// // these buffs effect an inate value which will decay to a targetted value slowly
 	3,// ATTACKBUFF: 7, 
 	1,// DEFENCEBUFF: 8, 
@@ -204,7 +230,6 @@ class Entity {
 	}
 
 	activeEffects(type) {
-
 		switch(type) {
 			case statusList.VINES:
 				this.health -= 5;
@@ -240,8 +265,7 @@ class Entity {
 				break;	
 				
 		}
-		console.log("Unknown effect type: " + type);
-			
+		console.log("Unknown effect type: " + type);	
 	}
 
 	//turn based system
@@ -299,4 +323,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType, statusTime };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus };

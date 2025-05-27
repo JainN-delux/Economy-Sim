@@ -1,6 +1,6 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
-import { entityAtTile, player, entities, statusTime } from "./entity.js";
+import { entityAtTile, player, entities, statusTime,convertStatus } from "./entity.js";
 import { inventory, items, inRange } from "./item.js";
 
 //variables
@@ -164,6 +164,21 @@ window.mouseClicked = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
+	let h = 1 
+	for (let effect in currentEffects) {
+		if (currentEffects[effect][1] > 0) {
+			let type = currentEffects[effect][0];
+			let time = currentEffects[effect][1];
+			fill(255, 0, 0, 20);
+			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+			textSize(32);
+			fill(100)
+			textAlign(CENTER);
+			textFont('Courier New');
+			text(`Effect: ${convertStatus(type)} Time left: ${time}`, CANVAS_WIDTH/2 ,h*32);
+			h++
+		}
+	}
 }
 
 export { turnCount, attack_x, attack_y };
