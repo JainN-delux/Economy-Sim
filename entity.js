@@ -29,13 +29,13 @@ function countTime(limit) {
 
 
 const statusList = {
-	NULL: 0,
-	FIRE: 1, // 5 dot 5t
-	BLEED: 2, // 5 dot 5t
-	STUN: 3, // locks movement 5t
-	VINES: 4, // 1 dot 60t
-	POISON: 5, // 1% health dot 1t
-	// these buffs effect an inate value which will decay to a targetted value slowly
+	NULL: 0, // null attacks
+	FIRE: 1, // decrease health either by 5 or 10 
+	BLEED: 2, // decreases health by some percent
+	STUN: 3, // can not attack 
+	VINES: 4, // stops player from moving
+	POISON: 5, // health decreases by 2%
+	
 	ATTACKBUFF: 7, // increases attack power 
 	DEFENCEBUFF: 8, // increases defence power
 	TIMEBUFF: 9, // gives a extra turn 
