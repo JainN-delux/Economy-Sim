@@ -283,10 +283,21 @@ class Entity {
 			this.die(this);
 	}
 
+	effects() {
+		for (let i = 0; i < this.currentEffects.length; i++) {
+			this.activeEffects(this.currentEffects[i][0]);
+			if (this.currentEffects[i][1] > 0)
+				this.currentEffects[i][1]--;
+			else
+				this.currentEffects[i].splice(i, 1);
+		}
+	}
+
 	//turn based system
 	turn() {
 		this.returnBase()
 		this.regen(0.01) // does the entire regen part
+		this.effects();
 		// Don't attack or move torwards player if not hostile
 		if (this.hostility == false || debug)
 			return;

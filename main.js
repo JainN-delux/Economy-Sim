@@ -8,18 +8,6 @@ let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
 
-function traps(turnCount) {
-	for (let k = 0 ; k < entities.length; k++) {
-		for (let i = 0; i < entities[k].currentEffects.length; i++) {
-				entities[k].activeEffects(entities[k].currentEffects[i][0]);
-			if (entities[k].currentEffects[i][1] > 0)
-				entities[k].currentEffects[i][1]--;
-			else	
-			entities[k].currentEffects[i].splice(i, 1);
-		}
-	}
-}
-
 function updateWorld() {
 	//if enemy is on trap apply effect
 	for (let i = 0; i < entities.length; i++) {
@@ -32,7 +20,7 @@ function updateWorld() {
 
 	player.returnBase();
 	player.regen(0.01);
-	traps(turnCount);
+	player.effects();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
