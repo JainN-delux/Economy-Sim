@@ -12,15 +12,14 @@ function updateWorld() {
 	//if enemy is on trap apply effect
 	for (let i = 0; i < entities.length; i++) {
 		if (tiles[entities[i].y][entities[i].x] > 16) {
-			let list = [(tiles[entities[i].y][entities[i].x]-17),(statusTime[tiles[entities[i].y][entities[i].x]-17])]
-			entities[i].currentEffects.push(list);	
+			entities[i].effects[tiles[entities[i].y][entities[i].x]-17] += statusTime[tiles[entities[i].y][entities[i].x]-17];
 			tiles[entities[i].y][entities[i].x] = 11; //reset tile to floor
 		}
 	}
 
 	player.returnBase();
 	player.regen(0.01);
-	player.effects();
+	player.applyEffects();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
@@ -163,20 +162,17 @@ window.mouseClicked = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
-	let h = 1 
-	for (let effect in player.currentEffects) {
-		if (player.currentEffects[effect][1] > 0) {
-			let type = player.currentEffects[effect][0];
-			let time = player.currentEffects[effect][1];
-			fill(255, 0, 0, 50*(1/statusTime[type]))
+	let h = 1;
+	for (let i = 0; i < player.effects.length; i++) {
+		if (player.effects[i] > 0) {
+			fill(255, 0, 0, 50*(1/statusTime[i]))
 			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 			textSize(32);
 			fill(100)
 			textAlign(CENTER);
 			textFont('Courier New');
-			text(`Effect: ${convertStatus(type)}      Time left: ${time}`, CANVAS_WIDTH/2 ,h*32);
-			h++
-
+			text(`Effect: ${convertStatus(i)}      Time left: ${player.effects[i]}`, CANVAS_WIDTH/2 ,h*32);
+			h++;
 		}
 	}
 }
