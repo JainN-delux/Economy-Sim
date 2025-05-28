@@ -4,6 +4,7 @@ import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange } from "./ite
 import { turnCount } from "./main.js";
 
 let player;
+
 const ENTITY_SRC_SIZE = 16;
 
 // This turns off things like hostile enemies
