@@ -188,7 +188,7 @@ function drawWorld(px, py) {
 	textAlign(LEFT);
 	drawInvent()
 	
-	drawShop()
+	//drawShop()
 	drawRestart()
 	textSize(32);
 	fill(255);

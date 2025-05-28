@@ -178,7 +178,7 @@ class Entity {
 			return;
 		entity.lastAttacked = turnCount;
 		// Calculate damage of attack by doing attack value / defense value
-		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * this.attack_buff * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * this.defense_buff* (entity.lvl))
+		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
 		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
