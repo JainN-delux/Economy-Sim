@@ -318,8 +318,7 @@ class Entity {
 					this.x++;
 			}
 		}
-		console.log(player.attack_buff, player.defense_buff)
-	}	
+	}
 }
 
 // Spawn player

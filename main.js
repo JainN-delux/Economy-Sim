@@ -23,13 +23,6 @@ function traps(turnCount) {
 }
 
 function updateWorld() {
-	//add items to inventory when player collides
-	if (items[player.y][player.x] != null) {
-		inventory.add(items[player.y][player.x]);
-		items[player.y][player.x] = null;
-	}
-	
-	
 	//if enemy is on trap apply effect
 	for (let i = 0; i < entities.length; i++) {
 		if (tiles[entities[i].y][entities[i].x] > 16) {
