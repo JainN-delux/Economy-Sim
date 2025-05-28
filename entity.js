@@ -178,7 +178,7 @@ class Entity {
 
 	die(killer) {
 		killer.gainXp(entity.lvl);
-		items[this.y][this.x] = this.quickslot[entity.selected];
+		items[this.y][this.x] = this.quickslot[this.selected];
 		entities.splice(entities.indexOf(this), 1)
 	}
 
