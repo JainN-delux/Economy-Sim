@@ -1,4 +1,4 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles } from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant} from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount, attack_x, attack_y } from "./main.js";
 import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange } from "./item.js" 
@@ -59,6 +59,8 @@ function drawInvent() {
 		rect(stat_x, 0, TILE_SIZE*9, TILE_SIZE*6);
 		fill(255);
 		textSize(20);
+		text("X Location: " + player.x, stat_x, 200)
+		text("Y Location: " + player.y, stat_x, 220)
 		text("Level: " + player.lvl, stat_x, 20);
 		text("Xp: " + player.xp, stat_x, 40);
 		text("Health: " + player.health.toFixed(1), stat_x, 60);
@@ -115,15 +117,15 @@ function drawQuickslot() {
 } // draws the quick slots in the bottom
 
 function drawShop() {
-
-	fill(0)
-	rect(100, 100, 350, 500)
-	for (let i = 0; i < 6; i++) {
-		fill(255)
-		rect(110, 110 + i*80, 70, 70)
-		 
+	if (Math.abs(player.x - merchant.x) < 5 && Math.abs(player.y - merchant.y) < 5 ) {
+		fill(0)
+		rect(100, 100, 350, 500)
+		for (let i = 0; i < 6; i++) {
+			fill(255)
+			rect(110, 110 + i*80, 70, 70)
+			
+		}
 	}
-
 }
 
 
@@ -187,7 +189,6 @@ function drawWorld(px, py) {
 	drawQuickslot()
 	textAlign(LEFT);
 	drawInvent()
-	
 	//drawShop()
 	drawRestart()
 	textSize(32);
@@ -196,7 +197,7 @@ function drawWorld(px, py) {
 	text(turnCount, 32, 32);
 	
 	noStroke()
-	
+	console.log(merchant.x , merchant.y)
 } // draws the entire map
 
 

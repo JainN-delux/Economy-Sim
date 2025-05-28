@@ -1,4 +1,4 @@
-import { Entity, EntityType, entities, player } from "./entity.js";
+import { Entity, EntityType, entities, player} from "./entity.js";
 import { itemInRoom, Item } from "./item.js";
 import { turnCount } from "./main.js";
 
@@ -14,6 +14,8 @@ let spaces = []
 function randint(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
+
+let merchant;
 
 // Enums for the different tiles
 const Tile = {
@@ -116,7 +118,7 @@ function generateRoom(rx, ry, w, h) {
 
 	//TRAPS IN ROOMS
 	// 1 in 2 chance to place a trap
-	for (let i = 0; i <= Math.floor((w*h)/30); i++) {
+	for (let i = 0; i <= Math.floor((w*h)/50); i++) {
 		//if (randint(0, 1) == 1) 
 			tiles[randint(ry + 1,ry + h-2)][randint(rx + 1,rx + w-2)] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);	
 		
@@ -291,7 +293,9 @@ function generateMerchant() {
 		}
 	}
 	merchantRooms.push(smallestRoom);
-	entities.push(new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false))
+	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false)
+	entities.push(merchant)
+
 }
 
 function generateWorld() {
@@ -309,4 +313,4 @@ function generateWorld() {
 				connectRooms(rooms[i], rooms[j]);
 }
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles ,randint,rooms};
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles ,randint,rooms, merchant};
