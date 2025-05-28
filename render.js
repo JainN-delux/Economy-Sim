@@ -114,6 +114,19 @@ function drawQuickslot() {
 	} // draws the squares 4 times
 } // draws the quick slots in the bottom
 
+function drawShop() {
+
+	fill(0)
+	rect(100, 100, 350, 500)
+	for (let i = 0; i < 6; i++) {
+		fill(255)
+		rect(110, 110 + i*80, 70, 70)
+		 
+	}
+
+}
+
+
 function drawDamageMarker(damageMarker) {
 	fill(255, 0, 0)
 	textSize(10);
@@ -161,23 +174,29 @@ function drawWorld(px, py) {
 		else
 			drawDamageMarker(damageMarkers[i]);
 
+	fill(0, 0, 0, 0);
+	if (inRange(player.quickslot[player.selected], attack_x, attack_y)) {
+		stroke(100, 100, 255);
+	}else {
+		stroke(255, 100, 100);
+	}
+	strokeWeight(8);
+	rect((attack_x-fract(px)+VIEWPORT_WIDTH/2-1)*TILE_SIZE, (attack_y-fract(py)+VIEWPORT_HEIGHT/2-1)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
+	
 	drawHealthbar()
 	drawQuickslot()
 	textAlign(LEFT);
 	drawInvent()
+	
+	drawShop()
 	drawRestart()
 	textSize(32);
 	fill(255);
 	stroke(0);
 	text(turnCount, 32, 32);
-	fill(0, 0, 0, 0);
-	if (inRange(player.quickslot[player.selected], attack_x, attack_y))
-		stroke(100, 100, 255);
-	else
-		stroke(255, 100, 100);
-	strokeWeight(8);
-	rect((attack_x-fract(px)+VIEWPORT_WIDTH/2-1)*TILE_SIZE, (attack_y-fract(py)+VIEWPORT_HEIGHT/2-1)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
+	
 	noStroke()
+	
 } // draws the entire map
 
 
