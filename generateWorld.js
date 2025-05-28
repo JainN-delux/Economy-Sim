@@ -118,7 +118,7 @@ function generateRoom(rx, ry, w, h) {
 
 	//TRAPS IN ROOMS
 	// 1 in 2 chance to place a trap
-	for (let i = 0; i <= Math.floor((w*h)/30); i++) {
+	for (let i = 0; i <= Math.floor((w*h)/50); i++) {
 		//if (randint(0, 1) == 1) 
 			tiles[randint(ry + 1,ry + h-2)][randint(rx + 1,rx + w-2)] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);	
 		

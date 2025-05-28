@@ -37,10 +37,9 @@ const statusList = {
 	VINES: 4, // 1 dot 60t
 	POISON: 5, // 1% health dot 1t
 	// these buffs effect an inate value which will decay to a targetted value slowly
-	ATTACKBUFF: 7, // increases attack power 
-	DEFENCEBUFF: 8, // increases defence power
-	TIMEBUFF: 9, // gives a extra turn 
-	INVISIBLE: 10 // makes u invisible
+	TIMEBUFF: 6, // gives a extra turn 
+	INVISIBLE: 7, // makes u invisible
+	STATUS_MAX: 8,
 }
 
 function convertStatus(type) {
@@ -57,10 +56,6 @@ function convertStatus(type) {
 			return "Vines";
 		case statusList.POISON:
 			return "Poison";
-		case statusList.ATTACKBUFF:
-			return "AttackBuff";
-		case statusList.DEFENCEBUFF:
-			return "DefenceBuff";
 		case statusList.TIMEBUFF:
 			return "TimeBuff";
 		case statusList.INVISIBLE:
@@ -76,9 +71,6 @@ const statusTime = [
 	5,// STUN: 3, 
 	30,// VINES: 4,
 	20,// POSION: 5,
-	// // these buffs effect an inate value which will decay to a targetted value slowly
-	3,// ATTACKBUFF: 7, 
-	1,// DEFENCEBUFF: 8, 
 	2,// TIMEBUFF: 9, 
 	3// INVISIBLE: 10 
 ]
@@ -109,7 +101,7 @@ const entityStats = [
  * An entity includes the player, enemies, merchants and bosses, basically anything that moves
  */
 class Entity {
-	constructor(x, y, type, lvl, quickslot=[], hostile=true, currentEffects = []) {
+	constructor(x, y, type, lvl, quickslot=[], hostile=true) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -119,8 +111,6 @@ class Entity {
 		this.defense_base = entityStats[type].defense_base;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
-		this.attack_buff = 1;
-		this.defense_buff = 1;
 		this.lvl = lvl;
 		this.xp = 0;
 		this.quickslot = quickslot;
@@ -128,7 +118,7 @@ class Entity {
 		this.hostility = hostile
 		this.lastPotionUsed = 0;
 		this.lastAttacked = 0;
-		this.currentEffects = currentEffects; // array of status effects
+		this.effects = new Array(statusList.STATUS_MAX).fill(0);
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -185,6 +175,8 @@ class Entity {
 
 	// attack and damage
 	attack(entity) {
+		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
+			return;
 		entity.lastAttacked = turnCount;
 		// Calculate damage of attack by doing attack value / defense value
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * this.attack_buff * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * this.defense_buff* (entity.lvl))
@@ -237,10 +229,10 @@ class Entity {
 			this.lastPotionUsed = turnCount;
 	}
 
-	activeEffects(type) {
+	activeEffect(type) {
 		switch(type) {
 			case statusList.VINES:
-				this.health -= 5;
+				this.health -= 2;
 				// stop the player from moving
 				break;
 			case statusList.FIRE:
@@ -253,44 +245,28 @@ class Entity {
 				break;
 			case statusList.POISON:
 				this.health -= this.max_health/100;
-				
 				break;
 			case statusList.BLEED:
 				this.health -= this.max_health/50;
-				
 				break;
-			case statusList.NULL:
-				this.attack_buff = 0;
-				this.defense_buff = 1;
-				break;
-			case statusList.STUN:
-				this.hostility = false;
-				break;
-			case statusList.ATTACKBUFF:
-				this.attack_buff *= 2;
-				break;
-			case statusList.DEFENCEBUFF:
-				this.defense_buff *= 2;
-				break;
-			case statusList.TIMEBUFF:
-				turnCount += 1;
-				break;
-			case statusList.INVISIBLE:
-				this.hostility = false;
-				break;
-				
 		}
 		if (this.health <= 0)
 			this.die(this);
 	}
 
-	effects() {
-		for (let i = 0; i < this.currentEffects.length; i++) {
-			this.activeEffects(this.currentEffects[i][0]);
-			if (this.currentEffects[i][1] > 0)
-				this.currentEffects[i][1]--;
-			else
-				this.currentEffects[i].splice(i, 1);
+	resetEffect(type) {
+		switch (type) {
+		}
+	}
+
+	applyEffects() {
+		for (let i = 0; i < this.effects.length; i++) {
+			if (this.effects[i] > 0) {
+				this.activeEffect(i);
+				this.effects[i]--;
+				if (this.effects[i] == 0)
+					this.resetEffect(i);
+			}
 		}
 	}
 
@@ -298,9 +274,9 @@ class Entity {
 	turn() {
 		this.returnBase()
 		this.regen(0.01) // does the entire regen part
-		this.effects();
+		this.applyEffects();
 		// Don't attack or move torwards player if not hostile
-		if (this.hostility == false || debug)
+		if (this.hostility == false || this.effects[statusList.INVISIBLE] > 0 || debug)
 			return;
 		// Get the distance between enemy and players
 		let xdist = Math.abs(player.x-this.x);
@@ -309,7 +285,7 @@ class Entity {
 		if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y))
 			this.attack(player);
 		// If enemy is detected within aggro range moves toward player
-		else if (xdist + ydist < 10) {
+		else if (xdist + ydist < 10 && this.effects[statusList.VINES] == 0 && this.effects[statusList.STUN] == 0) {
 			// Choose axis to move in based on proximity
 			if (xdist > ydist) {
 				// If the player is the given direction and the tile is empty
