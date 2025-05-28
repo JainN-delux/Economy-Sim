@@ -43,7 +43,7 @@ window.keyPressed = () => {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y -= 1
 		}
-		else
+		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
 			player.attack(e);
 		updateWorld();
 	}
@@ -54,7 +54,7 @@ window.keyPressed = () => {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y += 1
 		}
-		else
+		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
 			player.attack(e);
 		updateWorld();
 	}
@@ -65,7 +65,7 @@ window.keyPressed = () => {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x -= 1
 		}
-		else
+		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
 			player.attack(e);
 		updateWorld();
 	}
@@ -76,14 +76,14 @@ window.keyPressed = () => {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x += 1
 		}
-		else
+		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
 			player.attack(e);
 		updateWorld();
 	}
 	if (key == 'e') {
 		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
 		if (e != null) {
-			if (inRange(player.quickslot[player.selected], attack_x, attack_y)) {
+			if (inRange(player.quickslot[player.selected], attack_x, attack_y) && player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0) {
 				player.attack(e);
 				updateWorld();
 			}

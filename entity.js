@@ -69,7 +69,7 @@ const statusTime = [
 	5,// FIRE: 1, 
 	4,// BLEED: 2, 
 	5,// STUN: 3, 
-	30,// VINES: 4,
+	5,// VINES: 4,
 	20,// POSION: 5,
 	2,// TIMEBUFF: 9, 
 	3// INVISIBLE: 10 
