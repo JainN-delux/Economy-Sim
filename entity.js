@@ -279,8 +279,8 @@ class Entity {
 				break;
 				
 		}
-		if (entity.health <= 0)
-			entity.die(this);
+		if (this.health <= 0)
+			this.die(this);
 	}
 
 	//turn based system
