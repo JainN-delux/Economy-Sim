@@ -326,4 +326,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus, statusList };

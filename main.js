@@ -1,6 +1,6 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
-import { entityAtTile, player, entities, statusTime,convertStatus } from "./entity.js";
+import { entityAtTile, player, entities, statusTime, convertStatus, statusList } from "./entity.js";
 import { inventory, items, inRange } from "./item.js";
 
 //variables
@@ -39,8 +39,10 @@ window.keyPressed = () => {
 	//move up
 	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);
-		if (e == null)
-			player.y -= 1
+		if (e == null) {
+			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
+				player.y -= 1
+		}
 		else
 			player.attack(e);
 		updateWorld();
@@ -48,9 +50,10 @@ window.keyPressed = () => {
 	//move down
 	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
-
-		if (e == null)
-			player.y += 1
+		if (e == null) {
+			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
+				player.y += 1
+		}
 		else
 			player.attack(e);
 		updateWorld();
@@ -58,8 +61,10 @@ window.keyPressed = () => {
 	//move left
 	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]]) {
 		let e = entityAtTile(player.x-1, player.y);
-		if (e == null)
-			player.x -= 1
+		if (e == null) {
+			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
+				player.x -= 1
+		}
 		else
 			player.attack(e);
 		updateWorld();
@@ -67,8 +72,10 @@ window.keyPressed = () => {
 	//move right
 	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]]) {
 		let e = entityAtTile(player.x+1, player.y);
-		if (e == null)
-			player.x += 1
+		if (e == null) {
+			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
+				player.x += 1
+		}
 		else
 			player.attack(e);
 		updateWorld();
