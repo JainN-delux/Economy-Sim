@@ -176,6 +176,12 @@ class Entity {
 		// after 3 or more turns since hp dropped turn on regen
 	}
 
+	die(killer) {
+		killer.gainXp(entity.lvl);
+		items[this.y][this.x] = this.quickslot[entity.selected];
+		entities.splice(entities.indexOf(this), 1)
+	}
+
 	// attack and damage
 	attack(entity) {
 		entity.lastAttacked = turnCount;
@@ -185,11 +191,8 @@ class Entity {
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
 		// Delete entity and drop held item if health < 0
-		if (entity.health <= 0) {
-			this.gainXp(entity.lvl);
-			items[entity.y][entity.x] = entity.quickslot[entity.selected];
-			entities.splice(entities.indexOf(entity), 1)
-		}
+		if (entity.health <= 0)
+			entity.die(this);
 	}
 
 	returnBase() {
@@ -246,7 +249,6 @@ class Entity {
 				else {
 					this.health -= 10;
 				}
-				
 				break;
 			case statusList.POISON:
 				this.health -= this.max_health/100;
@@ -277,6 +279,8 @@ class Entity {
 				break;
 				
 		}
+		if (entity.health <= 0)
+			entity.die(this);
 	}
 
 	//turn based system

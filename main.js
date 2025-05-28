@@ -8,8 +8,6 @@ let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
 
-
-
 function traps(turnCount) {
 	for (let k = 0 ; k < entities.length; k++) {
 		for (let i = 0; i < entities[k].currentEffects.length; i++) {
