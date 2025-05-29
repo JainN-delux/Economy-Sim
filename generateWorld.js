@@ -298,7 +298,7 @@ function generateMerchant() {
 		}
 	}
 	merchantRooms.push(smallestRoom);
-	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.WOODEN_SHIELD+1)], false)
+	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [Item.SWORD, Item.WOODEN_SHIELD], false)
 	entities.push(merchant)
 	console.log(merchant.x , merchant.y)
 }

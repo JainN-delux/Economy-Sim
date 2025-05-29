@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant} from "./generateWorld.js";
 import { entities, player } from "./entity.js";
 import { turnCount, attack_x, attack_y } from "./main.js";
-import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange } from "./item.js" 
+import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, shop } from "./item.js" 
 
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
@@ -47,8 +47,7 @@ function drawInvent() {
 					fill(40, 60, 255);
 					rect(i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5), TILE_SIZE, TILE_SIZE);
 				} 
-				
-				
+
 
 				if (inventory.items[i*6 + j] != null)
 					drawItems(inventory.items[i*6 + j], i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5));
@@ -118,13 +117,24 @@ function drawQuickslot() {
 
 function drawShop() {
 	if (Math.abs(player.x - merchant.x) < 5 && Math.abs(player.y - merchant.y) < 5 ) {
+		shop.open = true
 		fill(0)
 		rect(100, 100, 350, 500)
 		for (let i = 0; i < 6; i++) {
 			fill(255)
 			rect(110, 110 + i*80, 70, 70)
 			
+			if (i == inventory.selected) {
+				fill(40, 60, 255);
+				rect(110, 110 + i*80, 70, 70)
+			} 
+
+			if (merchant.quickslot[i]) 
+				image(itemset, 110, 110 + i*80, 50, 50, merchant.quickslot[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+			
 		}
+	} else {
+		shop.open = false
 	}
 }
 
