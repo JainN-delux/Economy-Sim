@@ -80,21 +80,22 @@ const statusTime = [
 
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
-	constructor(max_health, attack_base, defense_base, regen_max) {
+	constructor(max_health, attack_base, defense_base, mana, regen_max) {
 		this.max_health = max_health;
 		this.attack_base = attack_base;
 		this.defense_base = defense_base;
 		this.regen_max = regen_max;
+		this.mana = mana;
 	}
 }
 
 // assign 4 types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10, 10, 0.4),
-	new EntityStats(100, 13, 7, 0.4),
-	new EntityStats(100, 15, 5, 0.4),
-	new EntityStats(100, 80, 500, 0.4),
-	new EntityStats(100, 0, 10, 0.4)
+	new EntityStats(100, 10, 10, 4, 0.4),
+	new EntityStats(100, 13, 7, 4, 0.4),
+	new EntityStats(100, 15, 5, 4, 0.4),
+	new EntityStats(100, 80, 500, 4, 0.4),
+	new EntityStats(100, 0, 10, 4, 0.4)
 ];
 
 /*
@@ -109,6 +110,8 @@ class Entity {
 		this.max_health = entityStats[type].max_health;
 		this.attack_base = entityStats[type].attack_base;
 		this.defense_base = entityStats[type].defense_base;
+		this.mana_max = entityStats[type].mana;
+		this.mana = 0;
 		this.attack_mult = 1;
 		this.defense_mult = 1;
 		this.lvl = lvl;
@@ -177,6 +180,7 @@ class Entity {
 	attack(entity) {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
 			return;
+		this.mana -= itemStats[this.quickslot[this.selected]].mana;
 		entity.lastAttacked = turnCount;
 		// Calculate damage of attack by doing attack value / defense value
 		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
@@ -270,11 +274,16 @@ class Entity {
 		}
 	}
 
-	//turn based system
-	turn() {
+	update() {
 		this.returnBase()
 		this.regen(0.01) // does the entire regen part
 		this.applyEffects();
+		this.mana = Math.min(this.mana_max, this.mana + 1);
+	}
+
+	//turn based system
+	turn() {
+		this.update();
 		// Don't attack or move torwards player if not hostile
 		if (this.hostility == false || this.effects[statusList.INVISIBLE] > 0 || debug)
 			return;
@@ -282,8 +291,10 @@ class Entity {
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
 		// Attack if the player is within reach (adjacent)
-		if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y))
-			this.attack(player);
+		if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y)) {
+			if (this.mana >= entityStats[this.type].mana)
+				this.attack(player);
+		}
 		// If enemy is detected within aggro range moves toward player
 		else if (xdist + ydist < 10 && this.effects[statusList.VINES] == 0 && this.effects[statusList.STUN] == 0) {
 			// Choose axis to move in based on proximity
@@ -326,4 +337,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus, statusList };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus, statusList, entityStats };

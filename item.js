@@ -24,29 +24,30 @@ const Item = {
 
 //weapon stats
 class ItemStats {
-	constructor(damage, shield, name) {
+	constructor(damage, shield, mana, name) {
 		this.damage = damage;
 		this.shield = shield;
 		this.name = name;
+		this.mana = mana;
 	}
 }
 
 //weapon stats
 const itemStats = [
-	new ItemStats(1, 1, "Potion Red"),
-	new ItemStats(1, 1, "Defense Boost"),
-	new ItemStats(1, 1, "Attack Boost"),
-	new ItemStats(1, 1, "Potion Green"),
-	new ItemStats(1, 1, "Potion Purple"),
-	new ItemStats(10, 2, "Sword"),
-	new ItemStats(10, 2, "Poison Sword"),
-	new ItemStats(20, 1, "Hatchet"),
-	new ItemStats(25, 1, "Axe"),
-	new ItemStats(4, 20, "Steel Shield"),
-	new ItemStats(2, 10, "Wooden Shield"),
-	new ItemStats(10, 1, "Bow"),
-	new ItemStats(2, 1, "Arrow"),
-	new ItemStats(1, 1, "Key"),
+	new ItemStats(1, 1, 1, "Potion Red"),
+	new ItemStats(1, 1, 1, "Defense Boost"),
+	new ItemStats(1, 1, 1, "Attack Boost"),
+	new ItemStats(1, 1, 1, "Potion Green"),
+	new ItemStats(1, 1, 1, "Potion Purple"),
+	new ItemStats(10, 2, 1, "Sword"),
+	new ItemStats(10, 2, 1, "Poison Sword"),
+	new ItemStats(20, 1, 1, "Hatchet"),
+	new ItemStats(25, 1, 1, "Axe"),
+	new ItemStats(4, 20, 2, "Steel Shield"),
+	new ItemStats(2, 10, 1, "Wooden Shield"),
+	new ItemStats(10, 1, 1, "Bow"),
+	new ItemStats(2, 1, 1, "Arrow"),
+	new ItemStats(1, 1, 1, "Key"),
 ];
 
 function inRange(item, x, y) {

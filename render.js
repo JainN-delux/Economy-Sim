@@ -1,5 +1,5 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant} from "./generateWorld.js";
-import { entities, player } from "./entity.js";
+import { entities, player, entityStats } from "./entity.js";
 import { turnCount, attack_x, attack_y } from "./main.js";
 import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange } from "./item.js" 
 
@@ -112,8 +112,13 @@ function drawQuickslot() {
 		fill(255)
 		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
 		if (player.quickslot[i])
-			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE, TILE_SIZE, player.quickslot[i]*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE, TILE_SIZE, player.quickslot[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 	} // draws the squares 4 times
+	fill(125, 150, 150);
+	rect(10 + 4*60, CANVAS_HEIGHT-45, 50, 50)
+	fill(0);
+	textSize(32);
+	text(player.mana + "/" + entityStats[player.type].mana, 10 + 4*60, CANVAS_HEIGHT-35, 50, 50);
 } // draws the quick slots in the bottom
 
 function drawShop() {
@@ -197,7 +202,6 @@ function drawWorld(px, py) {
 	text(turnCount, 32, 32);
 	
 	noStroke()
-	console.log(merchant.x , merchant.y)
 } // draws the entire map
 
 

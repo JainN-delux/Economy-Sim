@@ -1,6 +1,6 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
-import { entityAtTile, player, entities, statusTime, convertStatus, statusList } from "./entity.js";
+import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats } from "./entity.js";
 import { inventory, items, inRange } from "./item.js";
 
 //variables
@@ -17,9 +17,7 @@ function updateWorld() {
 		}
 	}
 
-	player.returnBase();
-	player.regen(0.01);
-	player.applyEffects();
+	player.update();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
@@ -44,7 +42,8 @@ window.keyPressed = () => {
 				player.y -= 1
 		}
 		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
+			if (player.mana >= entityStats[player.type].mana)
+				player.attack(e);
 		updateWorld();
 	}
 	//move down
@@ -55,7 +54,8 @@ window.keyPressed = () => {
 				player.y += 1
 		}
 		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
+			if (player.mana >= entityStats[player.type].mana)
+				player.attack(e);
 		updateWorld();
 	}
 	//move left
@@ -66,7 +66,8 @@ window.keyPressed = () => {
 				player.x -= 1
 		}
 		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
+			if (player.mana >= entityStats[player.type].mana)
+				player.attack(e);
 		updateWorld();
 	}
 	//move right
@@ -77,14 +78,16 @@ window.keyPressed = () => {
 				player.x += 1
 		}
 		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
+			if (player.mana >= entityStats[player.type].mana)
+				player.attack(e);
 		updateWorld();
 	}
 	if (key == 'e') {
 		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
 		if (e != null) {
 			if (inRange(player.quickslot[player.selected], attack_x, attack_y) && player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0) {
-				player.attack(e);
+				if (player.mana >= entityStats[player.type].mana)
+					player.attack(e);
 				updateWorld();
 			}
 		}
