@@ -231,6 +231,11 @@ class Entity {
 		if (item >= Item.POTION_RED && item <= Item.POTION_PURPLE)
 			this.lastPotionUsed = turnCount;
 	}
+	resetEffect(type) {
+		switch (type) {
+		}
+	}
+
 
 	// apply status effect to entity
 	activeEffect(type) {
