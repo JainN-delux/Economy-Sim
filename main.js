@@ -175,6 +175,8 @@ window.draw = () => {
 
 	background(220);
 	drawWorld(player.x, player.y);
+	console.log(shop.selected)
+
 	let h = 1;
 	for (let i = 0; i < player.effects.length; i++) {
 		if (player.effects[i] > 0) {
