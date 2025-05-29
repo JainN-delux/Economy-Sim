@@ -189,7 +189,7 @@ function drawWorld(px, py) {
 	drawQuickslot()
 	textAlign(LEFT);
 	drawInvent()
-	//drawShop()
+	drawShop()
 	drawRestart()
 	textSize(32);
 	fill(255);
@@ -197,7 +197,7 @@ function drawWorld(px, py) {
 	text(turnCount, 32, 32);
 	
 	noStroke()
-	console.log(merchant.x , merchant.y)
+	
 } // draws the entire map
 
 
