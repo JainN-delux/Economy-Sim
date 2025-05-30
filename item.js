@@ -157,5 +157,5 @@ let inventory = new Inventory();
 
 let shop = new Shop();
 
-export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange ,shop}
+export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop}
 
