@@ -198,6 +198,7 @@ class Entity {
 					break;
 				case Item.WOODEN_SHIELD:
 					this.mana++;
+					this.regen(0.01);
 					break;
 			}
 		}
