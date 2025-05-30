@@ -4,7 +4,6 @@ import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange } from "./ite
 import { turnCount } from "./main.js";
 
 let player;
-
 const ENTITY_SRC_SIZE = 16;
 
 // This turns off things like hostile enemies
@@ -19,29 +18,36 @@ const EntityType = {
 	MERCHANT: 4
 }
 
-function countTime(limit) {
-    let previous = timeCount; 
-    if (previous + limit <= turnCount) { 
-        return true;
-    } else {
-        return false;
-    }
-}
-
-
+// -------------------STATUS EFFECTS-------------------
+// enum for status effects
 const statusList = {
-	NULL: 0,
-	FIRE: 1, // 5 dot 5t
-	BLEED: 2, // 5 dot 5t
-	STUN: 3, // locks movement 5t
-	VINES: 4, // 1 dot 60t
-	POISON: 5, // 1% health dot 1t
-	// these buffs effect an inate value which will decay to a targetted value slowly
+	NULL: 0, // attack and defense are nullified, 4t
+	FIRE: 1, //decreases health by 5 or 10 every turn, 5t
+	BLEED: 2, // decreases health by 2% every turn, 4t
+	STUN: 3, // locks movement, 5t
+	VINES: 4, // locks movement and decreases health by 1, 5t
+	POISON: 5, // 1% health decrease, 20t
+
+	// buffs
 	TIMEBUFF: 6, // gives a extra turn 
 	INVISIBLE: 7, // makes u invisible
 	STATUS_MAX: 8,
 }
 
+//array of how long each status effect lasts
+const statusTime = [
+	4,// NULL: 0,
+	5,// FIRE: 1, 
+	4,// BLEED: 2, 
+	5,// STUN: 3, 
+	5,// VINES: 4,
+	20,// POSION: 5,
+	2,// TIMEBUFF: 9, 
+	3// INVISIBLE: 10 
+]
+
+
+// function to display the status effect as a string to user
 function convertStatus(type) {
 	switch (type) {
 		case statusList.NULL:
@@ -63,21 +69,7 @@ function convertStatus(type) {
 	}
 }
 	
-
-const statusTime = [
-	4,// NULL: 0,
-	5,// FIRE: 1, 
-	4,// BLEED: 2, 
-	5,// STUN: 3, 
-	5,// VINES: 4,
-	20,// POSION: 5,
-	2,// TIMEBUFF: 9, 
-	3// INVISIBLE: 10 
-]
-
-
-
-
+// ------------------------ENTITY------------------------
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
 	constructor(max_health, attack_base, defense_base, mana, regen_max) {
@@ -91,11 +83,11 @@ class EntityStats {
 
 // assign 4 types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10, 10, 4, 0.4),
-	new EntityStats(100, 13, 7, 4, 0.4),
-	new EntityStats(100, 15, 5, 4, 0.4),
-	new EntityStats(100, 80, 500, 4, 0.4),
-	new EntityStats(100, 0, 10, 4, 0.4)
+	new EntityStats(100, 10, 10, 4, 0.4),	//player
+	new EntityStats(100, 13, 7, 4, 0.4),	//warrior
+	new EntityStats(100, 15, 5, 4, 0.4),	//archer
+	new EntityStats(100, 80, 500, 4, 0.4), //boss
+	new EntityStats(100, 0, 10, 4, 0.4)	//merchant
 ];
 
 /*
@@ -130,10 +122,10 @@ class Entity {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
-		// Draw held item
+		// Draw held item 
 		if (this.quickslot[this.selected])
 			image(itemset, x, y + TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE/2, this.quickslot[this.selected]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE);
-		// Draw healtbar
+		// Draw healtbar for all entities on top
 		fill(255, 0, 0);
 		rect(x, y-15, 32, 10);
 		fill(0, 255, 0);
@@ -150,6 +142,7 @@ class Entity {
 		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].shield : 1);
 	}
 
+	//experience gain function
 	gainXp(xp) {
 		this.xp += xp;
 		if (this.xp >= this.lvl*10) {
@@ -170,6 +163,7 @@ class Entity {
 		// after 3 or more turns since hp dropped turn on regen
 	}
 
+	// check who killed the entity and give xp to killer(player)
 	die(killer) {
 		killer.gainXp(this.lvl);
 		items[this.y][this.x] = this.quickslot[this.selected];
@@ -204,18 +198,23 @@ class Entity {
 	//Use item from inventory when selected
 	use(item) {
 		switch (item) {
+			// red potion increases health
 			case Item.POTION_RED:
 				this.max_health += 20;
 				break;
+			// green potion restores health to max
 			case Item.POTION_GREEN:
 				this.health = this.max_health;
 				break;
+			//attack multiplier 
 			case Item.POTION_ATTACK:
 				this.attack_mult *= 2;
 				break;
+			//defense multiplier
 			case Item.POTION_DEFENCE:
 				this.defense_mult *= 2;
 				break;
+			// potion that gives Xp and halves health
 			case Item.POTION_PURPLE:
 				this.gainXp(5);
 				this.health = this.health/2;
@@ -232,13 +231,20 @@ class Entity {
 		if (item >= Item.POTION_RED && item <= Item.POTION_PURPLE)
 			this.lastPotionUsed = turnCount;
 	}
+	resetEffect(type) {
+		switch (type) {
+		}
+	}
 
+
+	// apply status effect to entity
 	activeEffect(type) {
 		switch(type) {
+			//Vines: stops movement and decreases health by 1
 			case statusList.VINES:
-				this.health -= 2;
-				// stop the player from moving
+				this.health -= 1;
 				break;
+			//Fire: decreases health by 5 or 10
 			case statusList.FIRE:
 				if (randint(0,1) == 0) {
 					this.health -= 5;
@@ -247,27 +253,28 @@ class Entity {
 					this.health -= 10;
 				}
 				break;
+			//Poison: decreases health by 1%
 			case statusList.POISON:
 				this.health -= this.max_health/100;
 				break;
+			//Bleed: decreases health by 2% 
 			case statusList.BLEED:
 				this.health -= this.max_health/50;
 				break;
 		}
+		// if health is 0 or less, die
 		if (this.health <= 0)
 			this.die(this);
 	}
 
-	resetEffect(type) {
-		switch (type) {
-		}
-	}
-
+	// applies status effect to entity every turn 
+	// make count of time left for effect
 	applyEffects() {
 		for (let i = 0; i < this.effects.length; i++) {
 			if (this.effects[i] > 0) {
 				this.activeEffect(i);
 				this.effects[i]--;
+				// if effect time is 0, reset effect
 				if (this.effects[i] == 0)
 					this.resetEffect(i);
 			}
