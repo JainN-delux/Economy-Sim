@@ -198,7 +198,6 @@ class Entity {
 					break;
 				case Item.WOODEN_SHIELD:
 					this.mana++;
-					this.health = Math.min(this.max_health, this.health + this.max_health*(0.02));
 					break;
 			}
 		}
