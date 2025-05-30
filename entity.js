@@ -68,7 +68,7 @@ function convertStatus(type) {
 			return "Invisible";
 	}
 }
-	
+
 // ------------------------ENTITY------------------------
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
@@ -243,6 +243,7 @@ class Entity {
 			//Vines: stops movement and decreases health by 1
 			case statusList.VINES:
 				this.health -= 1;
+				this.lastAttacked = turnCount;
 				break;
 			//Fire: decreases health by 5 or 10
 			case statusList.FIRE:
@@ -252,14 +253,17 @@ class Entity {
 				else {
 					this.health -= 10;
 				}
+				this.lastAttacked = turnCount;
 				break;
 			//Poison: decreases health by 1%
 			case statusList.POISON:
 				this.health -= this.max_health/100;
+				this.lastAttacked = turnCount;
 				break;
 			//Bleed: decreases health by 2% 
 			case statusList.BLEED:
 				this.health -= this.max_health/50;
+				this.lastAttacked = turnCount;
 				break;
 		}
 		// if health is 0 or less, die
@@ -332,7 +336,7 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.STEEL_SHIELD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
 player = entities[0]
 
 // Returns entity at a position
