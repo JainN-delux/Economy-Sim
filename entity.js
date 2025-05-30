@@ -8,7 +8,7 @@ let player;
 const ENTITY_SRC_SIZE = 16;
 
 // This turns off things like hostile enemies
-let debug = true;
+let debug = false;
 
 // enum for entity types
 const EntityType = {
@@ -325,7 +325,7 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.BOW])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.STEEL_SHIELD])];
 player = entities[0]
 
 // Returns entity at a position
