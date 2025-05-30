@@ -24,35 +24,49 @@ const Item = {
 
 //weapon stats
 class ItemStats {
-	constructor(damage, shield, name) {
+	constructor(damage, shield, mana, special, special_mana, name) {
 		this.damage = damage;
 		this.shield = shield;
 		this.name = name;
+		this.mana = mana;
+		this.special = special;
+		this.special_mana = special_mana;
 	}
 }
 
 //weapon stats
 const itemStats = [
-	new ItemStats(1, 1, "Potion Red"),
-	new ItemStats(1, 1, "Defense Boost"),
-	new ItemStats(1, 1, "Attack Boost"),
-	new ItemStats(1, 1, "Potion Green"),
-	new ItemStats(1, 1, "Potion Purple"),
-	new ItemStats(10, 2, "Sword"),
-	new ItemStats(10, 2, "Poison Sword"),
-	new ItemStats(20, 1, "Hatchet"),
-	new ItemStats(25, 1, "Axe"),
-	new ItemStats(4, 20, "Steel Shield"),
-	new ItemStats(2, 10, "Wooden Shield"),
-	new ItemStats(10, 1, "Bow"),
-	new ItemStats(2, 1, "Arrow"),
-	new ItemStats(1, 1, "Key"),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Red"),
+	new ItemStats(1, 1, 1, 1, 1, "Defense Boost"),
+	new ItemStats(1, 1, 1, 1, 1, "Attack Boost"),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Green"),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Purple"),
+	new ItemStats(10, 2, 1, 30, 3, "Sword"),
+	new ItemStats(10, 2, 1, 30, 3, "Poison Sword"),
+	new ItemStats(20, 1, 1, 40, 4, "Hatchet"),
+	new ItemStats(30, 1, 2, 40, 3, "Axe"),
+	new ItemStats(4, 20, 2, 1, 4, "Steel Shield"),
+	new ItemStats(2, 10, 1, 2, 2, "Wooden Shield"),
+	new ItemStats(10, 1, 1, 10, 2, "Bow"),
+	new ItemStats(2, 1, 1, 1, 1, "Arrow"),
+	new ItemStats(1, 1, 1, 1, 1, "Key"),
 ];
 
 function inRange(item, x, y) {
 	switch (item) {
 		case Item.BOW:
 			return Math.abs(x)+Math.abs(y) <= 3;
+		default:
+			return Math.abs(x)+Math.abs(y) <= 1;
+	}
+}
+
+function inRangeSpecial(item, x, y) {
+	switch (item) {
+		case Item.BOW:
+			return Math.abs(x)+Math.abs(y) <= 5;
+		case Item.SWORD:
+			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}
@@ -140,6 +154,8 @@ class Shop {
 
 let inventory = new Inventory();
 
+
 let shop = new Shop();
 
 export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange ,shop}
+

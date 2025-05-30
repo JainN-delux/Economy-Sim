@@ -1,7 +1,9 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
-import { entityAtTile, player, entities, statusTime, convertStatus, statusList } from "./entity.js";
-import { inventory, items, inRange , shop} from "./item.js";
+
+import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats } from "./entity.js";
+import { inventory, items, inRange, shop, itemStats, inRangeSpecial } from "./item.js";
+
 
 //variables
 let turnCount = 0;
@@ -17,9 +19,7 @@ function updateWorld() {
 		}
 	}
 
-	player.returnBase();
-	player.regen(0.01);
-	player.applyEffects();
+	player.update();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();
@@ -28,66 +28,82 @@ function updateWorld() {
 	turnCount++;
 }
 
+function attackAt(e, x, y, key_shift) {
+	if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0) {
+		if (player.quickslot[player.selected] == null) {
+			player.attack(e);
+			updateWorld();
+		}
+		else if (key_shift) {
+			if (inRangeSpecial(player.quickslot[player.selected], x, y)) {
+				if (player.mana >= itemStats[player.quickslot[player.selected]].special_mana)
+					player.attack(e, true);
+				updateWorld();
+			}
+		}
+		else if (inRange(player.quickslot[player.selected], x, y)) {
+			if (player.mana >= itemStats[player.quickslot[player.selected]].mana)
+				player.attack(e);
+			updateWorld();
+		}
+	}
+}
+
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
-	
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
 	if (key === 'x') {
 		inventory.toggle();
 	}
 	//move up
-	if (key == 'w' && isWalkable[tiles[player.y-1][player.x]]) {
+	if ((key == 'w' || key == 'W') && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y -= 1
+			updateWorld();
 		}
-		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
-		updateWorld();
+		else
+			attackAt(e, 0, -1, key == 'W');
 	}
 	//move down
-	if (key == 's' && isWalkable[tiles[player.y+1][player.x]]) {
+	if ((key == 's' || key == 'S') && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y += 1
+			updateWorld();
 		}
-		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
-		updateWorld();
+		else
+			attackAt(e, 0, 1, key == 'S');
 	}
 	//move left
-	if (key == 'a' && isWalkable[tiles[player.y][player.x-1]]) {
+	if ((key == 'a' || key == 'A') && isWalkable[tiles[player.y][player.x-1]]) {
 		let e = entityAtTile(player.x-1, player.y);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x -= 1
+			updateWorld();
 		}
-		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
-		updateWorld();
+		else
+			attackAt(e, -1, 0, key == 'A');
 	}
 	//move right
-	if (key == 'd' && isWalkable[tiles[player.y][player.x+1]]) {
+	if ((key == 'd' || key == 'D') && isWalkable[tiles[player.y][player.x+1]]) {
 		let e = entityAtTile(player.x+1, player.y);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x += 1
+			updateWorld();
 		}
-		else if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0)
-			player.attack(e);
-		updateWorld();
+		else
+			attackAt(e, 1, 0, key == 'D');
 	}
-	if (key == 'e') {
+	if (key == 'e' || key == 'E') {
 		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
-		if (e != null) {
-			if (inRange(player.quickslot[player.selected], attack_x, attack_y) && player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0) {
-				player.attack(e);
-				updateWorld();
-			}
-		}
+		if (e != null)
+			attackAt(e, attack_x, attack_y, key == 'E');
 	}
 	if (key == 'o') {
 		if (items[player.y][player.x] != null) {
