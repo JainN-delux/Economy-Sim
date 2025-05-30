@@ -105,7 +105,7 @@ window.keyPressed = () => {
 		if (e != null)
 			attackAt(e, attack_x, attack_y, key == 'E');
 	}
-	if (key == 'o') {
+	if (key == 'o' || key == 'O') {
 		if (items[player.y][player.x] != null) {
 			inventory.add(items[player.y][player.x]);
 			items[player.y][player.x] = null;
