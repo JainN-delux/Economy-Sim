@@ -194,10 +194,10 @@ class Entity {
 					// Do AOE damage to all adjacent enemies
 					break;
 				case Item.STEEL_SHIELD:
-					this.defense_mult *= 2;
+					this.defense_mult *= 1.6;
 					break;
 				case Item.WOODEN_SHIELD:
-					this.defense_mult *= 2;
+					this.defense_mult *= 1.4;
 					break;
 			}
 		}
