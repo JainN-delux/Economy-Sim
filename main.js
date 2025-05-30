@@ -1,7 +1,9 @@
 import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
+
 import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats } from "./entity.js";
-import { inventory, items, inRange, itemStats, inRangeSpecial } from "./item.js";
+import { inventory, items, inRange, shop, itemStats, inRangeSpecial } from "./item.js";
+
 
 //variables
 let turnCount = 0;
@@ -123,7 +125,12 @@ window.keyPressed = () => {
 		window.location.reload()
 	}
 
-	if (inventory.open) {
+	if (shop.open) {
+		if (keyCode == UP_ARROW)
+			shop.selection_up();
+		else if (keyCode == DOWN_ARROW)
+			shop.selection_down();
+	} else if (inventory.open) {
 		if (keyCode == UP_ARROW)
 			inventory.selection_up();
 		else if (keyCode == DOWN_ARROW)
@@ -181,8 +188,11 @@ window.mouseClicked = () => {
 
 //DRAW
 window.draw = () => {
+
 	background(220);
 	drawWorld(player.x, player.y);
+	console.log(shop.selected)
+
 	let h = 1;
 	for (let i = 0; i < player.effects.length; i++) {
 		if (player.effects[i] > 0) {

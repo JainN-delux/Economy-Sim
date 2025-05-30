@@ -368,6 +368,9 @@ class Entity {
 	}
 }
 
+
+
+
 // Spawn player
 let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
 player = entities[0]

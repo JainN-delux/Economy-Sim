@@ -128,10 +128,34 @@ class Inventory {
 			this.selected += 1;
 	}
 
-	add_quickslot() {
-	}
 }
+
+class Shop {
+	constructor() {
+		this.items = [];
+		this.selected = 0;
+		this.open = false
+	}
+	remove_selected() {
+		return this.items.splice(shop.selected, 1)[0];
+	}
+	selection_up() {
+		if (this.selected > 6)
+			this.selected --;
+	}
+
+	selection_down() {
+		if (this.selected < 0)
+			this.selected ++;
+	}
+
+}
+
 
 let inventory = new Inventory();
 
-export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, }
+
+let shop = new Shop();
+
+export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange ,shop}
+
