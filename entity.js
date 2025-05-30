@@ -197,7 +197,8 @@ class Entity {
 					this.defense_mult *= 2;
 					break;
 				case Item.WOODEN_SHIELD:
-					this.defense_mult *= 2;
+					this.mana++;
+					this.health = Math.min(this.max_health, this.health + this.max_health*(0.02));
 					break;
 			}
 		}
