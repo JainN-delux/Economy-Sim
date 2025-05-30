@@ -335,10 +335,10 @@ class Entity {
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
 		// Attack if the player is within reach (adjacent)
-		if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y)) {
-			if (this.mana >= entityStats[this.type].mana)
-				this.attack(player);
-		}
+		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= entityStats[this.type].special_mana)
+			this.attack(player, true);
+		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= entityStats[this.type].mana)
+			this.attack(player);
 		// If enemy is detected within aggro range moves toward player
 		else if (xdist + ydist < 10 && this.effects[statusList.VINES] == 0 && this.effects[statusList.STUN] == 0) {
 			// Choose axis to move in based on proximity
