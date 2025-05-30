@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant} from "./generateWorld.js";
 import { entities, player, entityStats } from "./entity.js";
 import { turnCount, attack_x, attack_y } from "./main.js";
-import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange } from "./item.js" 
+import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
 
 //CONSTANTS
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
@@ -203,7 +203,7 @@ function drawWorld(px, py) {
 	fill(0, 0, 0, 0);
 	//check if item is choosen in the quickslot
 	//player quick the attack and defense of the weapon
-	if (inRange(player.quickslot[player.selected], attack_x, attack_y)) {
+	if (keyIsDown(SHIFT) ? inRangeSpecial(player.quickslot[player.selected], attack_x, attack_y) : inRange(player.quickslot[player.selected], attack_x, attack_y)) {
 		stroke(100, 100, 255);
 	}else {
 		stroke(255, 100, 100);

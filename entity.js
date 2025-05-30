@@ -1,6 +1,6 @@
 import { isWalkable, randint, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
-import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange } from "./item.js";
+import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial } from "./item.js";
 import { turnCount } from "./main.js";
 
 let player;
@@ -133,8 +133,11 @@ class Entity {
 	}
 
 	// Gets the attack stat of the current held item of the entity
-	heldItemAttack() {
-		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].damage : 1);
+	heldItemAttack(special=false) {
+		if (special)
+			return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].special : 1);
+		else
+			return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].damage : 1);
 	}
 
 	// Gets the shield stat of the current held itme of the entity
@@ -171,13 +174,39 @@ class Entity {
 	}
 
 	// attack and damage
-	attack(entity) {
+	attack(entity, special=false) {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
 			return;
-		this.mana -= itemStats[this.quickslot[this.selected]].mana;
+		if (special) {
+			if (this.quickslot[this.selected] != null)
+				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
+			switch (this.quickslot[this.selected]) {
+				case Item.SWORD:
+					this.attack_mult *= 1.5;
+					break;
+				case Item.POISON_SWORD:
+					entity.effects[statusList.POISON] += 5;
+					break;
+				case Item.HATCHET:
+					entity.defense_mult /= 2;
+					break;
+				case Item.AXE:
+					// Do AOE damage to all adjacent enemies
+					break;
+				case Item.STEEL_SHIELD:
+					this.defense_mult *= 2;
+					break;
+				case Item.WOODEN_SHIELD:
+					this.defense_mult *= 2;
+					break;
+			}
+		}
+		else
+			if (this.quickslot[this.selected] != null)
+				this.mana -= itemStats[this.quickslot[this.selected]].mana;
 		entity.lastAttacked = turnCount;
 		// Calculate damage of attack by doing attack value / defense value
-		let damage = (this.heldItemAttack() * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
+		let damage = (this.heldItemAttack(special) * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
 		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
 		entity.health -= damage;
@@ -193,6 +222,10 @@ class Entity {
 			this.attack_mult = (this.attack_mult-1)*0.9 + 1;
 		if (this.defense_mult >= 1)
 			this.defense_mult = (this.defense_mult-1)*0.9 + 1;
+		if (this.attack_mult <= 1)
+			this.attack_mult = 1 - (1-this.attack_mult)*0.9;
+		if (this.defense_mult <= 1)
+			this.attack_mult = 1 - (1-this.attack_mult)*0.9;
 	}
 
 	//Use item from inventory when selected
