@@ -160,7 +160,7 @@ function drawShop() {
 // display DAMAGE number for entities and player
 function drawDamageMarker(damageMarker) {
 	fill(255, 0, 0)
-	textSize(10);
+	textSize(15);
 	let x = (damageMarker.entity.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 	let y = (damageMarker.entity.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 	text(damageMarker.damage.toFixed(2), x, y-(millis()-damageMarker.time)/100, 100)
