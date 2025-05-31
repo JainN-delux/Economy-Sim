@@ -158,7 +158,9 @@ class Entity {
 	// if regen_percent = 5 then enitiy regens .5% of max hp a turn
 	regen(regenPercent){ 
 		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max){
+			let old_health = this.health;
 			this.health = Math.min(this.max_health, this.health + this.max_health*(regenPercent)) 
+			damageMarkers.push({ entity: this, damage: this.health - old_health, time: millis(), color: "green" });
 		}
 		// add a way to prevent regen in fights
 		// use the turn counter for this

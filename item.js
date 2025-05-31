@@ -67,6 +67,8 @@ function inRangeSpecial(item, x, y) {
 			return Math.abs(x)+Math.abs(y) <= 5;
 		case Item.SWORD:
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
+		case Item.AXE:
+			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}
