@@ -47,7 +47,7 @@ const itemStats = [
 	new ItemStats(30, 1, 2, 40, 3, "Axe"),
 	new ItemStats(4, 20, 2, 1, 4, "Steel Shield"),
 	new ItemStats(2, 10, 1, 0.1, 1, "Wooden Shield"),
-	new ItemStats(10, 1, 1, 10, 2, "Bow"),
+	new ItemStats(10, 1, 1, 15, 2, "Bow"),
 	new ItemStats(2, 1, 1, 1, 1, "Arrow"),
 	new ItemStats(1, 1, 1, 1, 1, "Key"),
 ];
@@ -66,6 +66,8 @@ function inRangeSpecial(item, x, y) {
 		case Item.BOW:
 			return Math.abs(x)+Math.abs(y) <= 5;
 		case Item.SWORD:
+			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
+		case Item.POISON_SWORD:
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		case Item.AXE:
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);

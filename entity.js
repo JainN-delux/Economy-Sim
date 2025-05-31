@@ -194,7 +194,14 @@ class Entity {
 					entity.defense_mult /= 2;
 					break;
 				case Item.AXE:
-					// Do AOE damage to all adjacent enemies
+					// Do AOE damage to all adjacent enemies (also does damage to itself)
+					for (let x = -1; x <= 1; x++)
+						for (let y = -1; y <= 1; y++) {
+							let e = entityAtTile(this.x+x, this.y+y);
+							if (e != null) {
+								this.attack(e);
+							}
+						}
 					break;
 				case Item.STEEL_SHIELD:
 					this.defense_mult *= 2;
