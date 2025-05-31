@@ -104,14 +104,8 @@ function drawRestart() {
 		textSize(32)
 		text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
 	// draws the restart button in the corner
-	} else { 
-		fill (255)
-		stroke (0)
-		strokeWeight(2)
-		rect(CANVAS_WIDTH-50, 0, 50, 50)
-		noStroke()
 	}
-} 
+}
 
 //draws the QUICK SLOT for equiped in the bottom of the screen
 function drawQuickslot() {
@@ -120,9 +114,11 @@ function drawQuickslot() {
 	// draws the 4 slots
 	for (let i = 0; i < 4; i++) {
 		fill(255)
+		if (player.selected == i)
+			fill(100, 200, 200);
 		rect(10 + i*60, CANVAS_HEIGHT-55, 50, 50)
 		if (player.quickslot[i])
-			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE, TILE_SIZE, player.quickslot[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+			image(itemset, 10 + i*60, CANVAS_HEIGHT-55, TILE_SIZE*1.5, TILE_SIZE*1.5, player.quickslot[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 	} // draws the squares 4 times
 	fill(125, 150, 150);
 	rect(10 + 4*60, CANVAS_HEIGHT-45, 50, 50)
@@ -141,7 +137,6 @@ function drawShop() {
 		for (let i = 0; i < 6; i++) {
 			fill(255)
 			rect(110, 110 + i*80, 70, 70)
-
 			
 			if (i == inventory.selected) {
 				fill(40, 60, 255);
@@ -159,7 +154,7 @@ function drawShop() {
 
 // display DAMAGE number for entities and player
 function drawDamageMarker(damageMarker) {
-	fill(255, 0, 0)
+	fill(damageMarker.color)
 	textSize(15);
 	let x = (damageMarker.entity.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 	let y = (damageMarker.entity.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
@@ -174,7 +169,7 @@ function drawTile(tile, x, y) {
 
 //function to draw item based on item type and x & y loci
 function drawItems(item, x, y) {
-	image(itemset, x, y, TILE_SIZE, TILE_SIZE, item*ITEM_SRC_SIZE, 0,ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+	image(itemset, x, y, TILE_SIZE, TILE_SIZE, item*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 } // draws the item at the x & y
 
 
@@ -185,14 +180,13 @@ const VIEWPORT_HEIGHT = 2 + CANVAS_HEIGHT / TILE_SIZE;
 function drawWorld(px, py) {
 	for (let x = 0; x < VIEWPORT_WIDTH; x++) {
 		for (let y = 0; y < VIEWPORT_HEIGHT; y++) {
-
 			let tile_x = Math.floor(x+px-VIEWPORT_WIDTH/2);
 			if (tile_x < 0 || tile_x >= WORLD_WIDTH)	//check if tile is within widht
 				continue
 			let tile_y = Math.floor(y+py-VIEWPORT_HEIGHT/2);	//check if tile is within height
 			if (tile_y < 0 || tile_y >= WORLD_HEIGHT)
 				continue
-			//draw tile at the x & y loci from the tiles array
+			// draw tile from tile_y, tile_x at the screenspace converted position relative to player
 			drawTile(tiles[tile_y][tile_x], (x-fract(px)-1)*TILE_SIZE, (y-fract(py)-1)*TILE_SIZE);
 
 			const item = items[tile_y][tile_x];
@@ -204,11 +198,11 @@ function drawWorld(px, py) {
 		}
 	}
 
-	//iterate through entities and blitz
+	// iterate through entities
 	for (let i = 0; i < entities.length; i++)
 		entities[i].draw();
 
-	// iterate through current damageMarker array and blitz
+	// iterate through current damageMarker array
 	for (let i = 0; i < damageMarkers.length; i++)
 		if (millis()-damageMarkers[i].time > 1000)
 			damageMarkers.splice(i--, 1);
@@ -217,15 +211,14 @@ function drawWorld(px, py) {
 
 	
 	fill(0, 0, 0, 0);
-	//check if item is choosen in the quickslot
-	//player quick the attack and defense of the weapon
+	// Shows the range of the current attack with weapon
 	if (keyIsDown(SHIFT) ? inRangeSpecial(player.quickslot[player.selected], attack_x, attack_y) : inRange(player.quickslot[player.selected], attack_x, attack_y)) {
 		stroke(100, 100, 255);
 	}else {
 		stroke(255, 100, 100);
 	}
 
-	// makes a background for quickslot
+	// attack marker
 	strokeWeight(8);
 	rect((attack_x-fract(px)+VIEWPORT_WIDTH/2-1)*TILE_SIZE, (attack_y-fract(py)+VIEWPORT_HEIGHT/2-1)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
 	
@@ -236,7 +229,7 @@ function drawWorld(px, py) {
 	drawShop()
 	drawRestart()
 
-	//blitz turn count on the screen
+	// turn count on the screen
 	textSize(32);
 	fill(255);
 	stroke(0);

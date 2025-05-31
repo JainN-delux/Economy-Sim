@@ -112,13 +112,13 @@ window.keyPressed = () => {
 			updateWorld();
 		}
 	}
-	if (key == '1')
+	if (key == '1' || key == '!')
 		player.selected = 0;
-	else if (key == '2')
+	else if (key == '2' || key == '@')
 		player.selected = 1;
-	else if (key == '3')
+	else if (key == '3' || key == '#')
 		player.selected = 2;
-	else if (key == '4')
+	else if (key == '4' || key == '$')
 		player.selected = 3;
 	//reload
 	else if (key == "r" ) {

@@ -152,6 +152,7 @@ class Entity {
 			this.xp -= this.lvl*10;
 			this.lvl++;
 		}
+		damageMarkers.push({ entity: this, damage: xp, time: millis(), color: "violet" });
 	}
 
 	// if regen_percent = 5 then enitiy regens .5% of max hp a turn
@@ -166,7 +167,7 @@ class Entity {
 		// after 3 or more turns since hp dropped turn on regen
 	}
 
-	// check who killed the entity and give xp to killer(player)
+	// Give xp to killer, drop item, delete entity
 	die(killer) {
 		killer.gainXp(this.lvl);
 		items[this.y][this.x] = this.quickslot[this.selected];
@@ -209,7 +210,7 @@ class Entity {
 		// Calculate damage of attack by doing attack value / defense value
 		let damage = (this.heldItemAttack(special) * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
 		// show damage on screen
-		damageMarkers.push({ entity: entity, damage: damage, time: millis() });
+		damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
 		entity.health -= damage;
 		// Delete entity and drop held item if health < 0
 		if (entity.health <= 0)
@@ -226,7 +227,7 @@ class Entity {
 		if (this.attack_mult <= 1)
 			this.attack_mult = 1 - (1-this.attack_mult)*0.9;
 		if (this.defense_mult <= 1)
-			this.attack_mult = 1 - (1-this.attack_mult)*0.9;
+			this.defense_mult = 1 - (1-this.defense_mult)*0.9;
 	}
 
 	//Use item from inventory when selected
@@ -235,9 +236,11 @@ class Entity {
 			// red potion increases health
 			case Item.POTION_RED:
 				this.max_health += 20;
+				damageMarkers.push({ entity: this, damage: this.max_health - this.health, time: millis(), color: "pink" });
 				break;
 			// green potion restores health to max
 			case Item.POTION_GREEN:
+				damageMarkers.push({ entity: this, damage: this.max_health - this.health, time: millis(), color: "green" });
 				this.health = this.max_health;
 				break;
 			//attack multiplier 
@@ -251,6 +254,7 @@ class Entity {
 			// potion that gives Xp and halves health
 			case Item.POTION_PURPLE:
 				this.gainXp(5);
+				damageMarkers.push({ entity: this, damage: this.health/2, time: millis(), color: "red" });
 				this.health = this.health/2;
 				break;
 			//if item is WEAPON push to quickslot
@@ -277,25 +281,30 @@ class Entity {
 			//Vines: stops movement and decreases health by 1
 			case statusList.VINES:
 				this.health -= 1;
+				damageMarkers.push({ entity: this, damage: 1, time: millis(), color: "red" });
 				this.lastAttacked = turnCount;
 				break;
 			//Fire: decreases health by 5 or 10
 			case statusList.FIRE:
 				if (randint(0,1) == 0) {
 					this.health -= 5;
+					damageMarkers.push({ entity: this, damage: 5, time: millis(), color: "red" });
 				}
 				else {
 					this.health -= 10;
+					damageMarkers.push({ entity: this, damage: 10, time: millis(), color: "red" });
 				}
 				this.lastAttacked = turnCount;
 				break;
 			//Poison: decreases health by 1%
 			case statusList.POISON:
+				damageMarkers.push({ entity: this, damage: this.max_health/100, time: millis(), color: "red" });
 				this.health -= this.max_health/100;
 				this.lastAttacked = turnCount;
 				break;
 			//Bleed: decreases health by 2% 
 			case statusList.BLEED:
+				damageMarkers.push({ entity: this, damage: this.max_health/50, time: millis(), color: "red" });
 				this.health -= this.max_health/50;
 				this.lastAttacked = turnCount;
 				break;
@@ -336,7 +345,8 @@ class Entity {
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
 		// Attack if the player is within reach (adjacent)
-		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
+		// WOODEN_SHIELD thing is so that the AI dosen't constantly use the special for no reason. I will need item specific logic later.
+		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana && (this.quickslot[this.selected] != Item.WOODEN_SHIELD || this.health <= 0.5*this.max_health))
 			this.attack(player, true);
 		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].mana)
 			this.attack(player);
