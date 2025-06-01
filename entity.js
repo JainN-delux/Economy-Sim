@@ -72,9 +72,10 @@ function convertStatus(type) {
 // ------------------------ENTITY------------------------
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
-	constructor(max_health, attack_base, defense_base, mana, regen_max) {
+	constructor(max_health, attack_base, ranged_base, defense_base, mana, regen_max) {
 		this.max_health = max_health;
 		this.attack_base = attack_base;
+		this.ranged_base = ranged_base;
 		this.defense_base = defense_base;
 		this.regen_max = regen_max;
 		this.mana = mana;
@@ -83,11 +84,11 @@ class EntityStats {
 
 // assign 4 types of enemies and their stats
 const entityStats = [
-	new EntityStats(100, 10, 10, 4, 0.4),	//player
-	new EntityStats(100, 13, 7, 4, 0.4),	//warrior
-	new EntityStats(100, 15, 5, 4, 0.4),	//archer
-	new EntityStats(100, 80, 500, 4, 0.4), //boss
-	new EntityStats(100, 0, 10, 4, 0.4)	//merchant
+	new EntityStats(100, 10, 10, 10, 4, 0.4),
+	new EntityStats(100, 8, 15, 7, 4, 0.4),
+	new EntityStats(100, 15, 12, 5, 6, 0.4),
+	new EntityStats(100, 80, 80, 500, 4, 0.4),
+	new EntityStats(100, 0, 0, 10, 4, 0.4),
 ];
 
 /*
@@ -101,10 +102,12 @@ class Entity {
 		this.health = entityStats[type].max_health;
 		this.max_health = entityStats[type].max_health;
 		this.attack_base = entityStats[type].attack_base;
+		this.ranged_base = entityStats[type].ranged_base;
 		this.defense_base = entityStats[type].defense_base;
 		this.mana_max = entityStats[type].mana;
 		this.mana = 0;
 		this.attack_mult = 1;
+		this.ranged_mult = 1;
 		this.defense_mult = 1;
 		this.lvl = lvl;
 		this.xp = 0;
@@ -210,14 +213,18 @@ class Entity {
 					this.mana++;
 					this.regen(0.01);
 					break;
+				case Item.BOW:
+					this.ranged_mult *= 1.2;
+					break;
 			}
 		}
 		else
 			if (this.quickslot[this.selected] != null)
 				this.mana -= itemStats[this.quickslot[this.selected]].mana;
 		entity.lastAttacked = turnCount;
+		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value
-		let damage = (this.heldItemAttack(special) * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
+		let damage = (this.heldItemAttack(special) * attack * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl))
 		// show damage on screen
 		damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
 		entity.health -= damage;
@@ -231,10 +238,14 @@ class Entity {
 			return;
 		if (this.attack_mult >= 1)
 			this.attack_mult = (this.attack_mult-1)*0.9 + 1;
+		if (this.ranged_mult >= 1)
+			this.ranged_mult = (this.ranged_mult-1)*0.9 + 1;
 		if (this.defense_mult >= 1)
 			this.defense_mult = (this.defense_mult-1)*0.9 + 1;
 		if (this.attack_mult <= 1)
 			this.attack_mult = 1 - (1-this.attack_mult)*0.9;
+		if (this.ranged_mult <= 1)
+			this.ranged_mult = 1 - (1-this.ranged_mult)*0.9;
 		if (this.defense_mult <= 1)
 			this.defense_mult = 1 - (1-this.defense_mult)*0.9;
 	}
@@ -255,6 +266,7 @@ class Entity {
 			//attack multiplier 
 			case Item.POTION_ATTACK:
 				this.attack_mult *= 2;
+				this.ranged_mult *= 2;
 				break;
 			//defense multiplier
 			case Item.POTION_DEFENCE:
@@ -392,7 +404,7 @@ class Entity {
 
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.BOW])];
 player = entities[0]
 
 // Returns entity at a position

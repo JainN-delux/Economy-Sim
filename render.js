@@ -61,21 +61,23 @@ function drawInvent() {
 		}
 		//show item stats of selected item on the right side of the screen
 		fill(0);
-		rect(stat_x, 0, TILE_SIZE*9, TILE_SIZE*6);
+		rect(stat_x, 0, TILE_SIZE*9, TILE_SIZE*9);
 		fill(255);
 		textSize(20);
-		text("X Location: " + player.x, stat_x, 200)
-		text("Y Location: " + player.y, stat_x, 220)
 		text("Level: " + player.lvl, stat_x, 20);
 		text("Xp: " + player.xp, stat_x, 40);
-		text("Health: " + player.health.toFixed(1), stat_x, 60);
+		text("Health: " + player.health.toFixed(2), stat_x, 60);
 		text("Max Health: " + player.max_health, stat_x, 80);
-		text("Attack base: " + player.attack_base*player.lvl.toFixed(1), stat_x, 100);
-		text("Defense base: " + player.defense_base*player.lvl.toFixed(1), stat_x, 120);
-		text("Attack mult: " + player.attack_mult.toFixed(1), stat_x, 140);
-		text("Defense mult: " + player.defense_mult.toFixed(1), stat_x, 160);
+		text("Attack base: " + player.attack_base*player.lvl.toFixed(2), stat_x, 100);
+		text("Defense base: " + player.defense_base*player.lvl.toFixed(2), stat_x, 120);
+		text("Ranged base: " + player.ranged_base*player.lvl.toFixed(2), stat_x, 140);
+		text("Attack mult: " + player.attack_mult.toFixed(2), stat_x, 160);
+		text("Ranged mult: " + player.ranged_mult.toFixed(2), stat_x, 180);
+		text("Defense mult: " + player.defense_mult.toFixed(2), stat_x, 200);
 		if (inventory.items[inventory.selected])
-			text("Item Selected: " + itemStats[inventory.items[inventory.selected]].name, stat_x, 180);
+			text("Item Selected: " + itemStats[inventory.items[inventory.selected]].name, stat_x, 220);
+		text("X Location: " + player.x, stat_x, 240)
+		text("Y Location: " + player.y, stat_x, 260)
 	}
 }
 
