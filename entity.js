@@ -87,7 +87,7 @@ const entityStats = [
 	new EntityStats(100, 10, 10, 10, 4, 0.4),
 	new EntityStats(100, 8, 15, 7, 4, 0.4),
 	new EntityStats(100, 15, 12, 5, 6, 0.4),
-	new EntityStats(100, 80, 80, 500, 4, 0.4),
+	new EntityStats(1000, 160, 160, 500, 10, 1.0),
 	new EntityStats(100, 0, 0, 10, 4, 0.4),
 ];
 
@@ -159,17 +159,10 @@ class Entity {
 	}
 
 	// if regen_percent = 5 then enitiy regens .5% of max hp a turn
-	regen(regenPercent){ 
-		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max){
-			let old_health = this.health;
-			this.health = Math.min(this.max_health, this.health + this.max_health*(regenPercent)) 
-			damageMarkers.push({ entity: this, damage: this.health - old_health, time: millis(), color: "green" });
-		}
-		// add a way to prevent regen in fights
-		// use the turn counter for this
-		// check is health lowers from the last turn
-		// if its lower than last turn disable regn
-		// after 3 or more turns since hp dropped turn on regen
+	regen(regenPercent) { 
+		let old_health = this.health;
+		this.health = Math.min(this.max_health, this.health + this.max_health*(regenPercent)) 
+		damageMarkers.push({ entity: this, damage: this.health - old_health, time: millis(), color: "green" });
 	}
 
 	// Give xp to killer, drop item, delete entity
@@ -210,7 +203,6 @@ class Entity {
 					this.defense_mult *= 2;
 					break;
 				case Item.WOODEN_SHIELD:
-					this.mana++;
 					this.regen(0.01);
 					break;
 				case Item.BOW:
@@ -351,7 +343,8 @@ class Entity {
 
 	update() {
 		this.returnBase()
-		this.regen(0.01) // does the entire regen part
+		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max)
+			this.regen(0.01) // does the entire regen part
 		this.applyEffects();
 		this.mana = Math.min(this.mana_max, this.mana + 1);
 	}
@@ -404,7 +397,7 @@ class Entity {
 
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.BOW])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
 player = entities[0]
 
 // Returns entity at a position

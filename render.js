@@ -1,4 +1,4 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant} from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant, level } from "./generateWorld.js";
 import { entities, player, entityStats } from "./entity.js";
 import { turnCount, attack_x, attack_y } from "./main.js";
 import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop } from "./item.js" 
@@ -235,7 +235,8 @@ function drawWorld(px, py) {
 	textSize(32);
 	fill(255);
 	stroke(0);
-	text(turnCount, 32, 32);
+	text(turnCount, 48, 32);
+	text(level, 10, 32);
 	
 	noStroke()
 } // draws the entire map

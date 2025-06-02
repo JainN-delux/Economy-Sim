@@ -1,4 +1,4 @@
-import { isWalkable, generateWorld, tiles, generateEnemies } from "./generateWorld.js";
+import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 
 import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats } from "./entity.js";
@@ -13,10 +13,15 @@ let attack_y = 0;
 function updateWorld() {
 	//if enemy is on trap apply effect
 	for (let i = 0; i < entities.length; i++) {
-		if (tiles[entities[i].y][entities[i].x] > 16) {
+		if (tiles[entities[i].y][entities[i].x] > Tile.EMPTY && tiles[entities[i].y][entities[i].x] < Tile.STAIRS) {
 			entities[i].effects[tiles[entities[i].y][entities[i].x]-17] += statusTime[tiles[entities[i].y][entities[i].x]-17];
 			tiles[entities[i].y][entities[i].x] = 11; //reset tile to floor
 		}
+	}
+
+	if (tiles[player.y][player.x] == Tile.STAIRS && boss.health <= 0) {
+		generateWorld();
+		return;
 	}
 
 	player.update();
@@ -170,8 +175,6 @@ window.setup = () => {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
 	generateWorld();
-	
-
 }
 //mousclick
 window.mouseClicked = () => {

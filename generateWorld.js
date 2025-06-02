@@ -1,5 +1,5 @@
 import { Entity, EntityType, entities, entityAtTile, player} from "./entity.js";
-import { itemInRoom, Item } from "./item.js";
+import { itemInRoom, Item, items } from "./item.js";
 import { turnCount } from "./main.js";
 
 //CONSTANTS
@@ -9,6 +9,7 @@ const WORLD_HEIGHT = 256;  // The height in tiles in size
 //arrays
 let rooms = []
 let spaces = []
+let level = 0;
 
 //fundamental functions
 function randint(min, max) {
@@ -41,38 +42,46 @@ const Tile = {
 	TRAP_BLEED: 19,
 	TRAP_STUN: 20,
 	TRAP_VINES: 21,
-	TRAP_POISON: 22,	
+	TRAP_POISON: 22,
+	TRAP_UNKNOWN0: 23,
+	TRAP_UNKNOWN1: 24,
+	TRAP_HOLE: 25,
+	STAIRS: 26,
 }
 
 // check if entities can walk on tiles or not
 const isWalkable = [
-	false, 	//1
-	false, 	//2
-	false, 	//3
-	false,	//4
-	false,	//5
-	false,	//6
-	false,  //7
-	true,   //8
-	true,  	//9
-	true, 	//10
-	true, 	//11
-	true, 	//12
-	true,	//13
-	true,	//14
-	true,	//15
-	true,	//16
-	true,	//17
-	true,	//18
-	true, 	//19
-	true,   //20
-	true,	//21
-	true,	//22
-	true,	//23
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
 ];
 
 // Our 2D array that stores tile data. This is initially filled with floors
-let tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
+let tiles;
 
 
 /* function
@@ -140,14 +149,11 @@ function generateRoomInsideSpace(rx, ry, w, h) {
 	
 }
 
-
-
 const SplitDir = {
 	HORIZONTAL: 0,
 	VERTICAL: 1,
 	MAX: 2,
 };
-
 
 function connectRooms(roomA, roomB) {
 	// Room floor tiles
@@ -206,7 +212,6 @@ function connectRooms(roomA, roomB) {
 	if (x0 != x1) {
 		let [startX, endX] = x0 < x1 ? [x0, x1] : [x1, x0];
 		for (let x = startX; x <= endX; x++) {
-
 			tiles[y0-1][x] = Tile.WALL_FRONT;
 			tiles[y0][x] = Tile.FLOOR;
 			tiles[y0+1][x] = Tile.WALL_FRONT;
@@ -269,12 +274,13 @@ function generateEnemies() {
 				let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1);
 				let y = randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1);
 				if (!entityAtTile(x, y))
-					entities.push(new Entity(x, y, randint(EntityType.WARRIOR+1, EntityType.WIZARD+1), randint(1, 1+Math.floor(turnCount/1000)), [randint(Item.SWORD, Item.BOW+1)]))
+					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)), [randint(Item.SWORD, Item.BOW+1)]))
 			}
 	}
 }
 
 let bossRoom;
+let boss;
 
 function generateBossroom() {
 	let best = 0;
@@ -284,7 +290,9 @@ function generateBossroom() {
 			best = rooms[i].h * rooms[i].w;
 		}
 	}
-	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h ), EntityType.BOSS, 1, [randint(Item.SWORD, Item.BOW+1)]))
+	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h - 1 ), EntityType.BOSS, level, [randint(Item.SWORD, Item.BOW+1)]))
+	boss = entities[entities.length-1];
+	tiles[boss.y][boss.x] = Tile.STAIRS;
 }
 
 let merchantRooms = []
@@ -299,13 +307,23 @@ function generateMerchant() {
 	}
 	merchantRooms.push(smallestRoom);
 
-	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h ), EntityType.MERCHANT, 1, [randint(Item.SWORD, Item.BOW+1)], false)
+	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, [randint(Item.SWORD, Item.BOW+1)], false)
 
 	entities.push(merchant)
 	console.log(merchant.x , merchant.y)
 }
 
 function generateWorld() {
+	level++;
+	rooms = [];
+	spaces = [];
+	merchant = null;
+	entities.splice(1, entities.length-1);
+	merchantRooms = [];
+	bossRoom = null;
+	tiles = Array.from({ length: WORLD_HEIGHT }, () => new Array(WORLD_WIDTH).fill(Tile.EMPTY));
+	for (let i = 0; i < items.length; i++) // ES6 mutability is a PITA
+		items[i] = new Array(WORLD_WIDTH).fill(null);
 	generateRooms(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 	generateBossroom()
 	generateMerchant()
@@ -320,4 +338,4 @@ function generateWorld() {
 				connectRooms(rooms[i], rooms[j]);
 }
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles ,randint,rooms, merchant};
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, merchant, Tile, level, boss };
