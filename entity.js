@@ -196,6 +196,7 @@ class Entity {
 							let e = entityAtTile(this.x+x, this.y+y);
 							if (e != null) {
 								this.attack(e);
+								this.mana++;
 							}
 						}
 					break;
@@ -427,7 +428,7 @@ class Entity {
 
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.WOODEN_SHIELD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.HATCHET])];
 player = entities[0]
 
 // Returns entity at a position
