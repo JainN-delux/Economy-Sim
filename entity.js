@@ -210,9 +210,38 @@ class Entity {
 					break;
 			}
 		}
-		else
+		else {
 			if (this.quickslot[this.selected] != null)
 				this.mana -= itemStats[this.quickslot[this.selected]].mana;
+			switch (this.quickslot[this.selected]) {
+				case Item.WOODEN_SHIELD:
+					let dir_x = entity.x-this.x;
+					let dir_y = entity.y-this.y;
+					if (!isWalkable[tiles[entity.x+dir_x][entity.y+dir_y]]) {
+						let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.defense_base * entity.defense_mult * (entity.lvl));
+						entity.health -= damage;
+						damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
+					}
+					else {
+						let e = entityAtTile(entity.x+dir_x, entity.y+dir_y);
+						if (e != null) {
+							let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.defense_base * entity.defense_mult * (entity.lvl));
+							entity.health -= damage;
+							damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
+							damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (e.defense_base * e.defense_mult * (e.lvl));
+							e.health -= damage;
+							damageMarkers.push({ entity: e, damage: damage, time: millis(), color: "red" });
+							if (entity.health <= 0)
+								entity.die(this);
+						}
+						else {
+							entity.x += dir_x;
+							entity.y += dir_y;
+						}
+					}
+					break;
+			}
+		}
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value
@@ -397,7 +426,7 @@ class Entity {
 
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.WOODEN_SHIELD])];
 player = entities[0]
 
 // Returns entity at a position
