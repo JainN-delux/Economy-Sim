@@ -14,12 +14,13 @@ const TILE_SIZE = 32;      // Rendered size of tile
 let tileset;                // Stores our tileset image
 let entitysheet;            // Stores our entity tilesheet image
 let itemset;				// Stores our item tilesheet image
-
+			
 // Preloads our images
 window.preload = () => { 
 	tileset = loadImage("./assets/tileset.png");
-	itemset = loadImage("./assets/item1.png");
+	itemset = loadImage("./assets/itemset.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
+	
 }		
 let damageMarkers = []; // hold relivent info to make the damage float
 
@@ -171,7 +172,9 @@ function drawTile(tile, x, y) {
 
 //function to draw item based on item type and x & y loci
 function drawItems(item, x, y) {
-	image(itemset, x, y, TILE_SIZE, TILE_SIZE, item*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+	let h = Math.floor(item/15); // get the height of the item in the sprite sheet
+	let w = item % 15;
+	image(itemset, x, y, TILE_SIZE, TILE_SIZE, w*ITEM_SRC_SIZE, h*ITEM_SRC_SIZE, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 } // draws the item at the x & y
 
 
