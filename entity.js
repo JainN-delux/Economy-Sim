@@ -217,26 +217,27 @@ class Entity {
 				case Item.WOODEN_SHIELD:
 					let dir_x = entity.x-this.x;
 					let dir_y = entity.y-this.y;
-					if (!isWalkable[tiles[entity.x+dir_x][entity.y+dir_y]]) {
-						let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.defense_base * entity.defense_mult * (entity.lvl));
+					if (!isWalkable[tiles[entity.y+dir_y][entity.x+dir_x]]) {
+						let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl));
 						entity.health -= damage;
 						damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
 					}
 					else {
 						let e = entityAtTile(entity.x+dir_x, entity.y+dir_y);
 						if (e != null) {
-							let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.defense_base * entity.defense_mult * (entity.lvl));
+							let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl));
 							entity.health -= damage;
 							damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
-							damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (e.defense_base * e.defense_mult * (e.lvl));
+							damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (e.heldItemShield() * e.defense_base * e.defense_mult * (e.lvl));
 							e.health -= damage;
 							damageMarkers.push({ entity: e, damage: damage, time: millis(), color: "red" });
-							if (entity.health <= 0)
-								entity.die(this);
+							if (e.health <= 0)
+								e.die(this);
 						}
 						else {
 							entity.x += dir_x;
 							entity.y += dir_y;
+							entity.effects[statusList.STUN] = 1;
 						}
 					}
 					break;
@@ -380,7 +381,6 @@ class Entity {
 
 	//turn based system
 	turn() {
-		this.update();
 		// Don't attack or move torwards player if not hostile
 		if (this.hostility == false || this.effects[statusList.INVISIBLE] > 0 || debug)
 			return;
@@ -419,6 +419,7 @@ class Entity {
 					this.x++;
 			}
 		}
+		this.update();
 	}
 }
 
