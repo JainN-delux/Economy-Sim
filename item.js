@@ -25,32 +25,33 @@ const Item = {
 
 //weapon stats
 class ItemStats {
-	constructor(damage, shield, mana, special, special_mana, name) {
+	constructor(damage, shield, mana, special, special_mana, name, cost) {
 		this.damage = damage;
 		this.shield = shield;
 		this.name = name;
 		this.mana = mana;
 		this.special = special;
 		this.special_mana = special_mana;
+		this.cost = cost
 	}
 }
 
 //weapon stats
 const itemStats = [
-	new ItemStats(1, 1, 1, 1, 1, "Potion Red"),
-	new ItemStats(1, 1, 1, 1, 1, "Defense Boost"),
-	new ItemStats(1, 1, 1, 1, 1, "Attack Boost"),
-	new ItemStats(1, 1, 1, 1, 1, "Potion Green"),
-	new ItemStats(1, 1, 1, 1, 1, "Potion Purple"),
-	new ItemStats(10, 2, 1, 20, 3, "Sword"),
-	new ItemStats(10, 2, 1, 30, 3, "Poison Sword"),
-	new ItemStats(20, 1, 1, 40, 3, "Hatchet"),
-	new ItemStats(30, 1, 2, 50, 3, "Axe"),
-	new ItemStats(4, 20, 2, 10, 4, "Steel Shield"),
-	new ItemStats(4, 10, 2, 1, 0, "Wooden Shield"),
-	new ItemStats(10, 1, 1, 15, 2, "Bow"),
-	new ItemStats(2, 1, 1, 1, 1, "Arrow"),
-	new ItemStats(1, 1, 1, 1, 1, "Key"),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Red", 10),
+	new ItemStats(1, 1, 1, 1, 1, "Defense Boost", 10),
+	new ItemStats(1, 1, 1, 1, 1, "Attack Boost", 10),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Green", 10),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Purple", 10),
+	new ItemStats(10, 2, 1, 20, 3, "Sword", 10),
+	new ItemStats(10, 2, 1, 30, 3, "Poison Sword", 10),
+	new ItemStats(20, 1, 1, 40, 3, "Hatchet", 10),
+	new ItemStats(30, 1, 2, 50, 3, "Axe", 10),
+	new ItemStats(4, 20, 2, 10, 4, "Steel Shield", 10),
+	new ItemStats(4, 10, 2, 1, 0, "Wooden Shield", 10),
+	new ItemStats(10, 1, 1, 15, 2, "Bow", 10),
+	new ItemStats(2, 1, 1, 1, 1, "Arrow", 10),
+	new ItemStats(1, 1, 1, 1, 1, "Key", 10),
 ];
 
 function inRange(item, x, y) {
