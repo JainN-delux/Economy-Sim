@@ -164,7 +164,6 @@ window.keyPressed = () => {
 		updateWorld();
 	}
 	if (keyCode == ENTER && shop.open) {
-		console.log("hello")
 		shop.buy()
 		updateWorld();
 	}

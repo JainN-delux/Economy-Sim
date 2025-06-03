@@ -8,7 +8,7 @@ const ENTITY_SRC_SIZE = 16;
 
 
 // This turns off things like hostile enemies
-let debug = true;
+let debug = false;
 
 // enum for entity types
 const EntityType = {
