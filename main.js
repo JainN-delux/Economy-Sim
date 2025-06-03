@@ -131,6 +131,7 @@ window.keyPressed = () => {
 	}
 
 	if (shop.open) {
+		console.log(shop.selected)
 		if (keyCode == UP_ARROW)
 			shop.selection_up();
 		else if (keyCode == DOWN_ARROW)

@@ -310,6 +310,7 @@ function generateMerchant() {
 	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, [randint(Item.SWORD, Item.BOW+1)], false)
 
 	entities.push(merchant)
+	
 	console.log(merchant.x , merchant.y)
 }
 
@@ -330,8 +331,8 @@ function generateWorld() {
 	generateEnemies()
 	itemInRoom()
 	
-	player.x = rooms[0].x + 1;
-	player.y = rooms[0].y + 1;
+	player.x = merchantRooms[0].x + 1;
+	player.y = merchantRooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))

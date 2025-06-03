@@ -1,6 +1,6 @@
 import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
 import {CANVAS_WIDTH, CANVAS_HEIGHT } from "./render.js";
-
+import {player} from "./entity.js";
 
 const ITEM_SRC_SIZE = 16;
 
@@ -142,16 +142,28 @@ class Shop {
 		this.selected = 0;
 		this.open = false
 	}
-	remove_selected() {
-		return this.items.splice(shop.selected, 1)[0];
+	buy() {
+		if (player.coins >= this.items[this.selected].cost) {
+			player.coins -= this.items[this.selected].cost
+			return this.items.splice(shop.selected, 1)[0];
+		}
+		else {
+
+		}
+
 	}
+
+	sell() {
+
+	}
+
 	selection_up() {
-		if (this.selected > 6)
+		if (this.selected < 6)
 			this.selected --;
 	}
 
 	selection_down() {
-		if (this.selected < 0)
+		if (this.selected > 0)
 			this.selected ++;
 	}
 
