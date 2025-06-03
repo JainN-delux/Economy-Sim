@@ -112,6 +112,7 @@ window.keyPressed = () => {
 	}
 	if (key == 'o' || key == 'O') {
 		if (items[player.y][player.x] != null) {
+			inventory.add(items[player.y][player.x]);
 			items[player.y][player.x] = null;
 			updateWorld();
 		}
