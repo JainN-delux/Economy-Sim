@@ -383,7 +383,7 @@ class Entity {
 	//turn based system
 	turn() {
 		// Don't attack or move torwards player if not hostile
-		if (this.hostility == false || this.effects[statusList.INVISIBLE] > 0 || debug)
+		if (this.hostility == false || player.effects[statusList.INVISIBLE] > 0 || debug)
 			return;
 		// Get the distance between enemy and players
 		let xdist = Math.abs(player.x-this.x);

@@ -274,7 +274,7 @@ function generateEnemies() {
 				let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1);
 				let y = randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1);
 				if (!entityAtTile(x, y))
-					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)), [randint(Item.SWORD, Item.BOW+1)]))
+					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.BOW+1)]))
 			}
 	}
 }
