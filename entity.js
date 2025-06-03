@@ -8,7 +8,7 @@ const ENTITY_SRC_SIZE = 16;
 
 
 // This turns off things like hostile enemies
-let debug = true;
+let debug = false;
 
 // enum for entity types
 const EntityType = {
@@ -208,18 +208,6 @@ class Entity {
 					this.defense_mult *= 2;
 					break;
 				case Item.WOODEN_SHIELD:
-					this.regen(0.01);
-					break;
-				case Item.BOW:
-					this.ranged_mult *= 1.2;
-					break;
-			}
-		}
-		else {
-			if (this.quickslot[this.selected] != null)
-				this.mana -= itemStats[this.quickslot[this.selected]].mana;
-			switch (this.quickslot[this.selected]) {
-				case Item.WOODEN_SHIELD:
 					let dir_x = entity.x-this.x;
 					let dir_y = entity.y-this.y;
 					if (!isWalkable[tiles[entity.y+dir_y][entity.x+dir_x]]) {
@@ -245,6 +233,18 @@ class Entity {
 							entity.effects[statusList.STUN] = 1;
 						}
 					}
+					break;
+				case Item.BOW:
+					this.ranged_mult *= 1.2;
+					break;
+			}
+		}
+		else {
+			if (this.quickslot[this.selected] != null)
+				this.mana -= itemStats[this.quickslot[this.selected]].mana;
+			switch (this.quickslot[this.selected]) {
+				case Item.WOODEN_SHIELD:
+					this.regen(0.01);
 					break;
 			}
 		}
@@ -396,7 +396,7 @@ class Entity {
 		let ydist = Math.abs(player.y-this.y);
 		// Attack if the player is within reach (adjacent)
 		// WOODEN_SHIELD thing is so that the AI dosen't constantly use the special for no reason. I will need item specific logic later.
-		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana && (this.quickslot[this.selected] != Item.WOODEN_SHIELD || this.health <= 0.5*this.max_health))
+		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
 			this.attack(player, true);
 		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].mana)
 			this.attack(player);
@@ -431,7 +431,7 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.HATCHET])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
 player = entities[0]
 
 // Returns entity at a position

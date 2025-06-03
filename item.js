@@ -48,7 +48,7 @@ const itemStats = [
 	new ItemStats(20, 1, 1, 40, 3, "Hatchet", 10),
 	new ItemStats(30, 1, 2, 50, 3, "Axe", 10),
 	new ItemStats(4, 20, 2, 10, 4, "Steel Shield", 10),
-	new ItemStats(4, 10, 2, 1, 0, "Wooden Shield", 10),
+	new ItemStats(1, 10, 0, 4, 2, "Wooden Shield", 10),
 	new ItemStats(10, 1, 1, 15, 2, "Bow", 10),
 	new ItemStats(2, 1, 1, 1, 1, "Arrow", 10),
 	new ItemStats(1, 1, 1, 1, 1, "Key", 10),

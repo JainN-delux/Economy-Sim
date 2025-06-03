@@ -216,6 +216,15 @@ function connectRooms(roomA, roomB) {
 			tiles[y0][x] = Tile.FLOOR;
 			tiles[y0+1][x] = Tile.WALL_FRONT;
 		}
+		let side = [Tile.WALL_SIDE, Tile.WALL_TOP_LEFT, Tile.WALL_TOP_RIGHT, Tile.WALL_BOTTOM_LEFT, Tile.WALL_BOTTOM_RIGHT];
+		if (side.includes(tiles[y1-2][startX]))
+			tiles[y1-1][startX] = Tile.WALL_BOTTOM_LEFT;
+		if (side.includes(tiles[y1+2][startX]))
+			tiles[y1+1][startX] = Tile.WALL_TOP_LEFT;
+		if (side.includes(tiles[y1-2][endX]))
+			tiles[y1-1][endX] = Tile.WALL_BOTTOM_RIGHT;
+		if (side.includes(tiles[y1+2][endX]))
+			tiles[y1+1][endX] = Tile.WALL_TOP_RIGHT;
 	}
 	if (y0 != y1) {
 		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
@@ -224,6 +233,15 @@ function connectRooms(roomA, roomB) {
 			tiles[y][x1] = Tile.FLOOR;
 			tiles[y][x1+1] = Tile.WALL_SIDE;
 		}
+		let front = [Tile.WALL_FRONT, Tile.WALL_TOP_LEFT, Tile.WALL_TOP_RIGHT, Tile.WALL_BOTTOM_LEFT, Tile.WALL_BOTTOM_RIGHT];
+		if (front.includes(tiles[startY][x1-2]))
+			tiles[startY][x1-1] = Tile.WALL_TOP_RIGHT;
+		if (front.includes(tiles[startY][x1+2]))
+			tiles[startY][x1+1] = Tile.WALL_TOP_LEFT;
+		if (front.includes(tiles[endY][x1-2]))
+			tiles[endY][x1-1] = Tile.WALL_BOTTOM_RIGHT;
+		if (front.includes(tiles[endY][x1+2]))
+			tiles[endY][x1+1] = Tile.WALL_BOTTOM_LEFT;
 	}
 	// Set traps
 	let randX = randint(x0,x1)
