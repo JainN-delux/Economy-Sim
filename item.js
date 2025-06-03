@@ -38,20 +38,20 @@ class ItemStats {
 
 //weapon stats
 const itemStats = [
-	new ItemStats(1, 1, 1, 1, 1, "Potion Red", 10),
-	new ItemStats(1, 1, 1, 1, 1, "Defense Boost", 10),
-	new ItemStats(1, 1, 1, 1, 1, "Attack Boost", 10),
-	new ItemStats(1, 1, 1, 1, 1, "Potion Green", 10),
-	new ItemStats(1, 1, 1, 1, 1, "Potion Purple", 10),
-	new ItemStats(10, 2, 1, 20, 3, "Sword", 10),
-	new ItemStats(10, 2, 1, 30, 3, "Poison Sword", 10),
-	new ItemStats(20, 1, 1, 40, 3, "Hatchet", 10),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Red", 15),
+	new ItemStats(1, 1, 1, 1, 1, "Defense Boost", 13),
+	new ItemStats(1, 1, 1, 1, 1, "Attack Boost", 12),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Green", 11),
+	new ItemStats(1, 1, 1, 1, 1, "Potion Purple", 20),
+	new ItemStats(10, 2, 1, 20, 3, "Sword", 5),
+	new ItemStats(10, 2, 1, 30, 3, "Poison Sword", 30),
+	new ItemStats(20, 1, 1, 40, 3, "Hatchet", 15),
 	new ItemStats(30, 1, 2, 50, 3, "Axe", 10),
-	new ItemStats(4, 20, 2, 10, 4, "Steel Shield", 10),
-	new ItemStats(1, 10, 0, 4, 2, "Wooden Shield", 10),
-	new ItemStats(10, 1, 1, 15, 2, "Bow", 10),
-	new ItemStats(2, 1, 1, 1, 1, "Arrow", 10),
-	new ItemStats(1, 1, 1, 1, 1, "Key", 10),
+	new ItemStats(4, 20, 2, 10, 4, "Steel Shield", 2),
+	new ItemStats(1, 10, 0, 4, 2, "Wooden Shield", 3),
+	new ItemStats(10, 1, 1, 15, 2, "Bow", 24),
+	new ItemStats(2, 1, 1, 1, 1, "Arrow", 9),
+	new ItemStats(1, 1, 1, 1, 1, "Key", 1000),
 ];
 
 function inRange(item, x, y) {
@@ -144,13 +144,12 @@ class Shop {
 	}
 
 	buy() {
-		if (player.coins >= this.items[this.selected].cost) {
-			player.coins -= this.items[this.selected].cost
+		if (player.coins >= itemStats[shop.items[shop.selected]].cost) {
+			player.coins -= itemStats[shop.items[shop.selected]].cost
+			console.log("works")
 			return this.items.splice(shop.selected, 1)[0];
 		}
-		else {
-
-		}
+		
 	}
 
 	sell() {

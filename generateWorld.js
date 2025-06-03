@@ -217,14 +217,18 @@ function connectRooms(roomA, roomB) {
 			tiles[y0+1][x] = Tile.WALL_FRONT;
 		}
 		let side = [Tile.WALL_SIDE, Tile.WALL_TOP_LEFT, Tile.WALL_TOP_RIGHT, Tile.WALL_BOTTOM_LEFT, Tile.WALL_BOTTOM_RIGHT];
-		if (side.includes(tiles[y1-2][startX]))
-			tiles[y1-1][startX] = Tile.WALL_BOTTOM_LEFT;
-		if (side.includes(tiles[y1+2][startX]))
-			tiles[y1+1][startX] = Tile.WALL_TOP_LEFT;
-		if (side.includes(tiles[y1-2][endX]))
-			tiles[y1-1][endX] = Tile.WALL_BOTTOM_RIGHT;
-		if (side.includes(tiles[y1+2][endX]))
-			tiles[y1+1][endX] = Tile.WALL_TOP_RIGHT;
+		if (y0-2 >= 0) {
+			if (side.includes(tiles[y0-2][startX]))
+				tiles[y0-1][startX] = Tile.WALL_BOTTOM_LEFT;
+			if (side.includes(tiles[y0-2][endX]))
+				tiles[y0-1][endX] = Tile.WALL_BOTTOM_RIGHT;
+		}
+		if (y0+2 <= WORLD_HEIGHT) {
+			if (side.includes(tiles[y0+2][startX]))
+				tiles[y0+1][startX] = Tile.WALL_TOP_LEFT;
+			if (side.includes(tiles[y0+2][endX]))
+				tiles[y0+1][endX] = Tile.WALL_TOP_RIGHT;
+		}
 	}
 	if (y0 != y1) {
 		let [startY, endY] = y0 < y1 ? [y0, y1] : [y1, y0];
@@ -234,14 +238,18 @@ function connectRooms(roomA, roomB) {
 			tiles[y][x1+1] = Tile.WALL_SIDE;
 		}
 		let front = [Tile.WALL_FRONT, Tile.WALL_TOP_LEFT, Tile.WALL_TOP_RIGHT, Tile.WALL_BOTTOM_LEFT, Tile.WALL_BOTTOM_RIGHT];
-		if (front.includes(tiles[startY][x1-2]))
-			tiles[startY][x1-1] = Tile.WALL_TOP_RIGHT;
-		if (front.includes(tiles[startY][x1+2]))
-			tiles[startY][x1+1] = Tile.WALL_TOP_LEFT;
-		if (front.includes(tiles[endY][x1-2]))
-			tiles[endY][x1-1] = Tile.WALL_BOTTOM_RIGHT;
-		if (front.includes(tiles[endY][x1+2]))
-			tiles[endY][x1+1] = Tile.WALL_BOTTOM_LEFT;
+		if (x1-2 >= 0) {
+			if (front.includes(tiles[startY][x1-2]))
+				tiles[startY][x1-1] = Tile.WALL_TOP_RIGHT;
+			if (front.includes(tiles[endY][x1-2]))
+				tiles[endY][x1-1] = Tile.WALL_BOTTOM_RIGHT;
+		}
+		if (x1+2 <= WORLD_WIDTH) {
+			if (front.includes(tiles[startY][x1+2]))
+				tiles[startY][x1+1] = Tile.WALL_TOP_LEFT;
+			if (front.includes(tiles[endY][x1+2]))
+				tiles[endY][x1+1] = Tile.WALL_BOTTOM_LEFT;
+		}
 	}
 	// Set traps
 	let randX = randint(x0,x1)
@@ -349,8 +357,8 @@ function generateWorld() {
 	generateEnemies()
 	itemInRoom()
 	
-	player.x = merchantRooms[0].x + 1;
-	player.y = merchantRooms[0].y + 1;
+	player.x = rooms[0].x + 1;
+	player.y = rooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))

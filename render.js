@@ -139,7 +139,8 @@ function drawShop() {
 		for (let i = 0; i < 6; i++) {
 			fill(255)
 			rect(110, 110 + i*80, 70, 70)
-			
+			text("Cost: "+ itemStats[i].cost, 190, 130 + i*80)
+
 			if (i == shop.selected) {
 				fill(40, 60, 255);
 				rect(110, 110 + i*80, 70, 70)
