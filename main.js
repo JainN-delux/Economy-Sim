@@ -164,7 +164,8 @@ window.keyPressed = () => {
 		player.use(inventory.remove_selected());
 		updateWorld();
 	}
-	if (keyCode == ENTER && shop.items[shop.selected] != null && shop.open) {
+	if (keyCode == ENTER && shop.open) {
+		console.log("hello")
 		shop.buy()
 		updateWorld();
 	}
@@ -199,7 +200,6 @@ window.mouseClicked = () => {
 
 //DRAW
 window.draw = () => {
-
 	background(220);
 	drawWorld(player.x, player.y);
 }

@@ -145,10 +145,11 @@ class Shop {
 	buy() {
 		if (player.coins >= this.items[this.selected].cost) {
 			player.coins -= this.items[this.selected].cost
+			console.log("works")
 			return this.items.splice(shop.selected, 1)[0];
 		}
 		else {
-
+			console.log("didn't work")
 		}
 
 	}
