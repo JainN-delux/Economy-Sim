@@ -159,8 +159,12 @@ window.keyPressed = () => {
 			attack_x += 1;
 	}
 	// use item in inventory
-	if (keyCode == ENTER && inventory.items[inventory.selected] != null) {
+	if (keyCode == ENTER && inventory.items[inventory.selected] != null && inventory.open) {
 		player.use(inventory.remove_selected());
+		updateWorld();
+	}
+	if (keyCode == ENTER && shop.items[shop.selected] != null && shop.open) {
+		shop.buy()
 		updateWorld();
 	}
 	if (keyCode == BACKSPACE && !inventory.open && player.quickslot[player.selected] != null) {
