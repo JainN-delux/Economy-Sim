@@ -140,7 +140,7 @@ function drawShop() {
 			fill(255)
 			rect(110, 110 + i*80, 70, 70)
 			
-			if (i == inventory.selected) {
+			if (i == shop.selected) {
 				fill(40, 60, 255);
 				rect(110, 110 + i*80, 70, 70)
 			} 
