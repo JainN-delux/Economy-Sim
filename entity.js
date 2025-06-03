@@ -358,7 +358,8 @@ class Entity {
 				this.lastAttacked = turnCount;
 				break;
 		}
-		// if health is 0 or less, die
+
+	// if health is 0 or less, die
 		if (this.health <= 0)
 			this.die(this);
 	}
@@ -428,9 +429,6 @@ class Entity {
 		this.update();
 	}
 }
-
-
-
 
 // Spawn player
 let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.HATCHET])];

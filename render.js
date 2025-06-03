@@ -132,8 +132,7 @@ function drawQuickslot() {
 
 // draws the SHOP if the player is close to the merchant
 function drawShop() {
-	if (Math.abs(player.x - merchant.x) < 5 && Math.abs(player.y - merchant.y) < 5 ) {
-		shop.open = true
+	if (shop.open) {
 		fill(0)
 		rect(100, 100, 350, 500)
 		// has 6 vertical slots
@@ -150,8 +149,6 @@ function drawShop() {
 				image(itemset, 110, 110 + i*80, 50, 50, merchant.quickslot[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 			
 		}
-	} else {
-		shop.open = false
 	}
 }
 

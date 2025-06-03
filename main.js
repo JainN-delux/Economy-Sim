@@ -1,7 +1,7 @@
 import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 
-import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats } from "./entity.js";
+import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType } from "./entity.js";
 import { inventory, items, inRange, shop, itemStats, inRangeSpecial, Item } from "./item.js";
 
 
@@ -107,8 +107,12 @@ window.keyPressed = () => {
 	}
 	if (key == 'e' || key == 'E') {
 		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
-		if (e != null)
-			attackAt(e, attack_x, attack_y, key == 'E');
+		if (e != null) {
+			if (e.type == EntityType.MERCHANT)
+				shop.open = !shop.open;
+			else
+				attackAt(e, attack_x, attack_y, key == 'E');
+		}
 	}
 	if (key == 'o' || key == 'O') {
 		if (items[player.y][player.x] != null) {

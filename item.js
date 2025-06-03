@@ -146,13 +146,13 @@ class Shop {
 		return this.items.splice(shop.selected, 1)[0];
 	}
 	selection_up() {
-		if (this.selected > 6)
-			this.selected --;
+		if (this.selected > 0)
+			this.selected--;
 	}
 
 	selection_down() {
-		if (this.selected < 0)
-			this.selected ++;
+		if (this.selected < 6)
+			this.selected++;
 	}
 
 }
