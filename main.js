@@ -9,7 +9,6 @@ import { inventory, items, inRange, shop, itemStats, inRangeSpecial, Item } from
 let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
-let coin = 0; //keeps track of coins collected
 
 function updateWorld() {
 	//if enemy is on trap apply effect
@@ -113,12 +112,6 @@ window.keyPressed = () => {
 	}
 	if (key == 'o' || key == 'O') {
 		if (items[player.y][player.x] != null) {
-			if (items[player.y][player.x] < Item.COIN) {
-			inventory.add(items[player.y][player.x]);
-			}
-			else if (items[player.y][player.x] == Item.COIN) {
-				coin++;
-			}	
 			items[player.y][player.x] = null;
 			updateWorld();
 		}
@@ -200,21 +193,6 @@ window.draw = () => {
 
 	background(220);
 	drawWorld(player.x, player.y);
-	text(`coins: ${coin}`, CANVAS_WIDTH/2 ,32);
-	let h = 1;
-	for (let i = 0; i < player.effects.length; i++) {
-		if (player.effects[i] > 0) {
-			fill(255, 0, 0, 50*(1/statusTime[i]))
-			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-			textSize(32);
-			fill(100)
-			textAlign(CENTER);
-			textFont('Courier New');
-			text(`Effect: ${convertStatus(i)}      Time left: ${player.effects[i]}`, CANVAS_WIDTH/2 ,h*32);
-			h++;
-			
-		}
-	}
 }
 
 export { turnCount, attack_x, attack_y };

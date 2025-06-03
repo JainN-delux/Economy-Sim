@@ -1,7 +1,7 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant, level } from "./generateWorld.js";
-import { entities, player, entityStats } from "./entity.js";
+import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
 import { turnCount, attack_x, attack_y } from "./main.js";
-import { items,Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop } from "./item.js" 
+import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop } from "./item.js" 
 
 
 //CONSTANTS
@@ -219,7 +219,7 @@ function drawWorld(px, py) {
 	// Shows the range of the current attack with weapon
 	if (keyIsDown(SHIFT) ? inRangeSpecial(player.quickslot[player.selected], attack_x, attack_y) : inRange(player.quickslot[player.selected], attack_x, attack_y)) {
 		stroke(100, 100, 255);
-	}else {
+	} else {
 		stroke(255, 100, 100);
 	}
 
@@ -240,6 +240,22 @@ function drawWorld(px, py) {
 	stroke(0);
 	text(turnCount, 48, 32);
 	text(level, 10, 32);
+
+	text(`coins: ${player.coins}`, CANVAS_WIDTH/2 ,32);
+	let h = 1;
+	for (let i = 0; i < player.effects.length; i++) {
+		if (player.effects[i] > 0) {
+			fill(255, 0, 0, 50*(1/statusTime[i]))
+			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+			textSize(32);
+			fill(100)
+			textAlign(CENTER);
+			textFont('Courier New');
+			text(`Effect: ${convertStatus(i)}      Time left: ${player.effects[i]}`, CANVAS_WIDTH/2 ,h*32);
+			h++;
+			
+		}
+	}
 	
 	noStroke()
 } // draws the entire map

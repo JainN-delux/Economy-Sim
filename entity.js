@@ -8,7 +8,7 @@ const ENTITY_SRC_SIZE = 16;
 
 
 // This turns off things like hostile enemies
-let debug = true;
+let debug = false;
 
 // enum for entity types
 const EntityType = {
@@ -118,6 +118,7 @@ class Entity {
 		this.lastPotionUsed = 0;
 		this.lastAttacked = 0;
 		this.effects = new Array(statusList.STATUS_MAX).fill(0);
+		this.coins = 0;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -169,8 +170,9 @@ class Entity {
 	// Give xp to killer, drop item, delete entity
 	die(killer) {
 		killer.gainXp(this.lvl);
-		//drop coin
-		items[this.y][this.x] = Item.COIN;
+		killer.coins += this.lvl;
+		// drop item
+		items[this.y][this.x] = this.quickslot[this.selected];
 		entities.splice(entities.indexOf(this), 1)
 	}
 
