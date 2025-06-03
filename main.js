@@ -4,8 +4,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./
 import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType } from "./entity.js";
 import { inventory, items, inRange, shop, itemStats, inRangeSpecial, Item } from "./item.js";
 
-
-//variables
+// variables
 let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
@@ -61,7 +60,7 @@ window.keyPressed = () => {
 	if (key === 'x') {
 		inventory.toggle();
 	}
-	//move up
+	// move up
 	if ((key == 'w' || key == 'W') && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);
 		if (e == null) {
@@ -72,7 +71,7 @@ window.keyPressed = () => {
 		else
 			attackAt(e, 0, -1, key == 'W');
 	}
-	//move down
+	// move down
 	if ((key == 's' || key == 'S') && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
 		if (e == null) {
@@ -83,7 +82,7 @@ window.keyPressed = () => {
 		else
 			attackAt(e, 0, 1, key == 'S');
 	}
-	//move left
+	// move left
 	if ((key == 'a' || key == 'A') && isWalkable[tiles[player.y][player.x-1]]) {
 		let e = entityAtTile(player.x-1, player.y);
 		if (e == null) {
@@ -94,7 +93,7 @@ window.keyPressed = () => {
 		else
 			attackAt(e, -1, 0, key == 'A');
 	}
-	//move right
+	// move right
 	if ((key == 'd' || key == 'D') && isWalkable[tiles[player.y][player.x+1]]) {
 		let e = entityAtTile(player.x+1, player.y);
 		if (e == null) {
@@ -108,7 +107,7 @@ window.keyPressed = () => {
 	if (key == 'e' || key == 'E') {
 		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
 		if (e != null) {
-			if (e.type == EntityType.MERCHANT)
+			if (e.type == EntityType.MERCHANT || shop.open)
 				shop.open = !shop.open;
 			else
 				attackAt(e, attack_x, attack_y, key == 'E');

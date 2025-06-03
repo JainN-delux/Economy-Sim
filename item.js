@@ -142,6 +142,7 @@ class Shop {
 		this.selected = 0;
 		this.open = false
 	}
+
 	buy() {
 		if (player.coins >= this.items[this.selected].cost) {
 			player.coins -= this.items[this.selected].cost
@@ -150,7 +151,6 @@ class Shop {
 		else {
 
 		}
-
 	}
 
 	sell() {
