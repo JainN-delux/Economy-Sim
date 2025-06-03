@@ -6,8 +6,9 @@ import { turnCount } from "./main.js";
 let player;
 const ENTITY_SRC_SIZE = 16;
 
+
 // This turns off things like hostile enemies
-let debug = false;
+let debug = true;
 
 // enum for entity types
 const EntityType = {
@@ -168,7 +169,8 @@ class Entity {
 	// Give xp to killer, drop item, delete entity
 	die(killer) {
 		killer.gainXp(this.lvl);
-		items[this.y][this.x] = this.quickslot[this.selected];
+		//drop coin
+		items[this.y][this.x] = Item.COIN;
 		entities.splice(entities.indexOf(this), 1)
 	}
 
@@ -301,6 +303,7 @@ class Entity {
 				damageMarkers.push({ entity: this, damage: this.health/2, time: millis(), color: "red" });
 				this.health = this.health/2;
 				break;
+			
 			//if item is WEAPON push to quickslot
 			default:
 				if (item >= Item.SWORD && item <= Item.BOW) {

@@ -1,5 +1,5 @@
 import {rooms, WORLD_WIDTH, WORLD_HEIGHT,randint} from "./generateWorld.js";
-import { CANVAS_WIDTH, CANVAS_HEIGHT, } from "./render.js";
+import {CANVAS_WIDTH, CANVAS_HEIGHT } from "./render.js";
 
 
 const ITEM_SRC_SIZE = 16;
@@ -20,6 +20,7 @@ const Item = {
 	BOW: 11,
 	ARROW: 12,
 	KEY: 13,
+	COIN:15
 }
 
 //weapon stats
@@ -161,5 +162,5 @@ let inventory = new Inventory();
 
 let shop = new Shop();
 
-export { itemInRoom, items, Item, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop}
+export { itemInRoom, items, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop,Item}
 
