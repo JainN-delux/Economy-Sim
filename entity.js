@@ -161,7 +161,7 @@ class Entity {
 	}
 
 	// if regen_percent = 5 then enitiy regens .5% of max hp a turn
-	regen(regenPercent) { 
+	regen(regenPercent) {
 		let old_health = this.health;
 		this.health = Math.min(this.max_health, this.health + this.max_health*(regenPercent)) 
 		damageMarkers.push({ entity: this, damage: this.health - old_health, time: millis(), color: "green" });
