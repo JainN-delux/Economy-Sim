@@ -242,6 +242,7 @@ function drawWorld(px, py) {
 	text(level, 10, 32);
 
 	text(`coins: ${player.coins}`, CANVAS_WIDTH/2 ,32);
+	noStroke()
 	let h = 1;
 	for (let i = 0; i < player.effects.length; i++) {
 		if (player.effects[i] > 0) {
@@ -256,8 +257,6 @@ function drawWorld(px, py) {
 			
 		}
 	}
-	
-	noStroke()
 } // draws the entire map
 
 
