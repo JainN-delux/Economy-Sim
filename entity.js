@@ -118,7 +118,7 @@ class Entity {
 		this.lastPotionUsed = 0;
 		this.lastAttacked = 0;
 		this.effects = new Array(statusList.STATUS_MAX).fill(0);
-		this.coins = 0;
+		this.coins = 1000;
 	}
 
 	// Draws entity sprite, healthbar and weapon
