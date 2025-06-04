@@ -2,12 +2,14 @@ import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss } 
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
 
 import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType } from "./entity.js";
-import { inventory, items, inRange, shop, itemStats, inRangeSpecial, Item } from "./item.js";
+import { inventory, items, inRange, Shop, itemStats, inRangeSpecial, Item } from "./item.js";
 
 // variables
 let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
+
+let shop = new Shop([]);
 
 function updateWorld() {
 	//if enemy is on trap apply effect
@@ -104,11 +106,13 @@ window.keyPressed = () => {
 		else
 			attackAt(e, 1, 0, key == 'D');
 	}
+	let e = entityAtTile(player.x+attack_x, player.y+attack_y);
 	if (key == 'e' || key == 'E') {
-		let e = entityAtTile(player.x+attack_x, player.y+attack_y);
 		if (e != null) {
-			if (e.type == EntityType.MERCHANT || shop.open)
+			if (e.type == EntityType.MERCHANT) {
+				shop = e.shop;
 				shop.open = !shop.open;
+			}
 			else
 				attackAt(e, attack_x, attack_y, key == 'E');
 		}
@@ -202,4 +206,4 @@ window.draw = () => {
 	drawWorld(player.x, player.y);
 }
 
-export { turnCount, attack_x, attack_y };
+export { turnCount, attack_x, attack_y, shop };

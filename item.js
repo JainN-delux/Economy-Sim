@@ -32,7 +32,7 @@ class ItemStats {
 		this.mana = mana;
 		this.special = special;
 		this.special_mana = special_mana;
-		this.cost = cost
+		this.cost = cost;
 	}
 }
 
@@ -136,18 +136,19 @@ class Inventory {
 
 }
 
+let inventory = new Inventory();
+
 class Shop {
-	constructor() {
-		this.items = [];
+	constructor(items) {
+		this.items = items;
 		this.selected = 0;
 		this.open = false
 	}
 
 	buy() {
-		if (player.coins >= itemStats[shop.items[shop.selected]].cost) {
-			player.coins -= itemStats[shop.items[shop.selected]].cost
-			console.log("works")
-			return this.items.splice(shop.selected, 1)[0];
+		if (player.coins >= itemStats[this.items[this.selected]].cost) {
+			player.coins -= itemStats[this.items[this.selected]].cost
+			inventory.add(this.items.splice(this.selected, 1)[0]);
 		}
 		
 	}
@@ -162,16 +163,10 @@ class Shop {
 	}
 
 	selection_down() {
-		if (this.selected < 5)
+		if (this.selected < 5 && this.selected < this.items.length-1)
 			this.selected++;
 	}
 }
 
-
-let inventory = new Inventory();
-
-
-let shop = new Shop();
-
-export { itemInRoom, items, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop,Item}
+export { itemInRoom, items, Inventory, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, Item, Shop}
 

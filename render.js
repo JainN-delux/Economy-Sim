@@ -1,7 +1,7 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles , merchant, level } from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level } from "./generateWorld.js";
 import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
-import { turnCount, attack_x, attack_y } from "./main.js";
-import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial, shop } from "./item.js" 
+import { turnCount, attack_x, attack_y, shop } from "./main.js";
+import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
 
 
 //CONSTANTS
@@ -146,8 +146,8 @@ function drawShop() {
 				rect(110, 110 + i*80, 70, 70)
 			} 
 
-			if (merchant.quickslot[i]) 
-				image(itemset, 110, 110 + i*80, 50, 50, merchant.quickslot[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+			if (shop.items[i]) 
+				image(itemset, 110, 110 + i*80, 50, 50, shop.items[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 			
 		}
 	}

@@ -16,8 +16,6 @@ function randint(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
-let merchant;
-
 // Enums for the different tiles
 const Tile = {
 	WALL_FRONT: 0,
@@ -333,7 +331,7 @@ function generateMerchant() {
 	}
 	merchantRooms.push(smallestRoom);
 
-	merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, [randint(Item.SWORD, Item.BOW+1)], false)
+	let merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, [randint(Item.SWORD, Item.BOW+1)], false)
 
 	entities.push(merchant)
 	
@@ -344,7 +342,6 @@ function generateWorld() {
 	level++;
 	rooms = [];
 	spaces = [];
-	merchant = null;
 	entities.splice(1, entities.length-1);
 	merchantRooms = [];
 	bossRoom = null;
@@ -357,12 +354,12 @@ function generateWorld() {
 	generateEnemies()
 	itemInRoom()
 	
-	player.x = rooms[0].x + 1;
-	player.y = rooms[0].y + 1;
+	player.x = merchantRooms[0].x + 1;
+	player.y = merchantRooms[0].y + 1;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))
 				connectRooms(rooms[i], rooms[j]);
 }
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, merchant, Tile, level, boss };
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss };

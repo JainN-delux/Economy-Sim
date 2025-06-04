@@ -1,6 +1,6 @@
 import { isWalkable, randint, tiles } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
-import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial } from "./item.js";
+import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial, Shop } from "./item.js";
 import { turnCount } from "./main.js";
 
 let player;
@@ -112,7 +112,6 @@ class Entity {
 		this.defense_mult = 1;
 		this.lvl = lvl;
 		this.xp = 0;
-		this.quickslot = quickslot;
 		this.selected = 0;
 		this.hostility = hostile
 		this.lastPotionUsed = 0;
@@ -127,6 +126,12 @@ class Entity {
 			this.health = this.max_health;
 			this.elite = true;
 		}
+		if (type == EntityType.MERCHANT) {
+			this.shop = new Shop(quickslot);
+			this.quickslot = [];
+		}
+		else
+			this.quickslot = quickslot;
 	}
 
 	// Draws entity sprite, healthbar and weapon
