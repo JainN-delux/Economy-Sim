@@ -96,7 +96,7 @@ const entityStats = [
  * An entity includes the player, enemies, merchants and bosses, basically anything that moves
  */
 class Entity {
-	constructor(x, y, type, lvl, quickslot=[], hostile=true) {
+	constructor(x, y, type, lvl, quickslot=[], hostile=true, elite=false) {
 		this.x = x;
 		this.y = y;
 		this.type = type;
@@ -119,6 +119,14 @@ class Entity {
 		this.lastAttacked = 0;
 		this.effects = new Array(statusList.STATUS_MAX).fill(0);
 		this.coins = 1000;
+		if (elite) {
+			this.max_health *= 2;
+			this.attack_base *= 2;
+			this.ranged_base *= 2;
+			this.defense_base *= 2;
+			this.health = this.max_health;
+			this.elite = true;
+		}
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -127,6 +135,10 @@ class Entity {
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 		image(entitysheet, x, y, TILE_SIZE, TILE_SIZE, this.type*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		if (this.elite) {
+			fill(255, 0, 0, 100);
+			rect(x, y, TILE_SIZE, TILE_SIZE);
+		}
 		// Draw held item 
 		if (this.quickslot[this.selected])
 			image(itemset, x, y + TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE/2, this.quickslot[this.selected]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE);
