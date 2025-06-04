@@ -1,5 +1,5 @@
 import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss } from "./generateWorld.js";
-import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld } from "./render.js";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld, TILE_SIZE, statusiconset } from "./render.js";
 
 import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType } from "./entity.js";
 import { inventory, items, inRange, Shop, itemStats, inRangeSpecial, Item } from "./item.js";
@@ -19,6 +19,7 @@ function updateWorld() {
 			tiles[entities[i].y][entities[i].x] = 11; //reset tile to floor
 		}
 	}
+	
 
 	if (tiles[player.y][player.x] == Tile.STAIRS && boss.health <= 0) {
 		generateWorld();
@@ -204,6 +205,8 @@ window.mouseClicked = () => {
 window.draw = () => {
 	background(220);
 	drawWorld(player.x, player.y);
+	
+	
 }
 
 export { turnCount, attack_x, attack_y, shop };

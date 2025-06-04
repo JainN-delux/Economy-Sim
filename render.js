@@ -14,13 +14,13 @@ const TILE_SIZE = 32;      // Rendered size of tile
 let tileset;                // Stores our tileset image
 let entitysheet;            // Stores our entity tilesheet image
 let itemset;				// Stores our item tilesheet image
-			
+let statusiconset;		// Stores our status icon tilesheet image
 // Preloads our images
 window.preload = () => { 
-	tileset = loadImage("./assets/tileset.png");
+	tileset = loadImage("./assets/tileset_0.png");
 	itemset = loadImage("./assets/itemset.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
-	
+	statusiconset = loadImage("./assets/statusIcons.png");
 }		
 let damageMarkers = []; // hold relivent info to make the damage float
 
@@ -244,13 +244,14 @@ function drawWorld(px, py) {
 	let h = 1;
 	for (let i = 0; i < player.effects.length; i++) {
 		if (player.effects[i] > 0) {
-			fill(255, 0, 0, 50*(1/statusTime[i]))
-			rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-			textSize(32);
-			fill(100)
-			textAlign(CENTER);
-			textFont('Courier New');
-			text(`Effect: ${convertStatus(i)}      Time left: ${player.effects[i]}`, CANVAS_WIDTH/2 ,h*32);
+			// fill(255, 0, 0, 50*(1/statusTime[i]))
+			// rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+			// textSize(32);
+			// fill(100)
+			// textAlign(CENTER);
+			// textFont('Courier New');
+			//text(`Effect: ${convertStatus(i)}      Time left: ${player.effects[i]}`, CANVAS_WIDTH/2 ,h*32);
+			image(statusiconset, (h-1)*32 + 10, CANVAS_HEIGHT*(4/5) + 15, TILE_SIZE, TILE_SIZE, i*32, 0, 32, 32);
 			h++;
 			
 		}
@@ -258,4 +259,4 @@ function drawWorld(px, py) {
 } // draws the entire map
 
 
-export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers };
+export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers,statusiconset };

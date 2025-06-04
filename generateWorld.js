@@ -36,11 +36,11 @@ const Tile = {
 	FLOOR_BOTTOM_RIGHT: 15,
 	EMPTY: 16,
 	TRAP_NULL: 17,
-	TRAP_FIRE: 18,	
-	TRAP_BLEED: 19,
+	TRAP_POISON: 18,	
+	TRAP_VINES: 19,
 	TRAP_STUN: 20,
-	TRAP_VINES: 21,
-	TRAP_POISON: 22,
+	TRAP_BLEED: 21,
+	TRAP_FIRE: 22,
 	TRAP_UNKNOWN0: 23,
 	TRAP_UNKNOWN1: 24,
 	TRAP_HOLE: 25,
@@ -127,7 +127,7 @@ function generateRoom(rx, ry, w, h) {
 	// 1 in 2 chance to place a trap
 	for (let i = 0; i <= Math.floor((w*h)/50); i++) {
 		//if (randint(0, 1) == 1) 
-			tiles[randint(ry + 1,ry + h-2)][randint(rx + 1,rx + w-2)] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);	
+			tiles[randint(ry + 1,ry + h-2)][randint(rx + 1,rx + w-2)] = randint(Tile.TRAP_NULL, Tile.TRAP_FIRE+1);	
 		
 	}	
 }
@@ -254,7 +254,7 @@ function connectRooms(roomA, roomB) {
 	let randY = randint(y0,y1)
 	// 1 in 4 chance to place a trap
 	if (randint(0, 1) == 1) 
-		tiles[randY][randX] = randint(Tile.TRAP_FIRE, Tile.TRAP_POISON+1);
+		tiles[randY][randX] = randint(Tile.TRAP_NULL, Tile.TRAP_FIRE+1);
 }
 
 // -------------ROOMS GENERATION--------------
