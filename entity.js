@@ -181,8 +181,9 @@ class Entity {
 
 	// Give xp to killer, drop item, delete entity
 	die(killer) {
-		killer.gainXp(this.lvl);
-		killer.coins += this.lvl;
+		let mult = this.elite ? 4 : 1;
+		killer.gainXp(this.lvl*mult);
+		killer.coins += this.lvl*mult;
 		// drop item
 		items[this.y][this.x] = this.quickslot[this.selected];
 		entities.splice(entities.indexOf(this), 1)
