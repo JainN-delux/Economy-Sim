@@ -20,7 +20,7 @@ const Item = {
 	BOW: 11,
 	ARROW: 12,
 	KEY: 13,
-	COIN:15
+	
 }
 
 //weapon stats
