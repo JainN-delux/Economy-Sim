@@ -18,9 +18,19 @@ const Item = {
 	STEEL_SHIELD: 9,
 	WOODEN_SHIELD: 10,
 	BOW: 11,
-	ARROW: 12,
-	KEY: 13,
-	COIN:15
+	SPEAR: 12,
+	SCYTHE: 13,
+	MACE: 14,
+	TRIDENT: 15,
+	BAT: 16,
+	LIGHTNING_WAND: 17,
+	FIRE_WAND: 18,
+	VINE_WAND: 19,
+	POISON_WAND: 20,
+	FIRE_ARMOR: 21,
+	// Fill in rest of armor
+	POISON_LEGGINGS: 32,
+	// Fill in rest of leggings
 }
 
 //weapon stats
