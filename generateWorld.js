@@ -331,8 +331,13 @@ function generateMerchant() {
 	}
 	merchantRooms.push(smallestRoom);
 
-	let merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, [randint(Item.SWORD, Item.BOW+1)], false)
+	
+	let collection = []
 
+	for (let i = 0; i < 6; i++) {
+		collection.splice(i, 0, randint(Item.POTION_RED, Item.BOW+1))
+	}
+	let merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, collection, false)
 	entities.push(merchant)
 	
 	console.log(merchant.x , merchant.y)
