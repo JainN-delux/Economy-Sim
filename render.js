@@ -20,7 +20,7 @@ window.preload = () => {
 	tileset = loadImage("./assets/tileset_0.png");
 	itemset = loadImage("./assets/itemset.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
-	statusiconset = loadImage("./assets/statusIcons.png");
+	statusiconset = loadImage("./assets/statusicons.png");
 }		
 let damageMarkers = []; // hold relivent info to make the damage float
 
