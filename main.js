@@ -58,6 +58,8 @@ function attackAt(e, x, y, key_shift) {
 
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
+	if (player.health <= 0)
+		window.location.reload();
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
 	if (key === 'x') {
@@ -134,7 +136,7 @@ window.keyPressed = () => {
 	else if (key == '4' || key == '$')
 		player.selected = 3;
 	//reload
-	else if (key == "r" ) {
+	else if (key == "r") {
 		window.location.reload()
 	}
 
