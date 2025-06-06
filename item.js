@@ -56,18 +56,19 @@ const itemStats = [
 	new ItemStats(10, 2, 1, 20, 3, "Sword", 5),
 	new ItemStats(10, 2, 1, 30, 3, "Poison Sword", 30),
 	new ItemStats(20, 1, 1, 40, 3, "Hatchet", 15),
-	new ItemStats(30, 1, 2, 50, 3, "Axe", 10),
+	new ItemStats(30, 1.5, 2, 50, 3, "Axe", 10),
 	new ItemStats(4, 20, 2, 10, 4, "Steel Shield", 2),
 	new ItemStats(1, 10, 0, 4, 2, "Wooden Shield", 3),
 	new ItemStats(10, 1, 1, 15, 2, "Bow", 24),
-	new ItemStats(2, 1, 1, 1, 1, "Arrow", 9),
-	new ItemStats(1, 1, 1, 1, 1, "Key", 1000),
+	new ItemStats(20, 1.5, 1, 40, 2, "Spear", 24),
 ];
 
 function inRange(item, x, y) {
 	switch (item) {
 		case Item.BOW:
 			return Math.abs(x)+Math.abs(y) <= 3;
+		case Item.SPEAR:
+			return (Math.abs(x) == 1 && Math.abs(y) == 1);
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}
@@ -83,6 +84,8 @@ function inRangeSpecial(item, x, y) {
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		case Item.AXE:
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
+		case Item.SPEAR:
+			return (Math.abs(x) <= 2 && Math.abs(y) == 0) || (Math.abs(x) == 0 && Math.abs(y) <= 2);
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}

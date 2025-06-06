@@ -192,15 +192,6 @@ window.setup = () => {
 }
 //mousclick
 window.mouseClicked = () => {
-	
-	if (player.health >= 0) {
-		if (mouseX >= CANVAS_WIDTH-50 && mouseY <= 50) {
-			window.location. reload()
-		}
-
-	} else {
-		window.location.reload()
-	}
 }
 
 //DRAW

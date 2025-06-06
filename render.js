@@ -94,19 +94,15 @@ function drawHealthbar() {
 	noStroke()
 } 
 
-// draws RESTART BUTTON in the middle of the screen if the player health is 0
 function drawRestart() {
-	//if the player health is 0, draw a button in the middle of the screen
+	//if the player health is 0, draw death screen
 	if (player.health <= 0) {
-		fill(255)
-		stroke(0)
-		strokeWeight(4)
-		rect(CANVAS_WIDTH/3,CANVAS_HEIGHT/2,CANVAS_WIDTH/3,200)
-		noStroke()
 		fill(0)
-		textSize(32)
-		text("Restart",CANVAS_WIDTH/3+70,CANVAS_HEIGHT/2+70)
-	// draws the restart button in the corner
+		strokeWeight(4)
+		textSize(64)
+		text("DEAD",CANVAS_WIDTH/2-64,CANVAS_HEIGHT/2)
+		textSize(32);
+		text("ANY KEY TO RESTART",CANVAS_WIDTH/2-132,CANVAS_HEIGHT/2+90)
 	}
 }
 

@@ -225,21 +225,21 @@ class Entity {
 				case Item.STEEL_SHIELD:
 					this.defense_mult *= 2;
 					break;
-				case Item.WOODEN_SHIELD:
+				case Item.WOODEN_SHIELD: {
 					let dir_x = entity.x-this.x;
 					let dir_y = entity.y-this.y;
 					if (!isWalkable[tiles[entity.y+dir_y][entity.x+dir_x]]) {
-						let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl));
+						let damage = (5 * this.defense_base * this.defense_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl));
 						entity.health -= damage;
 						damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
 					}
 					else {
 						let e = entityAtTile(entity.x+dir_x, entity.y+dir_y);
 						if (e != null) {
-							let damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl));
+							let damage = (5 * this.defense_base * this.defense_mult * (this.lvl)) / (entity.heldItemShield() * entity.defense_base * entity.defense_mult * (entity.lvl));
 							entity.health -= damage;
 							damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
-							damage = (5 * this.attack_base * this.attack_mult * (this.lvl)) / (e.heldItemShield() * e.defense_base * e.defense_mult * (e.lvl));
+							damage = (5 * this.defense_base * this.defense_mult * (this.lvl)) / (e.heldItemShield() * e.defense_base * e.defense_mult * (e.lvl));
 							e.health -= damage;
 							damageMarkers.push({ entity: e, damage: damage, time: millis(), color: "red" });
 							if (e.health <= 0)
@@ -252,9 +252,26 @@ class Entity {
 						}
 					}
 					break;
+				}
 				case Item.BOW:
 					this.ranged_mult *= 1.2;
 					break;
+				case Item.SPEAR: {
+					let dir_x = entity.x-this.x;
+					let dir_y = entity.y-this.y;
+					dir_x = (Math.abs(dir_x) == 1 ? dir_x*2 : dir_x/2);
+					dir_y = (Math.abs(dir_y) == 1 ? dir_y*2 : dir_y/2);
+					console.log(dir_x + "," + dir_y);
+					let e = entityAtTile(this.x+dir_x, this.y+dir_y);
+					if (e != null) {
+						let damage = (this.heldItemAttack(special) * this.attack_base * this.attack_mult * (this.lvl)) / (e.heldItemShield() * e.defense_base * e.defense_mult * (e.lvl));
+						e.health -= damage;
+						damageMarkers.push({ entity: e, damage: damage, time: millis(), color: "red" });
+						if (e.health <= 0)
+							e.die(this);
+					}
+					break;
+				}
 			}
 		}
 		else {
@@ -326,7 +343,7 @@ class Entity {
 			
 			//if item is WEAPON push to quickslot
 			default:
-				if (item >= Item.SWORD && item <= Item.BOW) {
+				if (item >= Item.SWORD && item <= Item.BAT) {
 					if (this.quickslot.length >= 4)
 						inventory.add(this.quickslot.splice(3, 1)[0]);
 					this.quickslot.push(item);
@@ -449,7 +466,7 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD])];
+let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SPEAR])];
 player = entities[0]
 
 // Returns entity at a position
