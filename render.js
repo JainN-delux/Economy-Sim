@@ -241,9 +241,10 @@ function drawWorld(px, py) {
 	text(turnCount, 48, 32);
 	text(level, 10, 32);
 
-	text(`coins: ${player.coins}`, CANVAS_WIDTH/2 ,32);
-	noStroke()
+	textSize(20)
+	text(`coins: ${player.coins}`, CANVAS_WIDTH - 120, 20);
 	let h = 1;
+	stroke(0);
 	for (let i = 0; i < player.effects.length; i++) {
 		if (player.effects[i] > 0) {
 			// fill(255, 0, 0, 50*(1/statusTime[i]))
@@ -254,10 +255,12 @@ function drawWorld(px, py) {
 			// textFont('Courier New');
 			//text(`Effect: ${convertStatus(i)}      Time left: ${player.effects[i]}`, CANVAS_WIDTH/2 ,h*32);
 			image(statusiconset, (h-1)*32 + 10, CANVAS_HEIGHT*(4/5) + 15, TILE_SIZE, TILE_SIZE, i*32, 0, 32, 32);
+			text(player.effects[i], (h-1)*32 + 20, CANVAS_HEIGHT*(4/5) + 35)
 			h++;
 			
 		}
 	}
+	noStroke()
 } // draws the entire map
 
 

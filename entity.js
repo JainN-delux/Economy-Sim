@@ -23,11 +23,11 @@ const EntityType = {
 // enum for status effects
 const statusList = {
 	NULL: 0, // attack and defense are nullified, 4t
-	FIRE: 1, //decreases health by 5 or 10 every turn, 5t
-	BLEED: 2, // decreases health by 2% every turn, 4t
+	POISON: 1, // 1% health decrease, 20t
+	VINES: 2, // locks movement and decreases health by 1, 5t
 	STUN: 3, // locks movement, 5t
-	VINES: 4, // locks movement and decreases health by 1, 5t
-	POISON: 5, // 1% health decrease, 20t
+	BLEED: 4, // decreases health by 2% every turn, 4t
+	FIRE: 5, //decreases health by 5 or 10 every turn, 5t
 
 	// buffs
 	TIMEBUFF: 6, // gives a extra turn 
@@ -38,13 +38,13 @@ const statusList = {
 //array of how long each status effect lasts
 const statusTime = [
 	4,// NULL: 0,
-	5,// FIRE: 1, 
-	4,// BLEED: 2, 
-	5,// STUN: 3, 
-	5,// VINES: 4,
-	20,// POSION: 5,
-	2,// TIMEBUFF: 9, 
-	3// INVISIBLE: 10 
+	20,// POSION: 1,
+	5,// VINES: 2,
+	5,// STUN: 3,
+	4,// BLEED: 4,
+	5,// FIRE: 5,
+	2,// TIMEBUFF: 6,
+	3// INVISIBLE: 7
 ]
 
 
