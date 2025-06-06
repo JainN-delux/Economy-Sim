@@ -261,7 +261,6 @@ class Entity {
 					let dir_y = entity.y-this.y;
 					dir_x = (Math.abs(dir_x) == 1 ? dir_x*2 : dir_x/2);
 					dir_y = (Math.abs(dir_y) == 1 ? dir_y*2 : dir_y/2);
-					console.log(dir_x + "," + dir_y);
 					let e = entityAtTile(this.x+dir_x, this.y+dir_y);
 					if (e != null) {
 						let damage = (this.heldItemAttack(special) * this.attack_base * this.attack_mult * (this.lvl)) / (e.heldItemShield() * e.defense_base * e.defense_mult * (e.lvl));
