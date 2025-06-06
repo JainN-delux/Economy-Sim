@@ -41,7 +41,7 @@ const Tile = {
 	TRAP_STUN: 20,
 	TRAP_BLEED: 21,
 	TRAP_FIRE: 22,
-	STAIRS: 26,
+	STAIRS: 23,
 }
 
 // check if entities can walk on tiles or not
