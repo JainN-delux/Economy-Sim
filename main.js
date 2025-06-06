@@ -205,7 +205,7 @@ window.mouseClicked = () => {
 
 //DRAW
 window.draw = () => {
-	background(220);
+	background(20);
 	drawWorld(player.x, player.y);
 	
 	
