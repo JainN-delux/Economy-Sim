@@ -1,6 +1,7 @@
 import { Entity, EntityType, entities, entityAtTile, player} from "./entity.js";
 import { itemInRoom, Item, items } from "./item.js";
 import { turnCount } from "./main.js";
+import { fillMinimap } from "./render.js";
 
 //CONSTANTS
 const WORLD_WIDTH = 256;   // The width in tiles in size
@@ -362,6 +363,8 @@ function generateWorld() {
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))
 				connectRooms(rooms[i], rooms[j]);
+
+	fillMinimap();
 }
 
 export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss };

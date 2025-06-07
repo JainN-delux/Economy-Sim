@@ -1,4 +1,4 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level } from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable } from "./generateWorld.js";
 import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
@@ -15,13 +15,30 @@ let tileset;                // Stores our tileset image
 let entitysheet;            // Stores our entity tilesheet image
 let itemset;				// Stores our item tilesheet image
 let statusiconset;		// Stores our status icon tilesheet image
+let minimap;
 // Preloads our images
 window.preload = () => { 
 	tileset = loadImage("./assets/tileset_0.png");
 	itemset = loadImage("./assets/itemset.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
 	statusiconset = loadImage("./assets/statusicons.png");
-}		
+	minimap = createImage(WORLD_WIDTH, WORLD_HEIGHT);
+}
+
+
+function fillMinimap() {
+	minimap.loadPixels();
+	for (let x = 0; x < WORLD_WIDTH; x++) {
+		for (let y = 0; y < WORLD_HEIGHT; y++) {
+			if (isWalkable[tiles[y][x]])
+				minimap.set(x, y, [0, 0, 0, 255]);
+			else
+				minimap.set(x, y, [255, 255, 255, 255]);
+		}
+	}
+	minimap.updatePixels();
+}
+
 let damageMarkers = []; // hold relivent info to make the damage float
 
 //function that draws the inventory
@@ -79,6 +96,8 @@ function drawInvent() {
 			text("Item Selected: " + itemStats[inventory.items[inventory.selected]].name, stat_x, 220);
 		text("X Location: " + player.x, stat_x, 240)
 		text("Y Location: " + player.y, stat_x, 260)
+
+		image(minimap, CANVAS_WIDTH-256, CANVAS_HEIGHT-256);
 	}
 }
 
@@ -260,4 +279,4 @@ function drawWorld(px, py) {
 } // draws the entire map
 
 
-export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers,statusiconset };
+export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers, statusiconset, fillMinimap };
