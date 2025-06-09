@@ -41,10 +41,11 @@ function fillMinimap() {
 
 let damageMarkers = []; // hold relivent info to make the damage float
 
-//function that draws the inventory
+// function that draws the inventory
 function drawInvent() {
-	if (inventory.open) {		//check if the inventory is open
-		//inventory asthetics
+	// check if the inventory is open
+	if (inventory.open) {
+		// inventory asthetics
 		let i_x = 150;
 		let i_y = 150;
 		const stat_x = CANVAS_WIDTH-TILE_SIZE*9;
@@ -52,7 +53,7 @@ function drawInvent() {
 		rect(i_x, i_y, TILE_SIZE*9, TILE_SIZE*6.5);
 		fill(255);
 		textSize(40);
-		text("Inventory", i_x + 50 , i_y + 50);
+		text("Inventory", i_x + 60 , i_y + 50);
 		// draw slots in intevntory (3 * 6 slots)
 		for (let i = 0; i < 3; i++) {
 			for (let j = 0; j < 6; j++) {
@@ -71,12 +72,19 @@ function drawInvent() {
 				} 
 
 				//if there is an item in the array draw it on the slot
-
 				if (inventory.items[i*6 + j] != null)
 					drawItems(inventory.items[i*6 + j], i_x + 7.5 +(j*TILE_SIZE*1.5), i_y + 65 +(i*TILE_SIZE*1.5));
 
 			}
 		}
+		fill(160, 255, 200);
+		rect(i_x + 7.5, i_y + 65 - TILE_SIZE*1.5, TILE_SIZE, TILE_SIZE);
+		if (player.armor != null)
+			drawItems(player.armor, i_x + 7.5, i_y + 65 - TILE_SIZE*1.5);
+		rect(i_x + 7.5 + 5*TILE_SIZE*1.5, i_y + 65 - TILE_SIZE*1.5, TILE_SIZE, TILE_SIZE);
+		if (player.leggings != null)
+			drawItems(player.leggings, i_x + 7.5 + 5*TILE_SIZE*1.5, i_y + 65 - TILE_SIZE*1.5);
+		//show item stats of selected item on the right side of the screen
 		//show item stats of selected item on the right side of the screen
 		fill(0);
 		rect(stat_x, 0, TILE_SIZE*9, TILE_SIZE*9);
@@ -187,9 +195,7 @@ function drawTile(tile, x, y) {
 
 //function to draw item based on item type and x & y loci
 function drawItems(item, x, y) {
-	let h = Math.floor(item/15); // get the height of the item in the sprite sheet
-	let w = item % 15;
-	image(itemset, x, y, TILE_SIZE, TILE_SIZE, w*ITEM_SRC_SIZE, h*ITEM_SRC_SIZE, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+	image(itemset, x, y, TILE_SIZE, TILE_SIZE, item*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 } // draws the item at the x & y
 
 

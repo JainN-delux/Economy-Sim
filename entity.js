@@ -132,6 +132,8 @@ class Entity {
 		}
 		else
 			this.quickslot = quickslot;
+		this.armor = null;
+		this.leggings = null;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -346,6 +348,16 @@ class Entity {
 					if (this.quickslot.length >= 4)
 						inventory.add(this.quickslot.splice(3, 1)[0]);
 					this.quickslot.push(item);
+				}
+				else if (item >= Item.FIRE_ARMOR && item <= Item.RAINBOW_ARMOR) {
+					if (this.armor != null)
+						inventory.add(this.armor)
+					this.armor = item;
+				}
+				else if (item >= Item.POISON_LEGGINGS && item <= Item.BRONZE_LEGGINGS) {
+					if (this.leggings != null)
+						inventory.add(this.leggings)
+					this.leggings = item;
 				}
 				break;
 		}
