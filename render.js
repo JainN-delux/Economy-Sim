@@ -3,19 +3,19 @@ import { entities, player, entityStats, statusTime, convertStatus } from "./enti
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
 
-
-//CONSTANTS
+// CONSTANTS
 const CANVAS_WIDTH = 768;  // Width of p5 canvas
 const CANVAS_HEIGHT = 768; // Height of p5 canvas
 const TILE_SRC_SIZE = 16;  // Size of tile in tile atlas
 const TILE_SIZE = 32;      // Rendered size of tile
 
-//sprite sheet variables
+// sprite sheet variables
 let tileset;                // Stores our tileset image
 let entitysheet;            // Stores our entity tilesheet image
 let itemset;				// Stores our item tilesheet image
 let statusiconset;		// Stores our status icon tilesheet image
 let minimap;
+
 // Preloads our images
 window.preload = () => { 
 	tileset = loadImage("./assets/tileset_0.png");
@@ -24,7 +24,6 @@ window.preload = () => {
 	statusiconset = loadImage("./assets/statusicons.png");
 	minimap = createImage(WORLD_WIDTH, WORLD_HEIGHT);
 }
-
 
 function fillMinimap() {
 	minimap.loadPixels();

@@ -1,13 +1,15 @@
 import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss } from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld, TILE_SIZE, statusiconset } from "./render.js";
 
-import { entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType } from "./entity.js";
+import { Entity, entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType, setPlayer, ENTITY_SRC_SIZE } from "./entity.js";
 import { inventory, items, inRange, Shop, itemStats, inRangeSpecial, Item } from "./item.js";
 
 // variables
 let turnCount = 0;
 let attack_x = 0;
 let attack_y = 0;
+let intro = true;
+let intro_selected = 0;
 
 let shop = new Shop([]);
 
@@ -19,7 +21,6 @@ function updateWorld() {
 			tiles[entities[i].y][entities[i].x] = 11; //reset tile to floor
 		}
 	}
-	
 
 	if (tiles[player.y][player.x] == Tile.STAIRS && boss.health <= 0) {
 		generateWorld();
@@ -58,6 +59,23 @@ function attackAt(e, x, y, key_shift) {
 
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
+	if (intro) {
+		if (keyCode == ENTER) {
+			if (intro_selected == 0)
+				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD]));
+			else if (intro_selected == 1)
+				setPlayer(new Entity(0, 0, EntityType.ARCHER, 1, [Item.BOW]));
+			else if (intro_selected == 2)
+				setPlayer(new Entity(0, 0, EntityType.WIZARD, 1, [Item.SPEAR]));
+			generateWorld();
+			intro = false;
+		}
+		if (keyCode == LEFT_ARROW && intro_selected > 0)
+			intro_selected--;
+		if (keyCode == RIGHT_ARROW && intro_selected < 2)
+			intro_selected++;
+		return;
+	}
 	if (player.health <= 0)
 		window.location.reload();
 	// Key X / Inventory
@@ -188,7 +206,6 @@ window.keyPressed = () => {
 window.setup = () => {
 	createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 	noSmooth(); // Turns off filter on images because we want clear pixel art
-	generateWorld();
 }
 //mousclick
 window.mouseClicked = () => {
@@ -197,9 +214,23 @@ window.mouseClicked = () => {
 //DRAW
 window.draw = () => {
 	background(20);
-	drawWorld(player.x, player.y);
-	
-	
+	if (intro) {
+		fill(0);
+		rect(150, 150, CANVAS_WIDTH-300, CANVAS_HEIGHT-300);
+		noStroke();
+		textSize(32);
+		fill(255);
+		text("Choose your class:", 250, 250);
+		image(entitysheet, 250, 300, 4*ENTITY_SRC_SIZE, 4*ENTITY_SRC_SIZE, EntityType.WARRIOR*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		image(entitysheet, 350, 300, 4*ENTITY_SRC_SIZE, 4*ENTITY_SRC_SIZE, EntityType.ARCHER*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		image(entitysheet, 450, 300, 4*ENTITY_SRC_SIZE, 4*ENTITY_SRC_SIZE, EntityType.WIZARD*ENTITY_SRC_SIZE, 0, ENTITY_SRC_SIZE, ENTITY_SRC_SIZE);
+		stroke(0, 0, 255);
+		fill(0, 0, 0, 0);
+		strokeWeight(4);
+		rect(250 + 100*intro_selected, 300, 4*ENTITY_SRC_SIZE, 4*ENTITY_SRC_SIZE);
+	}
+	else
+		drawWorld(player.x, player.y);
 }
 
 export { turnCount, attack_x, attack_y, shop };

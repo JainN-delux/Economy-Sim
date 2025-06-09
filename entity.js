@@ -477,8 +477,12 @@ class Entity {
 }
 
 // Spawn player
-let entities = [new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SPEAR])];
-player = entities[0]
+let entities = [];
+
+function setPlayer(entity) {
+	entities[0] = entity;
+	player = entities[0]
+}
 
 // Returns entity at a position
 function entityAtTile(x, y) {
@@ -489,4 +493,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus, statusList, entityStats };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus, statusList, entityStats, setPlayer, ENTITY_SRC_SIZE };
