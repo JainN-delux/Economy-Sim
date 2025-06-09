@@ -37,17 +37,14 @@ const Tile = {
 	FLOOR_BOTTOM_RIGHT: 15,
 	EMPTY: 16,
 	TRAP_NULL: 17,
-	TRAP_POISON: 18,	
+	TRAP_POISON: 18,
 	TRAP_VINES: 19,
 	TRAP_STUN: 20,
 	TRAP_BLEED: 21,
 	TRAP_FIRE: 22,
-	TRAP_UNKNOWN0: 23,
-	TRAP_UNKNOWN1: 24,
-	TRAP_HOLE: 25,
-	STAIRS: 26,
-	FIRE: 27, 
-	POISON_MIST: 28
+	STAIRS: 23,
+	FIRE: 24, 
+	POISON_MIST: 25,
 }
 
 // check if entities can walk on tiles or not
