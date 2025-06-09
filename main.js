@@ -80,7 +80,7 @@ window.keyPressed = () => {
 		window.location.reload();
 	// Key X / Inventory
 	// if x is pressed and the inventory is not open 
-	if (key === 'x') {
+	if (key == 'x' || key == 'X') {
 		inventory.toggle();
 	}
 	// move up
