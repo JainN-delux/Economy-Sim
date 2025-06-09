@@ -44,7 +44,7 @@ const statusTime = [
 	4,// BLEED: 4,
 	5,// FIRE: 5,
 	2,// TIMEBUFF: 6,
-	3// INVISIBLE: 7
+	3,// INVISIBLE: 7
 ]
 
 
@@ -86,7 +86,7 @@ class EntityStats {
 // assign 4 types of enemies and their stats
 const entityStats = [
 	new EntityStats(100, 10, 10, 10, 4, 0.4),
-	new EntityStats(100, 8, 15, 7, 4, 0.4),
+	new EntityStats(100, 8, 20, 7, 4, 0.4),
 	new EntityStats(100, 15, 12, 5, 6, 0.4),
 	new EntityStats(1000, 160, 160, 500, 10, 1.0),
 	new EntityStats(100, 0, 0, 10, 4, 0.4),
@@ -138,6 +138,8 @@ class Entity {
 
 	// Draws entity sprite, healthbar and weapon
 	draw() {
+		if (this.effects[statusList.INVISIBLE] > 0)
+			return;
 		// Translate tile coordinates to screenspace
 		let x = (this.x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		let y = (this.y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
@@ -432,14 +434,16 @@ class Entity {
 		this.mana = Math.min(this.mana_max, this.mana + 1);
 	}
 
-	//turn based system
+	// turn based system
 	turn() {
 		// Don't attack or move torwards player if not hostile
-		if (this.hostility == false || player.effects[statusList.INVISIBLE] > 0 || debug)
+		if (this.hostility == false ||debug)
 			return;
 		// Get the distance between enemy and players
 		let xdist = Math.abs(player.x-this.x);
 		let ydist = Math.abs(player.y-this.y);
+		if (player.effects[statusList.INVISIBLE] > 0 && !(xdist <= 1 && ydist <= 1))
+			return;
 		// Attack if the player is within reach (adjacent)
 		// WOODEN_SHIELD thing is so that the AI dosen't constantly use the special for no reason. I will need item specific logic later.
 		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
