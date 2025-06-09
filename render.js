@@ -1,4 +1,4 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable } from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects} from "./generateWorld.js";
 import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
@@ -37,6 +37,18 @@ function fillMinimap() {
 	}
 	minimap.updatePixels();
 }
+
+function drawTileStatus() {
+
+	for (let i = 0; i < tileEffects.length; i++) {
+		let x = (tileEffects[i].x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+		let y = (tileEffects[i].y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+
+		fill (255, 0, 0, 150)
+		rect(x, y, TILE_SIZE, TILE_SIZE)
+	}
+}
+
 
 let damageMarkers = []; // hold relivent info to make the damage float
 
@@ -234,7 +246,8 @@ function drawWorld(px, py) {
 		else
 			drawDamageMarker(damageMarkers[i]);
 
-	
+	drawTileStatus()
+
 	fill(0, 0, 0, 0);
 	// Shows the range of the current attack with weapon
 	if (keyIsDown(SHIFT) ? inRangeSpecial(player.quickslot[player.selected], attack_x, attack_y) : inRange(player.quickslot[player.selected], attack_x, attack_y)) {
