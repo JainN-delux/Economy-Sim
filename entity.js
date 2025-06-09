@@ -117,7 +117,7 @@ class Entity {
 		this.lastPotionUsed = 0;
 		this.lastAttacked = 0;
 		this.effects = new Array(statusList.STATUS_MAX).fill(0);
-		this.coins = 1000;
+		this.coins = 0;
 		if (elite) {
 			this.max_health *= 2;
 			this.attack_base *= 2;
@@ -230,6 +230,8 @@ class Entity {
 					this.defense_mult *= 2;
 					break;
 				case Item.WOODEN_SHIELD: {
+					if (Math.random() > (this.attack_base * this.attack_mult / 2) / (entity.attack_base * entity.attack_mult))
+						break;
 					let dir_x = entity.x-this.x;
 					let dir_y = entity.y-this.y;
 					if (!isWalkable[tiles[entity.y+dir_y][entity.x+dir_x]]) {
