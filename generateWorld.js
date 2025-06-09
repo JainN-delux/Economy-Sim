@@ -1,7 +1,6 @@
-import { Entity, EntityType, entities, entityAtTile, player} from "./entity.js";
+import { Entity, EntityType, entities, entityAtTile, player, statusList} from "./entity.js";
 import { itemInRoom, Item, items } from "./item.js";
 import { turnCount } from "./main.js";
-import { fillMinimap } from "./render.js";
 
 //CONSTANTS
 const WORLD_WIDTH = 256;   // The width in tiles in size
@@ -42,7 +41,12 @@ const Tile = {
 	TRAP_STUN: 20,
 	TRAP_BLEED: 21,
 	TRAP_FIRE: 22,
-	STAIRS: 23,
+	TRAP_UNKNOWN0: 23,
+	TRAP_UNKNOWN1: 24,
+	TRAP_HOLE: 25,
+	STAIRS: 26,
+	FIRE: 27, 
+	POISON_MIST: 28
 }
 
 // check if entities can walk on tiles or not
@@ -78,6 +82,22 @@ const isWalkable = [
 
 // Our 2D array that stores tile data. This is initially filled with floors
 let tiles;
+
+let tileEffects = [];
+
+
+class tileEff {
+	constructor(x, y, size, status, t) {
+		this.x = x
+		this.y = y
+		this.size = size 
+		this.status = status
+		this.t = t
+	} 
+
+}
+
+tileEffects.push(new tileEff(5, 5, 2, statusList.FIRE, 5)) 
 
 
 /* function
@@ -296,7 +316,7 @@ function generateEnemies() {
 				let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1);
 				let y = randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1);
 				if (!entityAtTile(x, y))
-					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.SPEAR+1)], true, randint(0, 5) == 0))
+					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.BOW+1)], true, randint(0, 5) == 0))
 			}
 	}
 }
@@ -312,7 +332,7 @@ function generateBossroom() {
 			best = rooms[i].h * rooms[i].w;
 		}
 	}
-	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h - 1 ), EntityType.BOSS, level, [randint(Item.SWORD, Item.SPEAR+1)]))
+	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h - 1 ), EntityType.BOSS, level, [randint(Item.SWORD, Item.BOW+1)]))
 	boss = entities[entities.length-1];
 	tiles[boss.y][boss.x] = Tile.STAIRS;
 }
@@ -333,7 +353,7 @@ function generateMerchant() {
 	let collection = []
 
 	for (let i = 0; i < 6; i++) {
-		collection.push(randint(Item.POTION_RED, Item.BOW+1))
+		collection.splice(i, 0, randint(Item.POTION_RED, Item.BOW+1))
 	}
 	let merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, collection, false)
 	entities.push(merchant)
@@ -359,13 +379,13 @@ function generateWorld() {
 	
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
-	player.armor = Item.RAINBOW_ARMOR;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))
 				connectRooms(rooms[i], rooms[j]);
-
-	fillMinimap();
 }
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss };
+
+
+
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss , tileEffects};

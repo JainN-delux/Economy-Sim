@@ -11,6 +11,7 @@ const Item = {
 	POTION_ATTACK: 2,
 	POTION_GREEN: 3,
 	POTION_PURPLE: 4,
+	//WEAPONS
 	SWORD: 5,
 	POISON_SWORD: 6,
 	HATCHET: 7,
@@ -18,15 +19,17 @@ const Item = {
 	STEEL_SHIELD: 9,
 	WOODEN_SHIELD: 10,
 	BOW: 11,
-	SPEAR: 12,
+	SPEAR: 12,	//add from here
 	SCYTHE: 13,
 	MACE: 14,
 	TRIDENT: 15,
 	BAT: 16,
+	//WANDS
 	LIGHTNING_WAND: 17,
 	FIRE_WAND: 18,
 	VINE_WAND: 19,
 	POISON_WAND: 20,
+	//ARMORS
 	FIRE_ARMOR: 21,
 	BRONZE_ARMOR: 22,
 	GREEN_AURA_ARMOR: 23,
@@ -39,6 +42,7 @@ const Item = {
 	ICE_ARMOR: 30,
 	VINE_ARMOR: 31,
 	RAINBOW_ARMOR: 32,
+	//lEGGINGS
 	POISON_LEGGINGS: 33,
 	YELLOW_LEGGINGS: 34,
 	BLUE_LEGGINGS: 35,
@@ -102,6 +106,7 @@ function inRangeSpecial(item, x, y) {
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		case Item.SPEAR:
 			return (Math.abs(x) <= 2 && Math.abs(y) == 0) || (Math.abs(x) == 0 && Math.abs(y) <= 2);
+
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}
