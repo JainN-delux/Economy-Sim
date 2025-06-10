@@ -133,7 +133,7 @@ class Entity {
 		else
 			this.quickslot = quickslot;
 		this.armor = null;
-		this.leggings = null;
+		this.leggings = 36;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -198,10 +198,46 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
+	applyarmor(entity) {
+		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
+			return;
+		switch(this.armor) {
+			//is not effected by burns + inflicts burns
+			case Item.FIRE_ARMOR:
+				if (this.effects[statusList.FIRE] == 1) {
+					this.effects[statusList.FIRE] = 0;
+				}
+				entity.effects[statusList.FIRE] += 5;
+			break;
+			//increases base defense
+			case Item.BRONZE_ARMOR:
+				this.defense_base *= 0.5
+
+			break;
+			// is immune to vines + inflicts vine damage
+			case Item.GREEN_AURA_ARMOR:
+				if (this.effects[statusList.VINES] == 1) {
+					this.effects[statusList.VINES] = 0;
+				}
+				entity.effects[statusList.VINES] += 2;
+			break;
+			//inflicts poison to enemies
+			case Item.POISON_ARMOR:
+				entity.effects[statusList.POISON] += 5;
+			break;
+			case Item.SHIELD_ARMOR:
+				this.defense_base *= 2
+			break;
+			default:
+				this.defense_base = 1
+				break;
+		}
+	}
 	// attack and damage
 	attack(entity, special=false) {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
 			return;
+		this.applyarmor(entity)
 		if (special) {
 			if (this.quickslot[this.selected] != null)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
@@ -427,7 +463,7 @@ class Entity {
 			}
 		}
 	}
-
+	
 	update() {
 		this.returnBase()
 		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max)
@@ -487,7 +523,9 @@ let entities = [];
 
 function setPlayer(entity) {
 	entities[0] = entity;
-	player = entities[0]
+	player = entities[0];
+	player.armor = 24;
+	player.legging = 34;
 }
 
 // Returns entity at a position

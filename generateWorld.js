@@ -377,6 +377,7 @@ function generateWorld() {
 	
 	player.x = rooms[0].x + 1;
 	player.y = rooms[0].y + 1;
+	//player.armor = Item.RAINBOW_ARMOR;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))
