@@ -198,41 +198,50 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
-	//passive armor effects
+	//passive ARMOR IMMUNITY effects
 	applyarmor() {
-		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
-			return;
 		switch(this.armor) {
 			//is not effected by burns + inflicts burns
 			case Item.FIRE_ARMOR:
 				if (this.effects[statusList.FIRE] >= 1) {
 					this.effects[statusList.FIRE] = 0;		
 				}
-				
 			break;
 			//increases base defense
 			case Item.BRONZE_ARMOR:
 				this.defense_base *= 0.5
 
 			break;
-			// is immune to vines + inflicts vine damage
+			// increases player max-health by 50
 			case Item.GREEN_AURA_ARMOR:
-				if (this.effects[statusList.VINES] >= 1) {
-					this.effects[statusList.VINES] = 0;
-				}
+				this.maxhealth += 50
 			break;
+			
+			case Item.SHIELD_ARMOR:
+				this.defense_base *= 2
+			break;
+			case Item.BLACK_ARMOR:
+			break;
+			case Item.ICE_ARMOR:
+			break;
+			case Item.VINE_ARMOR:
+			break;
+			case Item.RAINBOW_ARMOR:
 			//inflicts poison to enemies
-			case Item.POISON_ARMOR:
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
 			break;
-			case Item.SHIELD_ARMOR:
-				this.defense_base *= 2
-			break;
-			default:
-				this.defense_base = 1
+			//----LEGGINGS----
+			case Item.POISON_LEGGINGS:
 				break;
+			case Item.YELLOW_LEGGINGS:
+
+			case Item.BLUE_LEGGINGS: 
+			case Item.WET_LEGGINGS: 
+			case Item.GOLD_LEGGINGS: 
+			case Item.BAG_THINGY: 
+			case Item.BRONZE_LEGGINGS: 
 		}
 	}
 	// attack and damage
@@ -325,12 +334,13 @@ class Entity {
 					break;
 			}
 		}
+		//ARMOR ATTACKS
 		switch(this.armor) {
-			//is not effected by burns + inflicts burns
+			//inflicts burns
 			case Item.FIRE_ARMOR:
 				entity.effects[statusList.FIRE] += 2;
 			break;
-			// is immune to vines + inflicts vine damage
+			// inflicts vine damage
 			case Item.GREEN_AURA_ARMOR:
 				entity.effects[statusList.VINES] += 2;
 			break;
@@ -338,7 +348,14 @@ class Entity {
 			case Item.POISON_ARMOR:
 				entity.effects[statusList.POISON] += 5;
 			break;
+			case Item.ORANGE_ARMOR:
+				break;
+			case Item.BLUE_ARMOR:
+			break;
+			case Item.GILDED_ARMOR:
+			break;
 		}
+
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value
