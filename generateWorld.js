@@ -351,7 +351,7 @@ function generateMerchant() {
 	let collection = []
 
 	for (let i = 0; i < 6; i++) {
-		collection.splice(i, 0, randint(Item.POTION_RED, Item.BOW+1))
+		collection.splice(i, 0, randint(Item.POTION_RED, Item.ITEM_MAX))
 	}
 	let merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, collection, false)
 	entities.push(merchant)
@@ -383,8 +383,5 @@ function generateWorld() {
 				connectRooms(rooms[i], rooms[j]);
 	fillMinimap();
 }
-
-
-
 
 export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss , tileEffects};

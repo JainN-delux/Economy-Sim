@@ -161,14 +161,14 @@ class Entity {
 	// Gets the attack stat of the current held item of the entity
 	heldItemAttack(special=false) {
 		if (special)
-			return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].special : 1);
+			return (this.quickslot[this.selected] ? itemStats[this.quickslot[this.selected]].special : 1) * (this.armor ? itemStats[this.armor].special : 1) * (this.leggings ? itemStats[this.leggings].special : 1);
 		else
-			return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].damage : 1);
+			return (this.quickslot[this.selected] ? itemStats[this.quickslot[this.selected]].damage : 1) * (this.armor ? itemStats[this.armor].damage : 1) * (this.leggings ? itemStats[this.leggings].damage : 1);
 	}
 
-	// Gets the shield stat of the current held itme of the entity
+	// Gets the shield stat of the current held item of the entity
 	heldItemShield() {
-		return (itemStats[this.quickslot[this.selected]] ? itemStats[this.quickslot[this.selected]].shield : 1);
+		return (this.quickslot[this.selected] ? itemStats[this.quickslot[this.selected]].shield : 1) * (this.armor ? itemStats[this.armor].shield : 1) * (this.leggings ? itemStats[this.leggings].shield : 1);
 	}
 
 	//experience gain function
@@ -190,7 +190,7 @@ class Entity {
 
 	// Give xp to killer, drop item, delete entity
 	die(killer) {
-		let mult = this.elite ? 4 : 1;
+		let mult = this.elite ? 5 : 1;
 		killer.gainXp(this.lvl*mult);
 		killer.coins += this.lvl*mult;
 		// drop item
