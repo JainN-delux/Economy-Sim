@@ -95,7 +95,7 @@ class tileEff {
 
 }
 
-tileEffects.push(new tileEff(5, 5, 2, statusList.FIRE, 5)) 
+tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5)) 
 
 
 /* function

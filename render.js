@@ -1,4 +1,4 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects} from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects, Tile} from "./generateWorld.js";
 import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
@@ -38,14 +38,35 @@ function fillMinimap() {
 	minimap.updatePixels();
 }
 
+function drawRow(tx, ty, s, tile) {
+
+
+	let x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+	let y = (ty-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+	drawTile(Tile.EMPTY, (x-fract(player.x)-1)*TILE_SIZE, (y-fract(player.y)-1)*TILE_SIZE);
+	//rect(x, y, TILE_SIZE, TILE_SIZE)
+	for (let k = 1; k < s; k++) {
+		x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+		y = (ty-player.y+k-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+		rect(x, y, TILE_SIZE, TILE_SIZE)
+		y = (ty-player.y-k-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+		rect(x, y, TILE_SIZE, TILE_SIZE)
+	}
+}
+
 function drawTileStatus() {
 
-	for (let i = 0; i < tileEffects.length; i++) {
-		let x = (tileEffects[i].x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
-		let y = (tileEffects[i].y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 
+	for (let i = 0; i < tileEffects.length; i++) {
+		console.log(tileEffects[i].status)
 		fill (255, 0, 0, 150)
-		rect(x, y, TILE_SIZE, TILE_SIZE)
+
+
+		drawRow(tileEffects[i].x, tileEffects[i].y, tileEffects[i].size, tileEffects[i].status)
+		for (let k = 1; k < tileEffects[i].size; k++) {
+			drawRow(tileEffects[i].x-k, tileEffects[i].y, tileEffects[i].size-k, tileEffects[i].status)
+			drawRow(tileEffects[i].x+k, tileEffects[i].y, tileEffects[i].size-k, tileEffects[i].status)
+		}
 	}
 }
 
