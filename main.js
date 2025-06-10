@@ -26,7 +26,7 @@ function updateWorld() {
 		generateWorld();
 		return;
 	}
-
+	console.log(player.effects)
 	player.update();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
@@ -34,9 +34,12 @@ function updateWorld() {
 	if (turnCount % 250 == 0)
 		generateEnemies();
 	turnCount++;
+	player.applyarmor()
+	
 }
 
 function attackAt(e, x, y, key_shift) {
+	
 	if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0) {
 		if (player.quickslot[player.selected] == null) {
 			player.attack(e);

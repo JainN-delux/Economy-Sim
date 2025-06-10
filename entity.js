@@ -133,7 +133,7 @@ class Entity {
 		else
 			this.quickslot = quickslot;
 		this.armor = null;
-		this.leggings = 36;
+		this.leggings = null;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -198,16 +198,17 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
-	applyarmor(entity) {
+	//passive armor effects
+	applyarmor() {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
 			return;
 		switch(this.armor) {
 			//is not effected by burns + inflicts burns
 			case Item.FIRE_ARMOR:
-				if (this.effects[statusList.FIRE] == 1) {
-					this.effects[statusList.FIRE] = 0;
+				if (this.effects[statusList.FIRE] >= 1) {
+					this.effects[statusList.FIRE] = 0;		
 				}
-				entity.effects[statusList.FIRE] += 5;
+				
 			break;
 			//increases base defense
 			case Item.BRONZE_ARMOR:
@@ -216,14 +217,15 @@ class Entity {
 			break;
 			// is immune to vines + inflicts vine damage
 			case Item.GREEN_AURA_ARMOR:
-				if (this.effects[statusList.VINES] == 1) {
+				if (this.effects[statusList.VINES] >= 1) {
 					this.effects[statusList.VINES] = 0;
 				}
-				entity.effects[statusList.VINES] += 2;
 			break;
 			//inflicts poison to enemies
 			case Item.POISON_ARMOR:
-				entity.effects[statusList.POISON] += 5;
+				if (this.effects[statusList.POISON] >= 1) {
+					this.effects[statusList.POISON] = 0;
+				}
 			break;
 			case Item.SHIELD_ARMOR:
 				this.defense_base *= 2
@@ -237,7 +239,6 @@ class Entity {
 	attack(entity, special=false) {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
 			return;
-		this.applyarmor(entity)
 		if (special) {
 			if (this.quickslot[this.selected] != null)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
@@ -324,6 +325,20 @@ class Entity {
 					break;
 			}
 		}
+		switch(this.armor) {
+			//is not effected by burns + inflicts burns
+			case Item.FIRE_ARMOR:
+				entity.effects[statusList.FIRE] += 2;
+			break;
+			// is immune to vines + inflicts vine damage
+			case Item.GREEN_AURA_ARMOR:
+				entity.effects[statusList.VINES] += 2;
+			break;
+			//inflicts poison to enemies
+			case Item.POISON_ARMOR:
+				entity.effects[statusList.POISON] += 5;
+			break;
+		}
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value
@@ -401,6 +416,7 @@ class Entity {
 				}
 				break;
 		}
+
 		if (item >= Item.POTION_RED && item <= Item.POTION_PURPLE)
 			this.lastPotionUsed = turnCount;
 	}
@@ -524,8 +540,8 @@ let entities = [];
 function setPlayer(entity) {
 	entities[0] = entity;
 	player = entities[0];
-	player.armor = 24;
-	player.legging = 34;
+	player.armor = 23;
+	player.leggings = 34;
 }
 
 // Returns entity at a position
