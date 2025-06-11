@@ -1,4 +1,4 @@
-import { isWalkable, randint, tiles } from "./generateWorld.js";
+import { isWalkable, randint, tiles, level } from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial, Shop } from "./item.js";
 import { turnCount } from "./main.js";
@@ -200,7 +200,7 @@ class Entity {
 
 	// attack and damage
 	attack(entity, special=false) {
-		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
+		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0 || entity == null)
 			return;
 		if (special) {
 			if (this.quickslot[this.selected] != null)
@@ -341,7 +341,7 @@ class Entity {
 				break;
 			// potion that gives Xp and halves health
 			case Item.POTION_PURPLE:
-				this.gainXp(5);
+				this.gainXp(5*level);
 				damageMarkers.push({ entity: this, damage: this.health/2, time: millis(), color: "red" });
 				this.health = this.health/2;
 				break;

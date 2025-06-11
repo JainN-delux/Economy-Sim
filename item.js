@@ -53,9 +53,9 @@ const Item = {
 	ITEM_MAX: 40,
 }
 
-//weapon stats
+// weapon stats
 class ItemStats {
-	constructor(damage, shield, mana, special, special_mana, name, cost) {
+	constructor(damage, shield, mana, special, special_mana, name, cost, directional=false) {
 		this.damage = damage;
 		this.shield = shield;
 		this.name = name;
@@ -63,6 +63,7 @@ class ItemStats {
 		this.special = special;
 		this.special_mana = special_mana;
 		this.cost = cost;
+		this.directional = directional;
 	}
 }
 
@@ -82,7 +83,7 @@ const itemStats = [
 	new ItemStats(10, 1, 1, 15, 2, "Bow", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Spear", 24),
 	// Fill in from here (these items aren't implemented yet)
-	new ItemStats(20, 1.5, 1, 40, 2, "Scythe", 24),
+	new ItemStats(15, 1.5, 2, 20, 3, "Scythe", 24, true),
 	new ItemStats(20, 1.5, 1, 40, 2, "Mace", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Trident", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Bat", 24),
@@ -117,6 +118,8 @@ function inRange(item, x, y) {
 			return Math.abs(x)+Math.abs(y) <= 3;
 		case Item.SPEAR:
 			return (Math.abs(x) == 1 && Math.abs(y) == 1);
+		case Item.SCYTHE:
+			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}
@@ -134,7 +137,8 @@ function inRangeSpecial(item, x, y) {
 			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		case Item.SPEAR:
 			return (Math.abs(x) <= 2 && Math.abs(y) == 0) || (Math.abs(x) == 0 && Math.abs(y) <= 2);
-
+		case Item.SCYTHE:
+			return (Math.abs(x) <= 1 && Math.abs(y) <= 1);
 		default:
 			return Math.abs(x)+Math.abs(y) <= 1;
 	}

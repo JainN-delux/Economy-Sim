@@ -43,7 +43,18 @@ function attackAt(e, x, y, key_shift) {
 			updateWorld();
 		}
 		else if (key_shift) {
-			if (inRangeSpecial(player.quickslot[player.selected], x, y)) {
+			if (itemStats[player.quickslot[player.selected].directional]) {
+				switch (player.quickslot[player.selected]) {
+					case Item.SCYTHE:
+						player.attack(e, true);
+						let dx = x == 0 ? 1 : 0;
+						let dy = y == 0 ? 1 : 0;
+						player.attack(entityAtTile(player.x+x+dx, player.y+y+dy), true);
+						break;
+				}
+				updateWorld();
+			}
+			else if (inRangeSpecial(player.quickslot[player.selected], x, y)) {
 				if (player.mana >= itemStats[player.quickslot[player.selected]].special_mana)
 					player.attack(e, true);
 				updateWorld();
@@ -82,6 +93,44 @@ window.keyPressed = () => {
 	// if x is pressed and the inventory is not open 
 	if (key == 'x' || key == 'X') {
 		inventory.toggle();
+	}
+
+	if (shop.open) {
+		if (keyCode == UP_ARROW)
+			shop.selection_up();
+		else if (keyCode == DOWN_ARROW)
+			shop.selection_down();
+	}
+	else if (inventory.open) {
+		if (keyCode == UP_ARROW)
+			inventory.selection_up();
+		else if (keyCode == DOWN_ARROW)
+			inventory.selection_down();
+		else if (keyCode == LEFT_ARROW)
+			inventory.selection_left();
+		else if (keyCode == RIGHT_ARROW)
+			inventory.selection_right();
+	}
+	else {
+		if (keyCode == UP_ARROW)
+			attack_y -= 1;
+		else if (keyCode == DOWN_ARROW)
+			attack_y += 1;
+		else if (keyCode == LEFT_ARROW)
+			attack_x -= 1;
+		else if (keyCode == RIGHT_ARROW)
+			attack_x += 1;
+	}
+
+	if (itemStats[player.quickslot[player.selected]].directional) {
+		if (keyCode == UP_ARROW)
+			attackAt(entityAtTile(player.x, player.y-1), 0, -1, keyIsDown(SHIFT));
+		else if (keyCode == DOWN_ARROW)
+			attackAt(entityAtTile(player.x, player.y+1), 0, 1, keyIsDown(SHIFT));
+		else if (keyCode == LEFT_ARROW)
+			attackAt(entityAtTile(player.x-1, player.y), -1, 0, keyIsDown(SHIFT));
+		else if (keyCode == RIGHT_ARROW)
+			attackAt(entityAtTile(player.x+1, player.y), 1, 0, keyIsDown(SHIFT));
 	}
 	// move up
 	if ((key == 'w' || key == 'W') && isWalkable[tiles[player.y-1][player.x]]) {
@@ -134,7 +183,7 @@ window.keyPressed = () => {
 				shop = e.shop;
 				shop.open = !shop.open;
 			}
-			else
+			else if (!itemStats[player.quickslot[player.selected]].directional)
 				attackAt(e, attack_x, attack_y, key == 'E');
 		}
 	}
@@ -158,31 +207,6 @@ window.keyPressed = () => {
 		window.location.reload()
 	}
 
-	if (shop.open) {
-		if (keyCode == UP_ARROW)
-			shop.selection_up();
-		else if (keyCode == DOWN_ARROW)
-			shop.selection_down();
-	} else if (inventory.open) {
-		if (keyCode == UP_ARROW)
-			inventory.selection_up();
-		else if (keyCode == DOWN_ARROW)
-			inventory.selection_down();
-		else if (keyCode == LEFT_ARROW)
-			inventory.selection_left();
-		else if (keyCode == RIGHT_ARROW)
-			inventory.selection_right();
-	}
-	else {
-		if (keyCode == UP_ARROW)
-			attack_y -= 1;
-		else if (keyCode == DOWN_ARROW)
-			attack_y += 1;
-		else if (keyCode == LEFT_ARROW)
-			attack_x -= 1;
-		else if (keyCode == RIGHT_ARROW)
-			attack_x += 1;
-	}
 	// use item in inventory
 	if (keyCode == ENTER && inventory.items[inventory.selected] != null && inventory.open) {
 		player.use(inventory.remove_selected());

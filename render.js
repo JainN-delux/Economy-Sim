@@ -179,11 +179,11 @@ function drawShop() {
 
 			if (i == shop.selected) {
 				fill(40, 60, 255);
-				rect(110, 110 + i*80, 70, 70)
+				rect(110, 110 + i*80, ITEM_SRC_SIZE*2, ITEM_SRC_SIZE*2)
 			} 
 
 			if (shop.items[i]) 
-				image(itemset, 110, 110 + i*80, 50, 50, shop.items[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+				image(itemset, 110, 110 + i*80, ITEM_SRC_SIZE*2, ITEM_SRC_SIZE*2, shop.items[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 			
 		}
 	}
