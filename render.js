@@ -18,7 +18,7 @@ let minimap;
 
 // Preloads our images
 window.preload = () => { 
-	tileset = loadImage("./assets/tileset_0.png");
+	tileset = loadImage("./assets/tileset_1.png");
 	itemset = loadImage("./assets/itemset.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
 	statusiconset = loadImage("./assets/statusicons.png");
