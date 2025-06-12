@@ -28,7 +28,7 @@ const statusList = {
 	STUN: 3, // locks movement, 5t
 	BLEED: 4, // decreases health by 2% every turn, 4t
 	FIRE: 5, //decreases health by 5 or 10 every turn, 5t
-
+	
 	// buffs
 	TIMEBUFF: 6, // gives a extra turn 
 	INVISIBLE: 7, // makes u invisible
@@ -210,21 +210,24 @@ class Entity {
 			//increases base defense
 			case Item.BRONZE_ARMOR:
 				this.defense_base *= 0.5
-
 			break;
 			// increases player max-health by 50
 			case Item.GREEN_AURA_ARMOR:
-				this.maxhealth += 50
+				this.max_health += 50
 			break;
 			
 			case Item.SHIELD_ARMOR:
 				this.defense_base *= 2
 			break;
 			case Item.BLACK_ARMOR:
+
 			break;
 			case Item.ICE_ARMOR:
 			break;
 			case Item.VINE_ARMOR:
+				if (this.effects[statusList.VINES] >= 1) {
+					this.effects[statusList.VINES] = 0;		
+				}
 			break;
 			case Item.RAINBOW_ARMOR:
 			//inflicts poison to enemies
@@ -232,9 +235,15 @@ class Entity {
 					this.effects[statusList.POISON] = 0;
 				}
 			break;
+			default:
+
+		}
 			//----LEGGINGS----
+		switch(this.armor) {
 			case Item.POISON_LEGGINGS:
-				break;
+				if (this.effects[statusList.POISON] >= 1) {
+					this.effects[statusList.POISON] = 0;
+				}
 			case Item.YELLOW_LEGGINGS:
 
 			case Item.BLUE_LEGGINGS: 
@@ -325,6 +334,7 @@ class Entity {
 				}
 			}
 		}
+
 		else {
 			if (this.quickslot[this.selected] != null)
 				this.mana -= itemStats[this.quickslot[this.selected]].mana;
@@ -334,6 +344,7 @@ class Entity {
 					break;
 			}
 		}
+
 		//ARMOR ATTACKS
 		switch(this.armor) {
 			//inflicts burns
@@ -349,10 +360,13 @@ class Entity {
 				entity.effects[statusList.POISON] += 5;
 			break;
 			case Item.ORANGE_ARMOR:
+
 				break;
 			case Item.BLUE_ARMOR:
+
 			break;
 			case Item.GILDED_ARMOR:
+
 			break;
 		}
 
@@ -557,7 +571,7 @@ let entities = [];
 function setPlayer(entity) {
 	entities[0] = entity;
 	player = entities[0];
-	player.armor = 23;
+	player.armor = 21;
 	player.leggings = 34;
 }
 
