@@ -219,11 +219,6 @@ class Entity {
 			case Item.SHIELD_ARMOR:
 				this.defense_base *= 2
 			break;
-			case Item.BLACK_ARMOR:
-
-			break;
-			case Item.ICE_ARMOR:
-			break;
 			case Item.VINE_ARMOR:
 				if (this.effects[statusList.VINES] >= 1) {
 					this.effects[statusList.VINES] = 0;		
@@ -236,6 +231,8 @@ class Entity {
 				}
 			break;
 			default:
+				this.max_health = 100;
+				this.defense_base = defense_base
 
 		}
 			//----LEGGINGS----
@@ -247,10 +244,21 @@ class Entity {
 			case Item.YELLOW_LEGGINGS:
 
 			case Item.BLUE_LEGGINGS: 
+				
 			case Item.WET_LEGGINGS: 
+
 			case Item.GOLD_LEGGINGS: 
+			if (this.effects[statusList.VINES] >= 1) {
+				this.effects[statusList.VINES] = 0;
+			} 
 			case Item.BAG_THINGY: 
-			case Item.BRONZE_LEGGINGS: 
+
+			//if bronze armor combo increase defence even more.
+			case Item.BRONZE_LEGGINGS:
+				if (this.armor = Item.BRONZE_ARMOR) {
+					this.defense_mult += 2
+				} 
+
 		}
 	}
 	// attack and damage
@@ -351,22 +359,29 @@ class Entity {
 			case Item.FIRE_ARMOR:
 				entity.effects[statusList.FIRE] += 2;
 			break;
-			// inflicts vine damage
-			case Item.GREEN_AURA_ARMOR:
-				entity.effects[statusList.VINES] += 2;
-			break;
 			//inflicts poison to enemies
 			case Item.POISON_ARMOR:
 				entity.effects[statusList.POISON] += 5;
 			break;
-			case Item.ORANGE_ARMOR:
-
-				break;
-			case Item.BLUE_ARMOR:
-
+			//enemy defense decreases
+			case Item.BLACK_ARMOR:
+				enitity.defense_mult -= 1
 			break;
-			case Item.GILDED_ARMOR:
-
+			//stuns enemies
+			case Item.ICE_ARMOR:
+				case Item.GREEN_AURA_ARMOR:
+				entity.effects[statusList.STUN] += 2;
+			break;
+			//inflicts vine damage
+			case Item.VINE_ARMOR:
+				entity.effects[statusList.VINES] += 3;
+			break;
+			//inflicts three types of damage one in 3 chance
+			case Item.RAINBOW_ARMOR:
+				if (randint(0,3) == 1) 
+				entity.effects[statusList.VINES] += 1
+				entity.effects[statusList.POISON] += 1
+				entity.effects[statusList.STUN] += 1;
 			break;
 		}
 
@@ -571,7 +586,7 @@ let entities = [];
 function setPlayer(entity) {
 	entities[0] = entity;
 	player = entities[0];
-	player.armor = 21;
+	player.armor = 32;
 	player.leggings = 34;
 }
 
