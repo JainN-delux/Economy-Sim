@@ -43,14 +43,15 @@ function drawRow(tx, ty, s, tile) {
 
 	let x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 	let y = (ty-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
-	drawTile(Tile.EMPTY, (x-fract(player.x)-1)*TILE_SIZE, (y-fract(player.y)-1)*TILE_SIZE);
-	//rect(x, y, TILE_SIZE, TILE_SIZE)
+	
+	// move to the draw tile function if have time
+	image(tileset, x, y, TILE_SIZE, TILE_SIZE, (Tile.TRAP_FIRE)*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 	for (let k = 1; k < s; k++) {
 		x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 		y = (ty-player.y+k-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
-		rect(x, y, TILE_SIZE, TILE_SIZE)
+		image(tileset, x, y, TILE_SIZE, TILE_SIZE, (Tile.TRAP_FIRE)*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 		y = (ty-player.y-k-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
-		rect(x, y, TILE_SIZE, TILE_SIZE)
+		image(tileset, x, y, TILE_SIZE, TILE_SIZE, (Tile.TRAP_FIRE)*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
 	}
 }
 
@@ -58,9 +59,8 @@ function drawTileStatus() {
 
 
 	for (let i = 0; i < tileEffects.length; i++) {
-		console.log(tileEffects[i].status)
+		
 		fill (255, 0, 0, 150)
-
 
 		drawRow(tileEffects[i].x, tileEffects[i].y, tileEffects[i].size, tileEffects[i].status)
 		for (let k = 1; k < tileEffects[i].size; k++) {

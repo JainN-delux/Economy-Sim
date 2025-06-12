@@ -26,7 +26,7 @@ function updateWorld() {
 		generateWorld();
 		return;
 	}
-	console.log(player.effects)
+	
 	player.update();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
