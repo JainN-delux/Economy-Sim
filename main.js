@@ -67,7 +67,7 @@ window.keyPressed = () => {
 	if (intro) {
 		if (keyCode == ENTER) {
 			if (intro_selected == 0)
-				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD]));
+				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.FIRE_WAND]));
 			else if (intro_selected == 1)
 				setPlayer(new Entity(0, 0, EntityType.ARCHER, 1, [Item.BOW]));
 			else if (intro_selected == 2)

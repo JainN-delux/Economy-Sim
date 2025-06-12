@@ -1,4 +1,4 @@
-import { isWalkable, randint, tiles } from "./generateWorld.js";
+import { isWalkable, randint, tiles , tileEffects, tileEff} from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial, Shop } from "./item.js";
 import { turnCount } from "./main.js";
@@ -8,7 +8,7 @@ const ENTITY_SRC_SIZE = 16;
 
 
 // This turns off things like hostile enemies
-let debug = false;
+let debug = true;
 
 // enum for entity types
 const EntityType = {
@@ -252,6 +252,9 @@ class Entity {
 			if (this.quickslot[this.selected] != null)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
+				case Item.FIRE_WAND:
+
+					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
 					break;
@@ -354,6 +357,10 @@ class Entity {
 			break;
 			case Item.GILDED_ARMOR:
 			break;
+		}
+		if (this.quickslot[this.selected] == Item.FIRE_WAND) {
+			tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
+			console.log(tileEffects)
 		}
 
 		entity.lastAttacked = turnCount;
@@ -559,6 +566,7 @@ function setPlayer(entity) {
 	player = entities[0];
 	player.armor = 23;
 	player.leggings = 34;
+	player.coins = 1000
 }
 
 // Returns entity at a position
