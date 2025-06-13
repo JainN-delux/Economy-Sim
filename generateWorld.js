@@ -85,17 +85,17 @@ let tileEffects = [];
 
 
 class tileEff {
-	constructor(x, y, size, status, t) {
+	constructor(x, y, size, status, t, applied) {
 		this.x = x
 		this.y = y
 		this.size = size 
 		this.status = status
 		this.t = t
+		this.applied = applied
 	} 
 
 }
 
-tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5)) 
 
 
 /* function

@@ -251,6 +251,7 @@ function drawWorld(px, py) {
 			}
 		}
 	}
+	drawTileStatus()
 
 	// iterate through entities
 	for (let i = 0; i < entities.length; i++)
@@ -263,7 +264,6 @@ function drawWorld(px, py) {
 		else
 			drawDamageMarker(damageMarkers[i]);
 
-	drawTileStatus()
 
 	fill(0, 0, 0, 0);
 	// Shows the range of the current attack with weapon

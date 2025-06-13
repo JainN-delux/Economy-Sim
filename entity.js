@@ -1,4 +1,4 @@
-import { isWalkable, randint, tiles , tileEffects, tileEff} from "./generateWorld.js";
+import { isWalkable, randint, tiles , tileEffects, tileEff, Tile} from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial, Shop } from "./item.js";
 import { turnCount } from "./main.js";
@@ -335,7 +335,13 @@ class Entity {
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.FIRE_WAND:
+<<<<<<< HEAD
+					tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
+
+					console.log(turnCount)
+=======
 					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
+>>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
 					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
@@ -418,6 +424,11 @@ class Entity {
 				case Item.WOODEN_SHIELD:
 					this.regen(0.01);
 					break;
+				case Item.FIRE_WAND:
+					tileEffects.push(new tileEff(entity.x, entity.y, 2, Tile.TRAP_FIRE, 5, turnCount)) 
+					console.log(tileEffects)
+				
+			
 			}
 		}
 
@@ -453,6 +464,10 @@ class Entity {
 				}
 			break;
 		}
+<<<<<<< HEAD
+		
+=======
+>>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
 
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
