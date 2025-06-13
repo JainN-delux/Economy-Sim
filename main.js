@@ -1,4 +1,4 @@
-import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss } from "./generateWorld.js";
+import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss , tileEffects} from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld, TILE_SIZE, statusiconset } from "./render.js";
 
 import { Entity, entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType, setPlayer, ENTITY_SRC_SIZE } from "./entity.js";
@@ -13,6 +13,7 @@ let intro_selected = 0;
 
 let shop = new Shop([]);
 
+
 function updateWorld() {
 	//if enemy is on trap apply effect
 	for (let i = 0; i < entities.length; i++) {
@@ -21,6 +22,20 @@ function updateWorld() {
 			tiles[entities[i].y][entities[i].x] = 11; //reset tile to floor
 		}
 	}
+
+	for (let i = 0; i<tileEffects.length; i++) {
+		console.log(tileEffects[i])
+		if (turnCount - tileEffects[i].applied > tileEffects[i].t) {
+			tileEffects.splice(i--, 1);
+		} else {
+			for (let j =0; j < entities.length; j++) {
+				if (Math.abs(entities[j].x-tileEffects[i].x)+Math.abs(entities[j].y-tileEffects[i].y) <= tileEffects[i].size-1) {
+					entities[j].effects[statusList.FIRE] += 2
+				}
+			}
+		}
+	}
+
 
 	if (tiles[player.y][player.x] == Tile.STAIRS && boss.health <= 0) {
 		generateWorld();
@@ -67,11 +82,11 @@ window.keyPressed = () => {
 	if (intro) {
 		if (keyCode == ENTER) {
 			if (intro_selected == 0)
-				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.FIRE_WAND]));
+				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD]));
 			else if (intro_selected == 1)
 				setPlayer(new Entity(0, 0, EntityType.ARCHER, 1, [Item.BOW]));
 			else if (intro_selected == 2)
-				setPlayer(new Entity(0, 0, EntityType.WIZARD, 1, [Item.SPEAR]));
+				setPlayer(new Entity(0, 0, EntityType.WIZARD, 1, [Item.FIRE_WAND]));
 			generateWorld();
 			intro = false;
 		}

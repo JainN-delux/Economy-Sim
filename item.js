@@ -114,7 +114,15 @@ const itemStats = [
 function inRange(item, x, y) {
 	switch (item) {
 		case Item.BOW:
-			return Math.abs(x)+Math.abs(y) <= 3;
+			return Math.abs(x)+Math.abs(y) <= 4;
+		case Item.FIRE_WAND:
+			return Math.abs(x)+Math.abs(y) <= 4;
+		case Item.LIGHTNING_WAND:
+			return Math.abs(x)+Math.abs(y) <= 4;
+		case Item.VINE_WAND:
+			return Math.abs(x)+Math.abs(y) <= 4;
+		case Item.POISON_WAND:
+			return Math.abs(x)+Math.abs(y) <= 4;
 		case Item.SPEAR:
 			return (Math.abs(x) == 1 && Math.abs(y) == 1);
 		default:
