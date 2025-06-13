@@ -261,33 +261,30 @@ class Entity {
 				if (this.effects[statusList.FIRE] >= 1) {
 					this.effects[statusList.FIRE] = 0;		
 				}
-			break;
+				break;
 			//increases base defense
 			case Item.BRONZE_ARMOR:
 				this.defense_base *= 0.5
-			break;
+				break;
 			// increases player max-health by 50
 			case Item.GREEN_AURA_ARMOR:
-				this.max_health += 50
-			break;
+				this.regen(0.01);
+				break;
 			
 			case Item.SHIELD_ARMOR:
-				this.defense_base *= 2
-			break;
+				break;
 			case Item.VINE_ARMOR:
 				if (this.effects[statusList.VINES] >= 1) {
-					this.effects[statusList.VINES] = 0;		
+					this.effects[statusList.VINES] = 0;
 				}
-			break;
+				break;
 			case Item.RAINBOW_ARMOR:
-			//inflicts poison to enemies
+				//inflicts poison to enemies
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
-			break;
+				break;
 			default:
-				this.max_health = 100;
-				this.defense_base = defense_base
 
 		}
 			//----LEGGINGS----
@@ -296,23 +293,27 @@ class Entity {
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
+				break;
 			case Item.YELLOW_LEGGINGS:
+				break;
 
-			case Item.BLUE_LEGGINGS: 
-				
-			case Item.WET_LEGGINGS: 
+			case Item.BLUE_LEGGINGS:
+				break;
 
-			case Item.GOLD_LEGGINGS: 
-			if (this.effects[statusList.VINES] >= 1) {
-				this.effects[statusList.VINES] = 0;
-			} 
+			case Item.WET_LEGGINGS:
+				break;
+			case Item.GOLD_LEGGINGS:
+				if (this.effects[statusList.VINES] >= 1) {
+					this.effects[statusList.VINES] = 0;
+				}
+				break;
+
 			case Item.BAG_THINGY: 
+				break;
 
 			//if bronze armor combo increase defence even more.
 			case Item.BRONZE_LEGGINGS:
-				if (this.armor = Item.BRONZE_ARMOR) {
-					this.defense_mult += 2
-				} 
+				break;
 
 		}
 	}
@@ -423,7 +424,7 @@ class Entity {
 			break;
 			//enemy defense decreases
 			case Item.BLACK_ARMOR:
-				enitity.defense_mult -= 1
+				entity.defense_mult *= 0.75
 			break;
 			//stuns enemies
 			case Item.ICE_ARMOR:
@@ -436,10 +437,11 @@ class Entity {
 			break;
 			//inflicts three types of damage one in 3 chance
 			case Item.RAINBOW_ARMOR:
-				if (randint(0,3) == 1) 
-				entity.effects[statusList.VINES] += 1
-				entity.effects[statusList.POISON] += 1
-				entity.effects[statusList.STUN] += 1;
+				if (randint(0,3) == 1) {
+					entity.effects[statusList.VINES] += 1
+					entity.effects[statusList.POISON] += 1
+					entity.effects[statusList.STUN] += 1;
+				}
 			break;
 		}
 
@@ -598,6 +600,7 @@ class Entity {
 	
 	update() {
 		this.returnBase()
+		this.applyarmor()
 		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max)
 			this.regen(0.01) // does the entire regen part
 		this.applyEffects();
@@ -663,9 +666,6 @@ let entities = [];
 function setPlayer(entity) {
 	entities[0] = entity;
 	player = entities[0];
-	player.armor = 32;
-	player.leggings = 34;
-	player.coins = 1000
 }
 
 // Returns entity at a position

@@ -83,7 +83,7 @@ const itemStats = [
 	new ItemStats(10, 1, 1, 15, 2, "Bow", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Spear", 24),
 	// Fill in from here (these items aren't implemented yet)
-	new ItemStats(5, 1.5, 2, 10, 3, "Scythe", 24, true),
+	new ItemStats(15, 1.5, 2, 20, 3, "Scythe", 24, true),
 	new ItemStats(20, 1.5, 1, 40, 2, "Mace", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Trident", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Bat", 24),
@@ -98,7 +98,7 @@ const itemStats = [
 	new ItemStats(1, 2, 1, 2, 1, "Orange Armor", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Blue Armor", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Gilded Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Shield Armor", 100),
+	new ItemStats(1, 4, 1, 2, 1, "Shield Armor", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Black Armor", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Ice Armor", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Vine Armor", 100),
