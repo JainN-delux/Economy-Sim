@@ -8,7 +8,7 @@ const ENTITY_SRC_SIZE = 16;
 
 
 // This turns off things like hostile enemies
-let debug = true;
+let debug = false;
 
 // enum for entity types
 const EntityType = {
@@ -134,6 +134,7 @@ class Entity {
 			this.quickslot = quickslot;
 		this.armor = null;
 		this.leggings = null;
+		this.mana_free = false;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -198,6 +199,60 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
+	attackAt(e, x, y, key_shift) {
+		if (this.effects[statusList.NULL] == 0 && this.effects[statusList.STUN] == 0) {
+			if (this.quickslot[this.selected] == null) {
+				this.attack(e);
+			}
+			else if (key_shift) {
+				if (this.mana < itemStats[this.quickslot[this.selected]].special_mana)
+					return;
+				if (itemStats[this.quickslot[this.selected]].directional) {
+					switch (this.quickslot[this.selected]) {
+						case Item.SCYTHE:
+							this.attack(e, true);
+							let dx = x == 0 ? 1 : 0;
+							let dy = y == 0 ? 1 : 0;
+							console.log(x, y, dx, dy)
+							this.mana_free = true;
+							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
+							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
+							this.attack(entityAtTile(this.x+dx, this.y+dy), true);
+							this.attack(entityAtTile(this.x-dx, this.y-dy), true);
+							this.mana_free = false;
+							break;
+					}
+				}
+				else if (inRangeSpecial(this.quickslot[this.selected], x, y)) {
+					if (this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
+						this.attack(e, true);
+				}
+			}
+			else {
+				if (this.mana < itemStats[this.quickslot[this.selected]].mana)
+					return;
+				if (itemStats[this.quickslot[this.selected]].directional) {
+					switch (this.quickslot[this.selected]) {
+						case Item.SCYTHE:
+							this.attack(e, true);
+							let dx = x == 0 ? 1 : 0;
+							let dy = y == 0 ? 1 : 0;
+							console.log(x, y, dx, dy)
+							this.mana_free = true;
+							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
+							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
+							this.mana_free = false;
+							break;
+					}
+				}
+				else if (inRange(this.quickslot[this.selected], x, y)) {
+					if (this.mana >= itemStats[this.quickslot[this.selected]].mana)
+						this.attack(e);
+				}
+			}
+		}
+	}
+
 	//passive ARMOR IMMUNITY effects
 	applyarmor() {
 		switch(this.armor) {
@@ -206,33 +261,31 @@ class Entity {
 				if (this.effects[statusList.FIRE] >= 1) {
 					this.effects[statusList.FIRE] = 0;		
 				}
-			break;
+				break;
 			//increases base defense
 			case Item.BRONZE_ARMOR:
 				this.defense_base *= 0.5
-			break;
+				break;
 			// increases player max-health by 50
 			case Item.GREEN_AURA_ARMOR:
-				this.max_health += 50
-			break;
+				this.regen(0.01);
+				break;
 			
 			case Item.SHIELD_ARMOR:
-				this.defense_base *= 2
-			break;
+				break;
 			case Item.VINE_ARMOR:
 				if (this.effects[statusList.VINES] >= 1) {
-					this.effects[statusList.VINES] = 0;		
+					this.effects[statusList.VINES] = 0;
 				}
-			break;
+				break;
 			case Item.RAINBOW_ARMOR:
-			//inflicts poison to enemies
+				//inflicts poison to enemies
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
-			break;
+				break;
 			default:
-				this.max_health = 100;
-				this.defense_base = defense_base
+				break;
 
 		}
 			//----LEGGINGS----
@@ -241,38 +294,54 @@ class Entity {
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
+				break;
 			case Item.YELLOW_LEGGINGS:
+				break;
 
+			// increase resistance to fire
 			case Item.BLUE_LEGGINGS: 
-				
+				if (this.effects[statusList.FIRE] >= 1) 
+					this.effects[statusList.FIRE] -= 1;
+				break;
+
 			case Item.WET_LEGGINGS: 
+				break;
 
 			case Item.GOLD_LEGGINGS: 
-			if (this.effects[statusList.VINES] >= 1) {
-				this.effects[statusList.VINES] = 0;
-			} 
+				if (randint(0,1) == 1) { 
+					if (this.effects[statusList.STUN] >= 1) 
+						this.effects[statusList.STUN] = 0;
+					if (this.effects[statusList.POISON] >= 1) 
+						this.effects[statusList.VINES] = 0;
+					if (this.effects[statusList.VINES] = 0)
+						this.effects[statusList.VINES] = 0;
+				}
+				break;
 			case Item.BAG_THINGY: 
+				break;
 
 			//if bronze armor combo increase defence even more.
 			case Item.BRONZE_LEGGINGS:
-				if (this.armor = Item.BRONZE_ARMOR) {
-					this.defense_mult += 2
-				} 
+				break;
 
 		}
 	}
 	// attack and damage
 	attack(entity, special=false) {
-		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0)
+		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0 || entity == null)
 			return;
 		if (special) {
-			if (this.quickslot[this.selected] != null)
+			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.FIRE_WAND:
+<<<<<<< HEAD
 					tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
 
 					console.log(turnCount)
+=======
+					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
+>>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
 					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
@@ -349,7 +418,7 @@ class Entity {
 		}
 
 		else {
-			if (this.quickslot[this.selected] != null)
+			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.WOODEN_SHIELD:
@@ -375,7 +444,7 @@ class Entity {
 			break;
 			//enemy defense decreases
 			case Item.BLACK_ARMOR:
-				enitity.defense_mult -= 1
+				entity.defense_mult *= 0.75
 			break;
 			//stuns enemies
 			case Item.ICE_ARMOR:
@@ -388,13 +457,17 @@ class Entity {
 			break;
 			//inflicts three types of damage one in 3 chance
 			case Item.RAINBOW_ARMOR:
-				if (randint(0,3) == 1) 
-				entity.effects[statusList.VINES] += 1
-				entity.effects[statusList.POISON] += 1
-				entity.effects[statusList.STUN] += 1;
+				if (randint(0,3) == 1) {
+					entity.effects[statusList.VINES] += 1
+					entity.effects[statusList.POISON] += 1
+					entity.effects[statusList.STUN] += 1;
+				}
 			break;
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
 
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
@@ -404,8 +477,20 @@ class Entity {
 		damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
 		entity.health -= damage;
 		// Delete entity and drop held item if health < 0
-		if (entity.health <= 0)
+		if (entity.health <= 0) {
+			damage += entity.health;
 			entity.die(this);
+		}
+
+		switch (this.quickslot[this.selected]) {
+			case Item.SCYTHE:
+				if (special) {
+					let old_health = this.health;
+					this.health = Math.min(this.health+(damage*0.2), this.max_health);
+					damageMarkers.push({ entity: this, damage: this.health - old_health, time: millis(), color: "green" });
+				}
+				break;
+		}
 	}
 
 	returnBase() {
@@ -449,7 +534,7 @@ class Entity {
 				break;
 			// potion that gives Xp and halves health
 			case Item.POTION_PURPLE:
-				this.gainXp(5);
+				this.gainXp(5*level);
 				damageMarkers.push({ entity: this, damage: this.health/2, time: millis(), color: "red" });
 				this.health = this.health/2;
 				break;
@@ -539,6 +624,7 @@ class Entity {
 	
 	update() {
 		this.returnBase()
+		this.applyarmor()
 		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max)
 			this.regen(0.01) // does the entire regen part
 		this.applyEffects();
@@ -556,11 +642,18 @@ class Entity {
 		if (player.effects[statusList.INVISIBLE] > 0 && !(xdist <= 1 && ydist <= 1))
 			return;
 		// Attack if the player is within reach (adjacent)
-		// WOODEN_SHIELD thing is so that the AI dosen't constantly use the special for no reason. I will need item specific logic later.
-		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
-			this.attack(player, true);
-		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].mana)
-			this.attack(player);
+		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana) {
+			if (itemStats[this.quickslot[this.selected]].directional)
+				this.attackAt(player, player.x-this.x >= player.y-this.y ? 1 : 0, player.x-this.x < player.y-this.y ? 1 : 0, true)
+			else
+				this.attack(player, true);
+		}
+		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].mana) {
+			if (itemStats[this.quickslot[this.selected]].directional)
+				this.attackAt(player, player.x-this.x >= player.y-this.y ? 1 : 0, player.x-this.x < player.y-this.y ? 1 : 0)
+			else
+				this.attack(player);
+		}
 		// If enemy is detected within aggro range moves toward player
 		else if (xdist + ydist < 10 && this.effects[statusList.VINES] == 0 && this.effects[statusList.STUN] == 0) {
 			// Choose axis to move in based on proximity
@@ -597,9 +690,6 @@ let entities = [];
 function setPlayer(entity) {
 	entities[0] = entity;
 	player = entities[0];
-	player.armor = 32;
-	player.leggings = 34;
-	player.coins = 1000
 }
 
 // Returns entity at a position

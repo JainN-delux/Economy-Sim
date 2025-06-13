@@ -314,7 +314,7 @@ function generateEnemies() {
 				let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1);
 				let y = randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1);
 				if (!entityAtTile(x, y))
-					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.BOW+1)], true, randint(0, 5) == 0))
+					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.SCYTHE+1)], true, randint(0, 5) == 0))
 			}
 	}
 }
@@ -330,7 +330,7 @@ function generateBossroom() {
 			best = rooms[i].h * rooms[i].w;
 		}
 	}
-	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h - 1 ), EntityType.BOSS, level, [randint(Item.SWORD, Item.BOW+1)]))
+	entities.push(new Entity(randint(bossRoom.x + 1, bossRoom.x + bossRoom.w - 1), randint(bossRoom.y + 1, bossRoom.y + bossRoom.h - 1 ), EntityType.BOSS, level, [randint(Item.SWORD, Item.SCYTHE+1)]))
 	boss = entities[entities.length-1];
 	tiles[boss.y][boss.x] = Tile.STAIRS;
 }
