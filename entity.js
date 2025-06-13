@@ -213,7 +213,6 @@ class Entity {
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
-							console.log(x, y, dx, dy)
 							this.mana_free = true;
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
@@ -237,7 +236,6 @@ class Entity {
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
-							console.log(x, y, dx, dy)
 							this.mana_free = true;
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
@@ -335,13 +333,7 @@ class Entity {
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.FIRE_WAND:
-<<<<<<< HEAD
 					tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
-
-					console.log(turnCount)
-=======
-					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
->>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
 					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
@@ -464,10 +456,6 @@ class Entity {
 				}
 			break;
 		}
-<<<<<<< HEAD
-		
-=======
->>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
 
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
