@@ -298,14 +298,22 @@ class Entity {
 				}
 			case Item.YELLOW_LEGGINGS:
 
+			// increase resistance to fire
 			case Item.BLUE_LEGGINGS: 
-				
+			if (this.effects[statusList.FIRE] >= 1) 
+				this.effects[statusList.FIRE] -= 1;
+
 			case Item.WET_LEGGINGS: 
 
 			case Item.GOLD_LEGGINGS: 
-			if (this.effects[statusList.VINES] >= 1) {
-				this.effects[statusList.VINES] = 0;
-			} 
+			if (randint(0,1) == 1) { 
+				if (this.effects[statusList.STUN] >= 1) 
+					this.effects[statusList.STUN] = 0;
+				if (this.effects[statusList.POISON] >= 1) 
+					this.effects[statusList.VINES] = 0;
+				if (this.effects[statusList.VINES] = 0)
+					this.effects[statusList.VINES] = 0;
+			}
 			case Item.BAG_THINGY: 
 
 			//if bronze armor combo increase defence even more.
