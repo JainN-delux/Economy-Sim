@@ -209,6 +209,10 @@ class Entity {
 					return;
 				if (itemStats[this.quickslot[this.selected]].directional) {
 					switch (this.quickslot[this.selected]) {
+						case Item.FIRE_WAND:
+							tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
+							console.log(turnCount)
+							break;
 						case Item.SCYTHE:
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
@@ -334,15 +338,6 @@ class Entity {
 			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
-				case Item.FIRE_WAND:
-<<<<<<< HEAD
-					tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
-
-					console.log(turnCount)
-=======
-					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
->>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
-					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
 					break;
@@ -464,11 +459,6 @@ class Entity {
 				}
 			break;
 		}
-<<<<<<< HEAD
-		
-=======
->>>>>>> 67b094ad1ed1b6b208cb553a8759f0d1e9b75358
-
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value
