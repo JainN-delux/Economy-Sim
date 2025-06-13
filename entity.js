@@ -213,6 +213,7 @@ class Entity {
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
+							console.log(x, y, dx, dy)
 							this.mana_free = true;
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
@@ -236,6 +237,7 @@ class Entity {
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
+							console.log(x, y, dx, dy)
 							this.mana_free = true;
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
