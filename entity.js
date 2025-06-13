@@ -325,7 +325,7 @@ class Entity {
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.FIRE_WAND:
-
+					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
 					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
@@ -442,10 +442,6 @@ class Entity {
 				entity.effects[statusList.STUN] += 1;
 			break;
 		}
-		if (this.quickslot[this.selected] == Item.FIRE_WAND) {
-			tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
-			console.log(tileEffects)
-		}
 
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
@@ -455,8 +451,20 @@ class Entity {
 		damageMarkers.push({ entity: entity, damage: damage, time: millis(), color: "red" });
 		entity.health -= damage;
 		// Delete entity and drop held item if health < 0
-		if (entity.health <= 0)
+		if (entity.health <= 0) {
+			damage += entity.health;
 			entity.die(this);
+		}
+
+		switch (this.quickslot[this.selected]) {
+			case Item.SCYTHE:
+				if (special) {
+					let old_health = this.health;
+					this.health = Math.min(this.health+(damage*0.2), this.max_health);
+					damageMarkers.push({ entity: this, damage: this.health - old_health, time: millis(), color: "green" });
+				}
+				break;
+		}
 	}
 
 	returnBase() {
