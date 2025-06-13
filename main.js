@@ -26,7 +26,7 @@ function updateWorld() {
 		generateWorld();
 		return;
 	}
-
+	
 	player.update();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
@@ -34,6 +34,8 @@ function updateWorld() {
 	if (turnCount % 250 == 0)
 		generateEnemies();
 	turnCount++;
+	player.applyarmor()
+	
 }
 
 //-------------------------KEYBOARD KEYS-------------------------

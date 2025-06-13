@@ -1,4 +1,4 @@
-import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects} from "./generateWorld.js";
+import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects, Tile} from "./generateWorld.js";
 import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
@@ -18,7 +18,7 @@ let minimap;
 
 // Preloads our images
 window.preload = () => { 
-	tileset = loadImage("./assets/tileset_0.png");
+	tileset = loadImage("./assets/tileset_1.png");
 	itemset = loadImage("./assets/itemset.png");
 	entitysheet = loadImage("./assets/entitySheet.png");
 	statusiconset = loadImage("./assets/statusicons.png");
@@ -38,14 +38,31 @@ function fillMinimap() {
 	minimap.updatePixels();
 }
 
+function drawRow(tx, ty, s, tile) {
+
+
+	let x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+	let y = (ty-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+	
+	// move to the draw tile function if have time
+	image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
+	for (let k = 1; k < s; k++) {
+		x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
+		y = (ty-player.y+k-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+		image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
+		y = (ty-player.y-k-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
+		image(tileset, x, y, TILE_SIZE, TILE_SIZE, tile*TILE_SRC_SIZE, 0, TILE_SRC_SIZE, TILE_SRC_SIZE);
+	}
+}
+
 function drawTileStatus() {
-
 	for (let i = 0; i < tileEffects.length; i++) {
-		let x = (tileEffects[i].x-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
-		let y = (tileEffects[i].y-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
-
-		fill (255, 0, 0, 150)
-		rect(x, y, TILE_SIZE, TILE_SIZE)
+	
+		drawRow(tileEffects[i].x, tileEffects[i].y, tileEffects[i].size, tileEffects[i].status)
+		for (let k = 1; k < tileEffects[i].size; k++) {
+			drawRow(tileEffects[i].x-k, tileEffects[i].y, tileEffects[i].size-k, tileEffects[i].status)
+			drawRow(tileEffects[i].x+k, tileEffects[i].y, tileEffects[i].size-k, tileEffects[i].status)
+		}
 	}
 }
 

@@ -1,4 +1,4 @@
-import { isWalkable, randint, tiles, level } from "./generateWorld.js";
+import { isWalkable, randint, tiles , tileEffects, tileEff} from "./generateWorld.js";
 import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damageMarkers } from "./render.js";
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial, Shop } from "./item.js";
 import { turnCount } from "./main.js";
@@ -28,7 +28,7 @@ const statusList = {
 	STUN: 3, // locks movement, 5t
 	BLEED: 4, // decreases health by 2% every turn, 4t
 	FIRE: 5, //decreases health by 5 or 10 every turn, 5t
-
+	
 	// buffs
 	TIMEBUFF: 6, // gives a extra turn 
 	INVISIBLE: 7, // makes u invisible
@@ -205,14 +205,15 @@ class Entity {
 				this.attack(e);
 			}
 			else if (key_shift) {
-				if (itemStats[this.quickslot[this.selected].directional]) {
+				if (this.mana < itemStats[this.quickslot[this.selected]].special_mana)
+					return;
+				if (itemStats[this.quickslot[this.selected]].directional) {
 					switch (this.quickslot[this.selected]) {
 						case Item.SCYTHE:
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
 							this.mana_free = true;
-							console.log(x, y, dx, dy)
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
 							this.attack(entityAtTile(this.x+dx, this.y+dy), true);
@@ -227,7 +228,9 @@ class Entity {
 				}
 			}
 			else {
-				if (itemStats[this.quickslot[this.selected].directional]) {
+				if (this.mana < itemStats[this.quickslot[this.selected]].mana)
+					return;
+				if (itemStats[this.quickslot[this.selected]].directional) {
 					switch (this.quickslot[this.selected]) {
 						case Item.SCYTHE:
 							this.attack(e, true);
@@ -248,6 +251,69 @@ class Entity {
 		}
 	}
 
+	//passive ARMOR IMMUNITY effects
+	applyarmor() {
+		switch(this.armor) {
+			//is not effected by burns + inflicts burns
+			case Item.FIRE_ARMOR:
+				if (this.effects[statusList.FIRE] >= 1) {
+					this.effects[statusList.FIRE] = 0;		
+				}
+			break;
+			//increases base defense
+			case Item.BRONZE_ARMOR:
+				this.defense_base *= 0.5
+			break;
+			// increases player max-health by 50
+			case Item.GREEN_AURA_ARMOR:
+				this.max_health += 50
+			break;
+			
+			case Item.SHIELD_ARMOR:
+				this.defense_base *= 2
+			break;
+			case Item.VINE_ARMOR:
+				if (this.effects[statusList.VINES] >= 1) {
+					this.effects[statusList.VINES] = 0;		
+				}
+			break;
+			case Item.RAINBOW_ARMOR:
+			//inflicts poison to enemies
+				if (this.effects[statusList.POISON] >= 1) {
+					this.effects[statusList.POISON] = 0;
+				}
+			break;
+			default:
+				this.max_health = 100;
+				this.defense_base = defense_base
+
+		}
+			//----LEGGINGS----
+		switch(this.armor) {
+			case Item.POISON_LEGGINGS:
+				if (this.effects[statusList.POISON] >= 1) {
+					this.effects[statusList.POISON] = 0;
+				}
+			case Item.YELLOW_LEGGINGS:
+
+			case Item.BLUE_LEGGINGS: 
+				
+			case Item.WET_LEGGINGS: 
+
+			case Item.GOLD_LEGGINGS: 
+			if (this.effects[statusList.VINES] >= 1) {
+				this.effects[statusList.VINES] = 0;
+			} 
+			case Item.BAG_THINGY: 
+
+			//if bronze armor combo increase defence even more.
+			case Item.BRONZE_LEGGINGS:
+				if (this.armor = Item.BRONZE_ARMOR) {
+					this.defense_mult += 2
+				} 
+
+		}
+	}
 	// attack and damage
 	attack(entity, special=false) {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0 || entity == null)
@@ -256,6 +322,9 @@ class Entity {
 			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
+				case Item.FIRE_WAND:
+
+					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
 					break;
@@ -329,6 +398,7 @@ class Entity {
 				}
 			}
 		}
+
 		else {
 			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].mana;
@@ -338,6 +408,43 @@ class Entity {
 					break;
 			}
 		}
+
+		//ARMOR ATTACKS
+		switch(this.armor) {
+			//inflicts burns
+			case Item.FIRE_ARMOR:
+				entity.effects[statusList.FIRE] += 2;
+			break;
+			//inflicts poison to enemies
+			case Item.POISON_ARMOR:
+				entity.effects[statusList.POISON] += 5;
+			break;
+			//enemy defense decreases
+			case Item.BLACK_ARMOR:
+				enitity.defense_mult -= 1
+			break;
+			//stuns enemies
+			case Item.ICE_ARMOR:
+				case Item.GREEN_AURA_ARMOR:
+				entity.effects[statusList.STUN] += 2;
+			break;
+			//inflicts vine damage
+			case Item.VINE_ARMOR:
+				entity.effects[statusList.VINES] += 3;
+			break;
+			//inflicts three types of damage one in 3 chance
+			case Item.RAINBOW_ARMOR:
+				if (randint(0,3) == 1) 
+				entity.effects[statusList.VINES] += 1
+				entity.effects[statusList.POISON] += 1
+				entity.effects[statusList.STUN] += 1;
+			break;
+		}
+		if (this.quickslot[this.selected] == Item.FIRE_WAND) {
+			tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5)) 
+			console.log(tileEffects)
+		}
+
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value
@@ -415,6 +522,7 @@ class Entity {
 				}
 				break;
 		}
+
 		if (item >= Item.POTION_RED && item <= Item.POTION_PURPLE)
 			this.lastPotionUsed = turnCount;
 	}
@@ -477,7 +585,7 @@ class Entity {
 			}
 		}
 	}
-
+	
 	update() {
 		this.returnBase()
 		if (this.lastAttacked + 3 <= turnCount && this.health < this.max_health*entityStats[this.type].regen_max)
@@ -544,7 +652,10 @@ let entities = [];
 
 function setPlayer(entity) {
 	entities[0] = entity;
-	player = entities[0]
+	player = entities[0];
+	player.armor = 32;
+	player.leggings = 34;
+	player.coins = 1000
 }
 
 // Returns entity at a position

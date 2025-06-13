@@ -95,7 +95,7 @@ class tileEff {
 
 }
 
-tileEffects.push(new tileEff(5, 5, 2, statusList.FIRE, 5)) 
+tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5)) 
 
 
 /* function
@@ -375,8 +375,9 @@ function generateWorld() {
 	generateEnemies()
 	itemInRoom()
 	
-	player.x = rooms[0].x + 1;
-	player.y = rooms[0].y + 1;
+	player.x = merchantRooms[0].x + 1;
+	player.y = merchantRooms[0].y + 1;
+	//player.armor = Item.RAINBOW_ARMOR;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)
 			if (spaceAdjacent(spaces[i], spaces[j]))
@@ -384,4 +385,4 @@ function generateWorld() {
 	fillMinimap();
 }
 
-export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss , tileEffects};
+export { WORLD_WIDTH, WORLD_HEIGHT, isWalkable, generateWorld, generateEnemies, tiles , randint, rooms, Tile, level, boss , tileEffects, tileEff};
