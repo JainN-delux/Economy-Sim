@@ -259,7 +259,7 @@ class Entity {
 			//is not effected by burns + inflicts burns
 			case Item.FIRE_ARMOR:
 				if (this.effects[statusList.FIRE] >= 1) {
-					this.effects[statusList.FIRE] = 0;		
+					this.effects[statusList.FIRE] = 0;
 				}
 				break;
 			//increases base defense
@@ -289,7 +289,7 @@ class Entity {
 
 		}
 			//----LEGGINGS----
-		switch(this.armor) {
+		switch(this.leggings) {
 			case Item.POISON_LEGGINGS:
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;

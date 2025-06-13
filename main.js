@@ -81,33 +81,35 @@ window.keyPressed = () => {
 		else if (keyCode == RIGHT_ARROW)
 			inventory.selection_right();
 	}
-	else if (itemStats[player.quickslot[player.selected]].directional) {
-		let arrow = true;
-		if (keyCode == UP_ARROW)
-			player.attackAt(entityAtTile(player.x, player.y-1), 0, -1, keyIsDown(SHIFT));
-		else if (keyCode == DOWN_ARROW)
-			player.attackAt(entityAtTile(player.x, player.y+1), 0, 1, keyIsDown(SHIFT));
-		else if (keyCode == LEFT_ARROW)
-			player.attackAt(entityAtTile(player.x-1, player.y), -1, 0, keyIsDown(SHIFT));
-		else if (keyCode == RIGHT_ARROW)
-			player.attackAt(entityAtTile(player.x+1, player.y), 1, 0, keyIsDown(SHIFT));
+	else if (player.quickslot[player.selected]) {
+		if (itemStats[player.quickslot[player.selected]].directional) {
+			let arrow = true;
+			if (keyCode == UP_ARROW)
+				player.attackAt(entityAtTile(player.x, player.y-1), 0, -1, keyIsDown(SHIFT));
+			else if (keyCode == DOWN_ARROW)
+				player.attackAt(entityAtTile(player.x, player.y+1), 0, 1, keyIsDown(SHIFT));
+			else if (keyCode == LEFT_ARROW)
+				player.attackAt(entityAtTile(player.x-1, player.y), -1, 0, keyIsDown(SHIFT));
+			else if (keyCode == RIGHT_ARROW)
+				player.attackAt(entityAtTile(player.x+1, player.y), 1, 0, keyIsDown(SHIFT));
+			else {
+				arrow = false;
+			}
+			if (arrow) {
+				updateWorld();
+				return;
+			}
+		}
 		else {
-			arrow = false;
+			if (keyCode == UP_ARROW)
+				attack_y -= 1;
+			else if (keyCode == DOWN_ARROW)
+				attack_y += 1;
+			else if (keyCode == LEFT_ARROW)
+				attack_x -= 1;
+			else if (keyCode == RIGHT_ARROW)
+				attack_x += 1;
 		}
-		if (arrow) {
-			updateWorld();
-			return;
-		}
-	}
-	else {
-		if (keyCode == UP_ARROW)
-			attack_y -= 1;
-		else if (keyCode == DOWN_ARROW)
-			attack_y += 1;
-		else if (keyCode == LEFT_ARROW)
-			attack_x -= 1;
-		else if (keyCode == RIGHT_ARROW)
-			attack_x += 1;
 	}
 
 	// move up
