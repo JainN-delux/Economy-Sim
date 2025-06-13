@@ -91,25 +91,25 @@ const itemStats = [
 	new ItemStats(20, 1.5, 1, 40, 2, "Fire Wand", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Vine Wand", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Poison Wand", 24),
-	new ItemStats(1, 2, 1, 2, 1, "Fire Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Bronze Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Green Aura Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Poison Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Orange Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Blue Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Gilded Armor", 100),
-	new ItemStats(1, 4, 1, 2, 1, "Shield Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Black Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Ice Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Vine Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Rainbow Armor", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Poison Leggings", 100),
+	new ItemStats(1, 1, 1, 1, 1, "Fire Armor", 100), 
+	new ItemStats(1, 2, 1, 1, 1, "Bronze Armor", 100),
+	new ItemStats(1, 1, 1, 2, 1, "Green Aura Armor", 100),
+	new ItemStats(1, 1, 1, 1, 1, "Poison Armor", 100),
+	new ItemStats(1, 2.5, 1, 1.5, 1, "Orange Armor", 100),
+	new ItemStats(1, 1, 1, 2, 1, "Blue Armor", 100),
+	new ItemStats(1, 1.5, 1, 1.5, 1, "Gilded Armor", 100),
+	new ItemStats(1, 3, 1, 1, 1, "Shield Armor", 100),
+	new ItemStats(1, 1.5, 1, 1, 1, "Black Armor", 100),
+	new ItemStats(1, 1.5, 1, 1.5, 1, "Ice Armor", 100),
+	new ItemStats(1, 1, 1, 1, 1, "Vine Armor", 100),
+	new ItemStats(1, 1, 1, 1.5, 1, "Rainbow Armor", 100),
+	new ItemStats(1, 1, 1, 1, 1, "Poison Leggings", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Yellow Leggings", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Blue Leggings", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Wet Leggings", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Gold Leggings", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Bag Thingy", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Bronze Leggings", 100),
+	new ItemStats(1, 2, 1, 2, 1, "Blue Leggings", 100),	// increses mana = 2.5
+	new ItemStats(1, 1, 1, 2.5, 1, "Wet Leggings", 100), // increses mana = 2.5
+	new ItemStats(1, 2, 1, 2, 1, "Gold Leggings", 100), // defense and mana = 2
+	new ItemStats(1, 1, 1, 2, 1, "Bag Thingy", 100), //increases mana = 2
+	new ItemStats(1, 1.5 , 1, 1, 1, "Bronze Leggings", 100), // defense is 1.5
 ];
 
 function inRange(item, x, y) {

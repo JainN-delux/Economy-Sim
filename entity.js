@@ -199,6 +199,8 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
+
+	// allow the player to attack at tile
 	attackAt(e, x, y, key_shift) {
 		if (this.effects[statusList.NULL] == 0 && this.effects[statusList.STUN] == 0) {
 			if (this.quickslot[this.selected] == null) {
@@ -277,9 +279,9 @@ class Entity {
 				if (this.effects[statusList.VINES] >= 1) {
 					this.effects[statusList.VINES] = 0;
 				}
-				break;
-			case Item.RAINBOW_ARMOR:
-				//inflicts poison to enemies
+			break;
+			case Item.POISON_ARMOR:
+			//inflicts poison to enemies
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
