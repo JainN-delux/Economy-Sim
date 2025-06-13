@@ -36,44 +36,12 @@ function updateWorld() {
 	turnCount++;
 }
 
-function attackAt(e, x, y, key_shift) {
-	if (player.effects[statusList.NULL] == 0 && player.effects[statusList.STUN] == 0) {
-		if (player.quickslot[player.selected] == null) {
-			player.attack(e);
-			updateWorld();
-		}
-		else if (key_shift) {
-			if (itemStats[player.quickslot[player.selected].directional]) {
-				switch (player.quickslot[player.selected]) {
-					case Item.SCYTHE:
-						player.attack(e, true);
-						let dx = x == 0 ? 1 : 0;
-						let dy = y == 0 ? 1 : 0;
-						player.attack(entityAtTile(player.x+x+dx, player.y+y+dy), true);
-						break;
-				}
-				updateWorld();
-			}
-			else if (inRangeSpecial(player.quickslot[player.selected], x, y)) {
-				if (player.mana >= itemStats[player.quickslot[player.selected]].special_mana)
-					player.attack(e, true);
-				updateWorld();
-			}
-		}
-		else if (inRange(player.quickslot[player.selected], x, y)) {
-			if (player.mana >= itemStats[player.quickslot[player.selected]].mana)
-				player.attack(e);
-			updateWorld();
-		}
-	}
-}
-
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
 	if (intro) {
 		if (keyCode == ENTER) {
 			if (intro_selected == 0)
-				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SWORD]));
+				setPlayer(new Entity(0, 0, EntityType.WARRIOR, 1, [Item.SCYTHE]));
 			else if (intro_selected == 1)
 				setPlayer(new Entity(0, 0, EntityType.ARCHER, 1, [Item.BOW]));
 			else if (intro_selected == 2)
@@ -111,6 +79,24 @@ window.keyPressed = () => {
 		else if (keyCode == RIGHT_ARROW)
 			inventory.selection_right();
 	}
+	else if (itemStats[player.quickslot[player.selected]].directional) {
+		let arrow = true;
+		if (keyCode == UP_ARROW)
+			player.attackAt(entityAtTile(player.x, player.y-1), 0, -1, keyIsDown(SHIFT));
+		else if (keyCode == DOWN_ARROW)
+			player.attackAt(entityAtTile(player.x, player.y+1), 0, 1, keyIsDown(SHIFT));
+		else if (keyCode == LEFT_ARROW)
+			player.attackAt(entityAtTile(player.x-1, player.y), -1, 0, keyIsDown(SHIFT));
+		else if (keyCode == RIGHT_ARROW)
+			player.attackAt(entityAtTile(player.x+1, player.y), 1, 0, keyIsDown(SHIFT));
+		else {
+			arrow = false;
+		}
+		if (arrow) {
+			updateWorld();
+			return;
+		}
+	}
 	else {
 		if (keyCode == UP_ARROW)
 			attack_y -= 1;
@@ -122,26 +108,16 @@ window.keyPressed = () => {
 			attack_x += 1;
 	}
 
-	if (itemStats[player.quickslot[player.selected]].directional) {
-		if (keyCode == UP_ARROW)
-			attackAt(entityAtTile(player.x, player.y-1), 0, -1, keyIsDown(SHIFT));
-		else if (keyCode == DOWN_ARROW)
-			attackAt(entityAtTile(player.x, player.y+1), 0, 1, keyIsDown(SHIFT));
-		else if (keyCode == LEFT_ARROW)
-			attackAt(entityAtTile(player.x-1, player.y), -1, 0, keyIsDown(SHIFT));
-		else if (keyCode == RIGHT_ARROW)
-			attackAt(entityAtTile(player.x+1, player.y), 1, 0, keyIsDown(SHIFT));
-	}
 	// move up
 	if ((key == 'w' || key == 'W') && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y -= 1
-			updateWorld();
 		}
 		else
-			attackAt(e, 0, -1, key == 'W');
+			player.attackAt(e, 0, -1, key == 'W');
+		updateWorld();
 	}
 	// move down
 	if ((key == 's' || key == 'S') && isWalkable[tiles[player.y+1][player.x]]) {
@@ -149,10 +125,10 @@ window.keyPressed = () => {
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y += 1
-			updateWorld();
 		}
 		else
-			attackAt(e, 0, 1, key == 'S');
+			player.attackAt(e, 0, 1, key == 'S');
+		updateWorld();
 	}
 	// move left
 	if ((key == 'a' || key == 'A') && isWalkable[tiles[player.y][player.x-1]]) {
@@ -160,10 +136,10 @@ window.keyPressed = () => {
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x -= 1
-			updateWorld();
 		}
 		else
-			attackAt(e, -1, 0, key == 'A');
+			player.attackAt(e, -1, 0, key == 'A');
+		updateWorld();
 	}
 	// move right
 	if ((key == 'd' || key == 'D') && isWalkable[tiles[player.y][player.x+1]]) {
@@ -171,10 +147,10 @@ window.keyPressed = () => {
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x += 1
-			updateWorld();
 		}
 		else
-			attackAt(e, 1, 0, key == 'D');
+			player.attackAt(e, 1, 0, key == 'D');
+		updateWorld();
 	}
 	let e = entityAtTile(player.x+attack_x, player.y+attack_y);
 	if (key == 'e' || key == 'E') {
@@ -183,8 +159,10 @@ window.keyPressed = () => {
 				shop = e.shop;
 				shop.open = !shop.open;
 			}
-			else if (!itemStats[player.quickslot[player.selected]].directional)
-				attackAt(e, attack_x, attack_y, key == 'E');
+			else if (!itemStats[player.quickslot[player.selected]].directional) {
+				player.attackAt(e, attack_x, attack_y, key == 'E');
+				updateWorld();
+			}
 		}
 	}
 	if (key == 'o' || key == 'O') {

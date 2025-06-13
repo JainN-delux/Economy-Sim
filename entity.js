@@ -134,6 +134,7 @@ class Entity {
 			this.quickslot = quickslot;
 		this.armor = null;
 		this.leggings = null;
+		this.mana_free = false;
 	}
 
 	// Draws entity sprite, healthbar and weapon
@@ -198,12 +199,61 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
+	attackAt(e, x, y, key_shift) {
+		if (this.effects[statusList.NULL] == 0 && this.effects[statusList.STUN] == 0) {
+			if (this.quickslot[this.selected] == null) {
+				this.attack(e);
+			}
+			else if (key_shift) {
+				if (itemStats[this.quickslot[this.selected].directional]) {
+					switch (this.quickslot[this.selected]) {
+						case Item.SCYTHE:
+							this.attack(e, true);
+							let dx = x == 0 ? 1 : 0;
+							let dy = y == 0 ? 1 : 0;
+							this.mana_free = true;
+							console.log(x, y, dx, dy)
+							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
+							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
+							this.attack(entityAtTile(this.x+dx, this.y+dy), true);
+							this.attack(entityAtTile(this.x-dx, this.y-dy), true);
+							this.mana_free = false;
+							break;
+					}
+				}
+				else if (inRangeSpecial(this.quickslot[this.selected], x, y)) {
+					if (this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
+						this.attack(e, true);
+				}
+			}
+			else {
+				if (itemStats[this.quickslot[this.selected].directional]) {
+					switch (this.quickslot[this.selected]) {
+						case Item.SCYTHE:
+							this.attack(e, true);
+							let dx = x == 0 ? 1 : 0;
+							let dy = y == 0 ? 1 : 0;
+							this.mana_free = true;
+							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
+							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
+							this.mana_free = false;
+							break;
+					}
+				}
+				else if (inRange(this.quickslot[this.selected], x, y)) {
+					if (this.mana >= itemStats[this.quickslot[this.selected]].mana)
+						this.attack(e);
+				}
+			}
+		}
+	}
+
 	// attack and damage
 	attack(entity, special=false) {
 		if (this.effects[statusList.NULL] > 0 || this.effects[statusList.STUN] > 0 || entity == null)
 			return;
 		if (special) {
-			if (this.quickslot[this.selected] != null)
+			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.SWORD:
@@ -280,7 +330,7 @@ class Entity {
 			}
 		}
 		else {
-			if (this.quickslot[this.selected] != null)
+			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.WOODEN_SHIELD:
@@ -447,11 +497,18 @@ class Entity {
 		if (player.effects[statusList.INVISIBLE] > 0 && !(xdist <= 1 && ydist <= 1))
 			return;
 		// Attack if the player is within reach (adjacent)
-		// WOODEN_SHIELD thing is so that the AI dosen't constantly use the special for no reason. I will need item specific logic later.
-		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
-			this.attack(player, true);
-		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].mana)
-			this.attack(player);
+		if (inRangeSpecial(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].special_mana) {
+			if (itemStats[this.quickslot[this.selected]].directional)
+				this.attackAt(player, player.x-this.x >= player.y-this.y ? 1 : 0, player.x-this.x < player.y-this.y ? 1 : 0, true)
+			else
+				this.attack(player, true);
+		}
+		else if (inRange(this.quickslot[this.selected], player.x-this.x, player.y-this.y) && this.mana >= itemStats[this.quickslot[this.selected]].mana) {
+			if (itemStats[this.quickslot[this.selected]].directional)
+				this.attackAt(player, player.x-this.x >= player.y-this.y ? 1 : 0, player.x-this.x < player.y-this.y ? 1 : 0)
+			else
+				this.attack(player);
+		}
 		// If enemy is detected within aggro range moves toward player
 		else if (xdist + ydist < 10 && this.effects[statusList.VINES] == 0 && this.effects[statusList.STUN] == 0) {
 			// Choose axis to move in based on proximity
