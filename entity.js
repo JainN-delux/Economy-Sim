@@ -285,6 +285,7 @@ class Entity {
 				}
 				break;
 			default:
+				break;
 
 		}
 			//----LEGGINGS----
@@ -297,17 +298,25 @@ class Entity {
 			case Item.YELLOW_LEGGINGS:
 				break;
 
-			case Item.BLUE_LEGGINGS:
+			// increase resistance to fire
+			case Item.BLUE_LEGGINGS: 
+				if (this.effects[statusList.FIRE] >= 1) 
+					this.effects[statusList.FIRE] -= 1;
 				break;
 
-			case Item.WET_LEGGINGS:
+			case Item.WET_LEGGINGS: 
 				break;
-			case Item.GOLD_LEGGINGS:
-				if (this.effects[statusList.VINES] >= 1) {
-					this.effects[statusList.VINES] = 0;
+
+			case Item.GOLD_LEGGINGS: 
+				if (randint(0,1) == 1) { 
+					if (this.effects[statusList.STUN] >= 1) 
+						this.effects[statusList.STUN] = 0;
+					if (this.effects[statusList.POISON] >= 1) 
+						this.effects[statusList.VINES] = 0;
+					if (this.effects[statusList.VINES] = 0)
+						this.effects[statusList.VINES] = 0;
 				}
 				break;
-
 			case Item.BAG_THINGY: 
 				break;
 
