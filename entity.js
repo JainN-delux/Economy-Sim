@@ -199,6 +199,8 @@ class Entity {
 		entities.splice(entities.indexOf(this), 1)
 	}
 
+
+	// allow the player to attack at tile
 	attackAt(e, x, y, key_shift) {
 		if (this.effects[statusList.NULL] == 0 && this.effects[statusList.STUN] == 0) {
 			if (this.quickslot[this.selected] == null) {
@@ -217,7 +219,6 @@ class Entity {
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
-							console.log(x, y, dx, dy)
 							this.mana_free = true;
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
@@ -241,7 +242,6 @@ class Entity {
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
 							let dy = y == 0 ? 1 : 0;
-							console.log(x, y, dx, dy)
 							this.mana_free = true;
 							this.attack(entityAtTile(this.x+x+dx, this.y+y+dy), true);
 							this.attack(entityAtTile(this.x+x-dx, this.y+y-dy), true);
@@ -263,7 +263,7 @@ class Entity {
 			//is not effected by burns + inflicts burns
 			case Item.FIRE_ARMOR:
 				if (this.effects[statusList.FIRE] >= 1) {
-					this.effects[statusList.FIRE] = 0;		
+					this.effects[statusList.FIRE] = 0;
 				}
 				break;
 			//increases base defense
@@ -281,9 +281,9 @@ class Entity {
 				if (this.effects[statusList.VINES] >= 1) {
 					this.effects[statusList.VINES] = 0;
 				}
-				break;
-			case Item.RAINBOW_ARMOR:
-				//inflicts poison to enemies
+			break;
+			case Item.POISON_ARMOR:
+			//inflicts poison to enemies
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
@@ -293,7 +293,7 @@ class Entity {
 
 		}
 			//----LEGGINGS----
-		switch(this.armor) {
+		switch(this.leggings) {
 			case Item.POISON_LEGGINGS:
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
@@ -459,6 +459,7 @@ class Entity {
 				}
 			break;
 		}
+
 		entity.lastAttacked = turnCount;
 		let attack = this.quickslot[this.selected] == Item.BOW ? this.ranged_base * this.ranged_mult : this.attack_base * this.attack_mult;
 		// Calculate damage of attack by doing attack value / defense value

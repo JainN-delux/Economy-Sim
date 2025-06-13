@@ -275,7 +275,9 @@ function drawWorld(px, py) {
 
 	// attack marker
 	strokeWeight(8);
-	rect((attack_x-fract(px)+VIEWPORT_WIDTH/2-1)*TILE_SIZE, (attack_y-fract(py)+VIEWPORT_HEIGHT/2-1)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
+	if (player.quickslot[player.selected])
+		if (!itemStats[player.quickslot[player.selected]].directional)
+			rect((attack_x-fract(px)+VIEWPORT_WIDTH/2-1)*TILE_SIZE, (attack_y-fract(py)+VIEWPORT_HEIGHT/2-1)*TILE_SIZE, TILE_SIZE, TILE_SIZE)
 	
 	drawHealthbar()
 	drawQuickslot()
