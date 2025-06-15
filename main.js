@@ -30,7 +30,10 @@ function updateWorld() {
 		} else {
 			for (let j =0; j < entities.length; j++) {
 				if (Math.abs(entities[j].x-tileEffects[i].x)+Math.abs(entities[j].y-tileEffects[i].y) <= tileEffects[i].size-1) {
-					entities[j].effects[statusList.FIRE] += 2
+					if (tileEffects[i].status == Tile.TRAP_FIRE)
+						entities[j].effects[statusList.FIRE] += 2
+					if (tileEffects[i].status == Tile.TRAP_POISON)
+						entities[j].effects[statusList.POISON] += 4
 				}
 			}
 		}
@@ -62,7 +65,7 @@ window.keyPressed = () => {
 			else if (intro_selected == 1)
 				setPlayer(new Entity(0, 0, EntityType.ARCHER, 1, [Item.BOW]));
 			else if (intro_selected == 2)
-				setPlayer(new Entity(0, 0, EntityType.WIZARD, 1, [Item.FIRE_WAND]));
+				setPlayer(new Entity(0, 0, EntityType.WIZARD, 1, [Item.FIRE_WAND, Item.POISON_WAND]));
 			generateWorld();
 			intro = false;
 		}

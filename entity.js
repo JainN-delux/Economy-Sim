@@ -339,6 +339,9 @@ class Entity {
 				case Item.FIRE_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5, turnCount))
 					break;
+				case Item.POISON_WAND:
+					tileEffects.push(new tileEff(entity.x, entity.y, 5, Tile.TRAP_POISON, 7, turnCount))
+					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
 					break;
@@ -422,8 +425,9 @@ class Entity {
 					break;
 				case Item.FIRE_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 2, Tile.TRAP_FIRE, 5, turnCount)) 
-					
-				
+				case Item.POISON_WAND:
+					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_POISON, 7, turnCount))	
+			
 			
 			}
 		}
