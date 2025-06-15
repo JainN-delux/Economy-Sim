@@ -211,10 +211,6 @@ class Entity {
 					return;
 				if (itemStats[this.quickslot[this.selected]].directional) {
 					switch (this.quickslot[this.selected]) {
-						case Item.FIRE_WAND:
-							tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
-							console.log(turnCount)
-							break;
 						case Item.SCYTHE:
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
@@ -229,8 +225,10 @@ class Entity {
 					}
 				}
 				else if (inRangeSpecial(this.quickslot[this.selected], x, y)) {
-					if (this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
+					if (this.mana >= itemStats[this.quickslot[this.selected]].special_mana)	
 						this.attack(e, true);
+					
+						
 				}
 			}
 			else {
@@ -338,6 +336,9 @@ class Entity {
 			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
+				case Item.FIRE_WAND:
+					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5, turnCount))
+					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
 					break;
@@ -421,7 +422,7 @@ class Entity {
 					break;
 				case Item.FIRE_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 2, Tile.TRAP_FIRE, 5, turnCount)) 
-					console.log(tileEffects)
+					
 				
 			
 			}
