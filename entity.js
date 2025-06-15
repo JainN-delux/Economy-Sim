@@ -576,7 +576,7 @@ class Entity {
 			//Fire: decreases health by 5 or 10
 			case statusList.FIRE:
 				if (randint(0,1) == 0) {
-					this.health -= 5;
+					this.health -= 8;
 					damageMarkers.push({ entity: this, damage: 5, time: millis(), color: "red" });
 				}
 				else {
@@ -585,16 +585,16 @@ class Entity {
 				}
 				this.lastAttacked = turnCount;
 				break;
-			//Poison: decreases health by 1%
+			//Poison: decreases health by 2%
 			case statusList.POISON:
 				damageMarkers.push({ entity: this, damage: this.max_health/100, time: millis(), color: "red" });
-				this.health -= this.max_health/100;
+				this.health -= this.max_health/50;
 				this.lastAttacked = turnCount;
 				break;
-			//Bleed: decreases health by 2% 
+			//Bleed: decreases health by 4% 
 			case statusList.BLEED:
 				damageMarkers.push({ entity: this, damage: this.max_health/50, time: millis(), color: "red" });
-				this.health -= this.max_health/50;
+				this.health -= this.max_health/25;
 				this.lastAttacked = turnCount;
 				break;
 		}
