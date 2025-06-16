@@ -341,7 +341,6 @@ function generateBossroom() {
 	boss = entities[entities.length-1];
 	tiles[boss.y][boss.x] = Tile.STAIRS;
 }
-
 function area(array) {
 	let new_array = []
 	for (let i = 0; i < array.length; i++) {
@@ -361,20 +360,18 @@ function max_index(array) {
 	}
 	return index
 }
-
 let merchantRooms = []
-
+// fixed merchant generator
 function generateMerchant() {
-	let smallestRoom = { w: Infinity, h: Infinity, x: 0, y: 0 };
-
+	let smallestRoom = { w: Infinity, h: Infinity };
+	
 	for (let i = 0; i < 5; i++) {
-		merchantRooms.push({ w: Infinity, h: Infinity, x: 0, y: 0 }) // changed to avoid shared reference
+		merchantRooms.push(smallestRoom)
 	}
-
 	let area_array = area(merchantRooms)
 	for (let i = 1; i < rooms.length; i++) {
-		if ((rooms[i].w * rooms[i].h) < area_array[max_index(area_array)]) { // fixed: used area_array
-			merchantRooms[max_index(area_array)] = rooms[i] // fixed: used area_array
+		if ((rooms[i].w * rooms[i].h) < area_array[max_index(area_array)]) {
+			merchantRooms[max_index(area_array)] = rooms[i]
 			area_array = area(merchantRooms)
 		}
 	}
@@ -385,20 +382,12 @@ function generateMerchant() {
 		collection.splice(i, 0, randint(Item.POTION_RED, Item.ITEM_MAX))
 	}
 	let merchant;
-	for (let i = 0; i < merchantRooms.length; i++) {
-		merchant = new Entity(
-			randint(merchantRooms[i].x + 1, merchantRooms[i].x + merchantRooms[i].w - 1),
-			randint(merchantRooms[i].y + 1, merchantRooms[i].y + merchantRooms[i].h - 1),
-			EntityType.MERCHANT,
-			level,
-			collection,
-			false
-		)
+	for ( let i = 0 ; i <merchantRooms.length ; i++) {
+		merchant = new Entity(randint(merchantRooms[i].x + 1, merchantRooms[i].x + merchantRooms[i].w - 1), randint(merchantRooms[i].y + 1, merchantRooms[i].y + merchantRooms[i].h - 1 ), EntityType.MERCHANT, level, collection, false)
 		entities.push(merchant)
-		console.log(merchant.x, merchant.y)
+		console.log(merchant.x , merchant.y)
 	}
-}
-
+} 
 
 
 function generateWorld() {

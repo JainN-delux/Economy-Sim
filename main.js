@@ -257,4 +257,5 @@ window.draw = () => {
 		drawWorld(player.x, player.y);
 }
 
+
 export { turnCount, attack_x, attack_y, shop };
