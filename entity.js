@@ -601,7 +601,7 @@ class Entity {
 				break;
 		}
 
-	// if health is 0 or less, die
+		// if health is 0 or less, die
 		if (this.health <= 0)
 			this.die(this);
 	}
