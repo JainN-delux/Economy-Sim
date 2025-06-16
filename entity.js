@@ -425,8 +425,10 @@ class Entity {
 					break;
 				case Item.FIRE_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 2, Tile.TRAP_FIRE, 5, turnCount)) 
+					break;
 				case Item.POISON_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_POISON, 7, turnCount))	
+					break;
 			
 			
 			}
@@ -573,11 +575,11 @@ class Entity {
 				damageMarkers.push({ entity: this, damage: 1, time: millis(), color: "red" });
 				this.lastAttacked = turnCount;
 				break;
-			//Fire: decreases health by 5 or 10
+			//Fire: decreases health by 8 or 10
 			case statusList.FIRE:
 				if (randint(0,1) == 0) {
 					this.health -= 8;
-					damageMarkers.push({ entity: this, damage: 5, time: millis(), color: "red" });
+					damageMarkers.push({ entity: this, damage: 8, time: millis(), color: "red" });
 				}
 				else {
 					this.health -= 10;
