@@ -341,30 +341,54 @@ function generateBossroom() {
 	boss = entities[entities.length-1];
 	tiles[boss.y][boss.x] = Tile.STAIRS;
 }
+function area(array) {
+	let new_array = []
+	for (let i = 0; i < array.length; i++) {
+		new_array[i] = array[i].w * array[i].h
+	}
+	return new_array
+}
 
-let merchantRooms = []
-
-// broken merchant gen
-function generateMerchant() {
-	let smallestRoom = {w: Infinity, h: Infinity };
-	for (let i = 1; i < rooms.length; i++) {
-		if ((rooms[i].h * rooms[i].w) < (smallestRoom.w*smallestRoom.h)) {
-			smallestRoom = rooms[i];
+function max_index(array) {
+	let max = 0
+	let index = 0
+	for (let i = 0; i < array.length; i++) {
+		if (array[i] > max) {
+			max = array[i]
+			index = i
 		}
 	}
-	merchantRooms.push(smallestRoom);
-
+	return index
+}
+let merchantRooms = []
+// fixed merchant generator
+function generateMerchant() {
+	let smallestRoom = { w: Infinity, h: Infinity };
 	
+	for (let i = 0; i < 5; i++) {
+		merchantRooms.push(smallestRoom)
+	}
+	let area_array = area(merchantRooms)
+	for (let i = 1; i < rooms.length; i++) {
+		if ((rooms[i].w * rooms[i].h) < area_array[max_index(area_array)]) {
+			merchantRooms[max_index(area_array)] = rooms[i]
+			area_array = area(merchantRooms)
+		}
+	}
+
 	let collection = []
 
 	for (let i = 0; i < 6; i++) {
 		collection.splice(i, 0, randint(Item.POTION_RED, Item.ITEM_MAX))
 	}
-	let merchant = new Entity(randint(merchantRooms[0].x + 1, merchantRooms[0].x + merchantRooms[0].w - 1), randint(merchantRooms[0].y + 1, merchantRooms[0].y + merchantRooms[0].h - 1 ), EntityType.MERCHANT, level, collection, false)
-	entities.push(merchant)
-	
-	console.log(merchant.x , merchant.y)
-}
+	let merchant;
+	for ( let i = 0 ; i <merchantRooms.length ; i++) {
+		merchant = new Entity(randint(merchantRooms[i].x + 1, merchantRooms[i].x + merchantRooms[i].w - 1), randint(merchantRooms[i].y + 1, merchantRooms[i].y + merchantRooms[i].h - 1 ), EntityType.MERCHANT, level, collection, false)
+		entities.push(merchant)
+		console.log(merchant.x , merchant.y)
+	}
+} 
+
 
 function generateWorld() {
 	level++;
