@@ -24,7 +24,6 @@ function updateWorld() {
 	}
 
 	for (let i = 0; i<tileEffects.length; i++) {
-		console.log(tileEffects[i])
 		if (turnCount - tileEffects[i].applied > tileEffects[i].t) {
 			tileEffects.splice(i--, 1);
 		} else {
