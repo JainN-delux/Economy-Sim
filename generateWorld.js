@@ -308,14 +308,21 @@ function spaceAdjacent(space1, space2) {
 
 function generateEnemies() {
 	for (let i = 1; i < rooms.length; i++) {
-		let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
-		for (let j = 0; j < enemies; j++)
-			if (entities.length < 400) {
-				let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1);
-				let y = randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1);
-				if (!entityAtTile(x, y))
-					entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.SCYTHE+1)], true, randint(0, 5) == 0))
+		for (let k = 0; k < merchantRooms.length; k++) {
+			if (merchantRooms[k] === rooms[i]) {
+				continue
+			} else {
+				let enemies = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 102));
+				for (let j = 0; j < enemies; j++)
+					if (entities.length < 400) {
+						let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w - 1);
+						let y = randint(rooms[i].y + 1, rooms[i].y + rooms[i].h - 1);
+
+						if (!entityAtTile(x, y))
+							entities.push(new Entity(x, y, randint(EntityType.WARRIOR, EntityType.WIZARD+1), randint(level, level+Math.floor(turnCount/1000)+1), [randint(Item.SWORD, Item.SCYTHE+1)], true, randint(0, 5) == 0))
+					}
 			}
+		}
 	}
 }
 
@@ -375,8 +382,8 @@ function generateWorld() {
 	generateEnemies()
 	itemInRoom()
 	
-	player.x = rooms[0].x + 1;
-	player.y = rooms[0].y + 1;
+	player.x = merchantRooms[0].x + 1;
+	player.y = merchantRooms[0].y + 1;
 	//player.armor = Item.RAINBOW_ARMOR;
 	for (let i = 0; i < spaces.length; i++)
 		for (let j = i + 1; j < spaces.length; j++)

@@ -225,8 +225,10 @@ class Entity {
 					}
 				}
 				else if (inRangeSpecial(this.quickslot[this.selected], x, y)) {
-					if (this.mana >= itemStats[this.quickslot[this.selected]].special_mana)
+					if (this.mana >= itemStats[this.quickslot[this.selected]].special_mana)	
 						this.attack(e, true);
+					
+						
 				}
 			}
 			else {
@@ -335,7 +337,10 @@ class Entity {
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
 				case Item.FIRE_WAND:
-					tileEffects.push(new tileEff(5, 5, 4, Tile.TRAP_FIRE, 5, turnCount))
+					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5, turnCount))
+					break;
+				case Item.POISON_WAND:
+					tileEffects.push(new tileEff(entity.x, entity.y, 5, Tile.TRAP_POISON, 7, turnCount))
 					break;
 				case Item.SWORD:
 					this.attack_mult *= 1.5;
@@ -420,8 +425,9 @@ class Entity {
 					break;
 				case Item.FIRE_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 2, Tile.TRAP_FIRE, 5, turnCount)) 
-					console.log(tileEffects)
-				
+				case Item.POISON_WAND:
+					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_POISON, 7, turnCount))	
+			
 			
 			}
 		}
@@ -570,7 +576,7 @@ class Entity {
 			//Fire: decreases health by 5 or 10
 			case statusList.FIRE:
 				if (randint(0,1) == 0) {
-					this.health -= 5;
+					this.health -= 8;
 					damageMarkers.push({ entity: this, damage: 5, time: millis(), color: "red" });
 				}
 				else {
@@ -579,16 +585,16 @@ class Entity {
 				}
 				this.lastAttacked = turnCount;
 				break;
-			//Poison: decreases health by 1%
+			//Poison: decreases health by 2%
 			case statusList.POISON:
 				damageMarkers.push({ entity: this, damage: this.max_health/100, time: millis(), color: "red" });
-				this.health -= this.max_health/100;
+				this.health -= this.max_health/50;
 				this.lastAttacked = turnCount;
 				break;
-			//Bleed: decreases health by 2% 
+			//Bleed: decreases health by 4% 
 			case statusList.BLEED:
 				damageMarkers.push({ entity: this, damage: this.max_health/50, time: millis(), color: "red" });
-				this.health -= this.max_health/50;
+				this.health -= this.max_health/25;
 				this.lastAttacked = turnCount;
 				break;
 		}

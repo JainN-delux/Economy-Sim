@@ -135,6 +135,14 @@ function inRange(item, x, y) {
 
 function inRangeSpecial(item, x, y) {
 	switch (item) {
+		case Item.FIRE_WAND:
+			return Math.abs(x)+Math.abs(y) <=5;
+		case Item.LIGHTNING_WAND:
+			return Math.abs(x)+Math.abs(y) <= 5;
+		case Item.VINE_WAND:
+			return Math.abs(x)+Math.abs(y) <= 5;
+		case Item.POISON_WAND:
+			return Math.abs(x)+Math.abs(y) <= 5;
 		case Item.BOW:
 			return Math.abs(x)+Math.abs(y) <= 5;
 		case Item.SWORD:

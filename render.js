@@ -184,23 +184,27 @@ function drawQuickslot() {
 // draws the SHOP if the player is close to the merchant
 function drawShop() {
 	if (shop.open) {
+		
 		fill(0)
-		rect(100, 100, 350, 500)
+		rect(100, 60, 350, 540)
+		fill(255)
+		text("Shop", 240, 95)
 		// has 6 vertical slots
 		for (let i = 0; i < 6; i++) {
 			fill(255)
 			rect(110, 110 + i*80, 70, 70)
+			
 			try {
 				text("Cost: "+ itemStats[shop.items[i]].cost, 190, 130 + i*80)
 			} catch {}
 
 			if (i == shop.selected) {
 				fill(40, 60, 255);
-				rect(110, 110 + i*80, ITEM_SRC_SIZE*2, ITEM_SRC_SIZE*2)
+				rect(110, 110 + i*80, 70, 70)
 			} 
 
 			if (shop.items[i]) 
-				image(itemset, 110, 110 + i*80, ITEM_SRC_SIZE*2, ITEM_SRC_SIZE*2, shop.items[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
+				image(itemset, 110, 110 + i*80, TILE_SIZE*2, TILE_SIZE*2, shop.items[i]*ITEM_SRC_SIZE, 0, ITEM_SRC_SIZE, ITEM_SRC_SIZE)
 			
 		}
 	}
