@@ -101,7 +101,7 @@ class Entity {
 		this.y = y;
 		this.type = type;
 		this.health = entityStats[type].max_health;
-		this.max_health = entityStats[type].max_health;
+		this.max_health = entityStats[type].max_health+(1+(lvl-1)*0.2);
 		this.attack_base = entityStats[type].attack_base;
 		this.ranged_base = entityStats[type].ranged_base;
 		this.defense_base = entityStats[type].defense_base;
