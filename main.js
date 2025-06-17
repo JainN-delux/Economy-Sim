@@ -1,5 +1,5 @@
 import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss , tileEffects} from "./generateWorld.js";
-import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld, TILE_SIZE, statusiconset } from "./render.js";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld, TILE_SIZE, statusiconset, EnemyMinimap } from "./render.js";
 
 import { Entity, entityAtTile, player, entities, statusTime, statusList, entityStats, EntityType, setPlayer, ENTITY_SRC_SIZE } from "./entity.js";
 import { inventory, items, inRange, Shop, itemStats, inRangeSpecial, Item } from "./item.js";
@@ -45,6 +45,7 @@ function updateWorld() {
 	}
 	
 	player.update();
+	EnemyMinimap();
 	//turn based system
 	for (let i = 1; i < entities.length; i++)
 		entities[i].turn();

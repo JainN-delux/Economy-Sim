@@ -1,5 +1,5 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects, Tile} from "./generateWorld.js";
-import { entities, player, entityStats, statusTime } from "./entity.js";
+import { entities, player, entityStats, statusTime, EntityType} from "./entity.js";
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
 
@@ -25,16 +25,33 @@ window.preload = () => {
 	minimap = createImage(WORLD_WIDTH, WORLD_HEIGHT);
 }
 
+// fills up the minimap 
 function fillMinimap() {
 	minimap.loadPixels();
 	for (let x = 0; x < WORLD_WIDTH; x++) {
 		for (let y = 0; y < WORLD_HEIGHT; y++) {
-			if (isWalkable[tiles[y][x]])
+			if (isWalkable[tiles[y][x]]) {
 				minimap.set(x, y, [0, 0, 0, 255]);
+			}
 			else
 				minimap.set(x, y, [255, 255, 255, 255]);
 		}
 	}
+	minimap.updatePixels();
+}
+
+function EnemyMinimap() {
+	minimap.loadPixels()
+	for (let i = 0; i < entities.length; i++) {			
+		if (entities[i].type == EntityType.MERCHANT) {
+			minimap.set(entities[i].x, entities[i].y, [0, 255, 0, 255])
+		} else if (entities[i].type == EntityType.BOSS) {
+			minimap.set(entities[i].x, entities[i].y, [255, 0, 0, 255])
+		} else {
+			minimap.set(entities[i].x, entities[i].y, [255, 255, 255, 255])
+		}				
+	}
+	minimap.set(player.x, player.y, [255,233,0, 255])
 	minimap.updatePixels();
 }
 
@@ -320,4 +337,4 @@ function drawWorld(px, py) {
 } // draws the entire map
 
 
-export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers, statusiconset, fillMinimap };
+export { CANVAS_WIDTH, CANVAS_HEIGHT, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, itemset, tileset, entitysheet, drawWorld, damageMarkers, statusiconset, fillMinimap, EnemyMinimap};
