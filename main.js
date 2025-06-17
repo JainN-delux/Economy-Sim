@@ -1,7 +1,7 @@
 import { isWalkable, generateWorld, tiles, generateEnemies, Tile, level, boss , tileEffects} from "./generateWorld.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, tileset, entitysheet, drawWorld, TILE_SIZE, statusiconset } from "./render.js";
 
-import { Entity, entityAtTile, player, entities, statusTime, convertStatus, statusList, entityStats, EntityType, setPlayer, ENTITY_SRC_SIZE } from "./entity.js";
+import { Entity, entityAtTile, player, entities, statusTime, statusList, entityStats, EntityType, setPlayer, ENTITY_SRC_SIZE } from "./entity.js";
 import { inventory, items, inRange, Shop, itemStats, inRangeSpecial, Item } from "./item.js";
 
 // variables

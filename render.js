@@ -1,5 +1,5 @@
 import { WORLD_WIDTH, WORLD_HEIGHT, tiles , level, isWalkable, tileEffects, Tile} from "./generateWorld.js";
-import { entities, player, entityStats, statusTime, convertStatus } from "./entity.js";
+import { entities, player, entityStats, statusTime } from "./entity.js";
 import { turnCount, attack_x, attack_y, shop } from "./main.js";
 import { items, Item,itemInRoom, inventory, itemStats, ITEM_SRC_SIZE, inRange, inRangeSpecial } from "./item.js" 
 

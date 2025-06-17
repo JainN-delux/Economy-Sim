@@ -3,6 +3,7 @@ import { VIEWPORT_WIDTH, VIEWPORT_HEIGHT, TILE_SIZE, entitysheet, itemset, damag
 import { items, Item, itemStats, ITEM_SRC_SIZE, inventory, inRange, inRangeSpecial, Shop } from "./item.js";
 import { turnCount } from "./main.js";
 
+//defining player variable
 let player;
 const ENTITY_SRC_SIZE = 16;
 
@@ -48,32 +49,11 @@ const statusTime = [
 ]
 
 
-// function to display the status effect as a string to user
-function convertStatus(type) {
-	switch (type) {
-		case statusList.NULL:
-			return "Null";
-		case statusList.FIRE:
-			return "Fire";
-		case statusList.BLEED:
-			return "Bleed";
-		case statusList.STUN:
-			return "Stun";
-		case statusList.VINES:
-			return "Vines";
-		case statusList.POISON:
-			return "Poison";
-		case statusList.TIMEBUFF:
-			return "TimeBuff";
-		case statusList.INVISIBLE:
-			return "Invisible";
-	}
-}
-
 // ------------------------ENTITY------------------------
 // Objects of this class will store base stats of the different entity types and the objects will be put into the entityStats array
 class EntityStats {
 	constructor(max_health, attack_base, ranged_base, defense_base, mana, regen_max) {
+		//major properties that diffenciate enemies
 		this.max_health = max_health;
 		this.attack_base = attack_base;
 		this.ranged_base = ranged_base;
@@ -97,9 +77,11 @@ const entityStats = [
  */
 class Entity {
 	constructor(x, y, type, lvl, quickslot=[], hostile=true, elite=false) {
+		//poisiton
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		//base stats
 		this.health = entityStats[type].max_health;
 		this.max_health = entityStats[type].max_health+(1+(lvl-1)*0.2);
 		this.attack_base = entityStats[type].attack_base;
@@ -107,17 +89,23 @@ class Entity {
 		this.defense_base = entityStats[type].defense_base;
 		this.mana_max = entityStats[type].mana;
 		this.mana = 0;
+		//multipliers
 		this.attack_mult = 1;
 		this.ranged_mult = 1;
 		this.defense_mult = 1;
+		//parameters
 		this.lvl = lvl;
 		this.xp = 0;
 		this.selected = 0;
-		this.hostility = hostile
+		//track status
+		this.hostility = hostile //used to debug
 		this.lastPotionUsed = 0;
 		this.lastAttacked = 0;
+		//status effects
 		this.effects = new Array(statusList.STATUS_MAX).fill(0);
+		//currency of the game
 		this.coins = 0;
+		//special enemy types with double strength
 		if (elite) {
 			this.max_health *= 2;
 			this.attack_base *= 2;
@@ -126,12 +114,14 @@ class Entity {
 			this.health = this.max_health;
 			this.elite = true;
 		}
+		//merchant type has the shop
 		if (type == EntityType.MERCHANT) {
 			this.shop = new Shop(quickslot);
 			this.quickslot = [];
 		}
 		else
 			this.quickslot = quickslot;
+		//equipment
 		this.armor = null;
 		this.leggings = null;
 		this.mana_free = false;
@@ -192,7 +182,9 @@ class Entity {
 	// Give xp to killer, drop item, delete entity
 	die(killer) {
 		let mult = this.elite ? 5 : 1;
-		killer.gainXp(this.lvl*mult);
+		//player will be the killer mostly 
+		// - gain xp and coin when enemy killed
+		killer.gainXp(this.lvl*mult);	
 		killer.coins += this.lvl*mult;
 		// drop item
 		items[this.y][this.x] = this.quickslot[this.selected];
@@ -200,12 +192,13 @@ class Entity {
 	}
 
 
-	// allow the player to attack at tile
+	// directs the player to attack at which tile
 	attackAt(e, x, y, key_shift) {
 		if (this.effects[statusList.NULL] == 0 && this.effects[statusList.STUN] == 0) {
 			if (this.quickslot[this.selected] == null) {
 				this.attack(e);
 			}
+			//holds shifts allow you to unleash charged attacks
 			else if (key_shift) {
 				if (this.mana < itemStats[this.quickslot[this.selected]].special_mana)
 					return;
@@ -699,4 +692,4 @@ function entityAtTile(x, y) {
 	return null;
 }
 
-export { entityAtTile, player, entities, Entity, EntityType, statusTime, convertStatus, statusList, entityStats, setPlayer, ENTITY_SRC_SIZE };
+export { entityAtTile, player, entities, Entity, EntityType, statusTime, statusList, entityStats, setPlayer, ENTITY_SRC_SIZE };
