@@ -24,7 +24,7 @@ window.preload = () => {
 	statusiconset = loadImage("./assets/statusicons.png");
 	minimap = createImage(WORLD_WIDTH, WORLD_HEIGHT);
 }
-
+//showcases a mini-map 
 function fillMinimap() {
 	minimap.loadPixels();
 	for (let x = 0; x < WORLD_WIDTH; x++) {
@@ -38,9 +38,8 @@ function fillMinimap() {
 	minimap.updatePixels();
 }
 
+
 function drawRow(tx, ty, s, tile) {
-
-
 	let x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 	let y = (ty-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 	
