@@ -529,7 +529,7 @@ class Entity {
 				break;
 			// potion that gives Xp and halves health
 			case Item.POTION_PURPLE:
-				this.gainXp(5*level);
+				this.gainXp(5*this.lvl);
 				damageMarkers.push({ entity: this, damage: this.health/2, time: millis(), color: "red" });
 				this.health = this.health/2;
 				break;
