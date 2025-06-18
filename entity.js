@@ -194,16 +194,20 @@ class Entity {
 
 	// directs the player to attack at which tile
 	attackAt(e, x, y, key_shift) {
+		// if entitiy does not have attack nullifing status effect
 		if (this.effects[statusList.NULL] == 0 && this.effects[statusList.STUN] == 0) {
 			if (this.quickslot[this.selected] == null) {
 				this.attack(e);
 			}
 			//holds shifts allow you to unleash charged attacks
 			else if (key_shift) {
+				//checks if you have mana required for the attack
 				if (this.mana < itemStats[this.quickslot[this.selected]].special_mana)
-					return;
+					return;	//no  mana
+				//if mana is enough
 				if (itemStats[this.quickslot[this.selected]].directional) {
 					switch (this.quickslot[this.selected]) {
+						//WEAPON = SYTHE: 
 						case Item.SCYTHE:
 							this.attack(e, true);
 							let dx = x == 0 ? 1 : 0;
@@ -224,6 +228,7 @@ class Entity {
 						
 				}
 			}
+
 			else {
 				if (this.mana < itemStats[this.quickslot[this.selected]].mana)
 					return;
@@ -265,16 +270,14 @@ class Entity {
 			case Item.GREEN_AURA_ARMOR:
 				this.regen(0.01);
 				break;
-			
-			case Item.SHIELD_ARMOR:
-				break;
+			//infilicts vine effect on player
 			case Item.VINE_ARMOR:
 				if (this.effects[statusList.VINES] >= 1) {
 					this.effects[statusList.VINES] = 0;
 				}
 			break;
-			case Item.POISON_ARMOR:
 			//inflicts poison to enemies
+			case Item.POISON_ARMOR:
 				if (this.effects[statusList.POISON] >= 1) {
 					this.effects[statusList.POISON] = 0;
 				}
@@ -329,6 +332,7 @@ class Entity {
 			if (this.quickslot[this.selected] != null && !this.mana_free)
 				this.mana -= itemStats[this.quickslot[this.selected]].special_mana;
 			switch (this.quickslot[this.selected]) {
+				// WEAPONS and thier effects
 				case Item.FIRE_WAND:
 					tileEffects.push(new tileEff(entity.x, entity.y, 4, Tile.TRAP_FIRE, 5, turnCount))
 					break;

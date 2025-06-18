@@ -24,8 +24,12 @@ window.preload = () => {
 	statusiconset = loadImage("./assets/statusicons.png");
 	minimap = createImage(WORLD_WIDTH, WORLD_HEIGHT);
 }
+<<<<<<< HEAD
 
 // fills up the minimap 
+=======
+//showcases a mini-map 
+>>>>>>> 31aaacbee36f6121b2689d373ca7c03145b6ba22
 function fillMinimap() {
 	minimap.loadPixels();
 	for (let x = 0; x < WORLD_WIDTH; x++) {
@@ -40,6 +44,7 @@ function fillMinimap() {
 	minimap.updatePixels();
 }
 
+<<<<<<< HEAD
 function EnemyMinimap() {
 	minimap.loadPixels()
 	for (let i = 0; i < entities.length; i++) {			
@@ -54,10 +59,10 @@ function EnemyMinimap() {
 	minimap.set(player.x, player.y, [255,233,0, 255])
 	minimap.updatePixels();
 }
+=======
+>>>>>>> 31aaacbee36f6121b2689d373ca7c03145b6ba22
 
 function drawRow(tx, ty, s, tile) {
-
-
 	let x = (tx-player.x-1+VIEWPORT_WIDTH/2)*TILE_SIZE;
 	let y = (ty-player.y-1+VIEWPORT_HEIGHT/2)*TILE_SIZE;
 	

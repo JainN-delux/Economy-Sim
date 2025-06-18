@@ -69,11 +69,13 @@ class ItemStats {
 
 //weapon stats
 const itemStats = [
+	//potion & Boost
 	new ItemStats(1, 1, 1, 1, 1, "Potion Red", 15),
 	new ItemStats(1, 1, 1, 1, 1, "Defense Boost", 13),
 	new ItemStats(1, 1, 1, 1, 1, "Attack Boost", 12),
 	new ItemStats(1, 1, 1, 1, 1, "Potion Green", 11),
 	new ItemStats(1, 1, 1, 1, 1, "Potion Purple", 20),
+	//weapons
 	new ItemStats(10, 2, 1, 20, 3, "Sword", 5),
 	new ItemStats(10, 2, 1, 30, 3, "Poison Sword", 30),
 	new ItemStats(20, 1, 1, 40, 3, "Hatchet", 15),
@@ -82,7 +84,6 @@ const itemStats = [
 	new ItemStats(1, 10, 0, 4, 2, "Wooden Shield", 3),
 	new ItemStats(10, 1, 1, 15, 2, "Bow", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Spear", 24),
-	// Fill in from here (these items aren't implemented yet)
 	new ItemStats(20, 1.5, 2, 30, 3, "Scythe", 24, true),
 	new ItemStats(20, 1.5, 1, 40, 2, "Mace", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Trident", 24),
@@ -91,6 +92,9 @@ const itemStats = [
 	new ItemStats(1, 1, 2, 1, 4, "Fire Wand", 24),
 	new ItemStats(1, 1, 2, 1, 4, "Vine Wand", 24),
 	new ItemStats(20, 1.5, 1, 40, 2, "Poison Wand", 24),
+
+	//EQUIPMENT
+	//armor
 	new ItemStats(1, 1, 1, 1, 1, "Fire Armor", 100), 
 	new ItemStats(1, 2, 1, 1, 1, "Bronze Armor", 100),
 	new ItemStats(1, 1, 1, 2, 1, "Green Aura Armor", 100),
@@ -103,15 +107,18 @@ const itemStats = [
 	new ItemStats(1, 1.5, 1, 1.5, 1, "Ice Armor", 100),
 	new ItemStats(1, 1, 1, 1, 1, "Vine Armor", 100),
 	new ItemStats(1, 1, 1, 1.5, 1, "Rainbow Armor", 100),
+	//leggings
 	new ItemStats(1, 1, 1, 1, 1, "Poison Leggings", 100),
 	new ItemStats(1, 2, 1, 2, 1, "Yellow Leggings", 100),
-	new ItemStats(1, 2, 1, 2, 1, "Blue Leggings", 100),	// increses mana = 2.5
-	new ItemStats(1, 1, 1, 2.5, 1, "Wet Leggings", 100), // increses mana = 2.5
-	new ItemStats(1, 2, 1, 2, 1, "Gold Leggings", 100), // defense and mana = 2
-	new ItemStats(1, 1, 1, 2, 1, "Bag Thingy", 100), //increases mana = 2
-	new ItemStats(1, 1.5 , 1, 1, 1, "Bronze Leggings", 100), // defense is 1.5
+	new ItemStats(1, 2, 1, 2, 1, "Blue Leggings", 100),	
+	new ItemStats(1, 1, 1, 2.5, 1, "Wet Leggings", 100),
+	new ItemStats(1, 2, 1, 2, 1, "Gold Leggings", 100), 
+	new ItemStats(1, 1, 1, 2, 1, "Bag Thingy", 100), 
+	new ItemStats(1, 1.5 , 1, 1, 1, "Bronze Leggings", 100), 
 ];
 
+//function to check if enemy is in range for 
+//range attacks : wand, bow, spear, scythe
 function inRange(item, x, y) {
 	switch (item) {
 		case Item.BOW:
@@ -133,6 +140,8 @@ function inRange(item, x, y) {
 	}
 }
 
+//function to check charged attack range (more than normal)
+// charged attacks in general have a higher range then default for all weapons
 function inRangeSpecial(item, x, y) {
 	switch (item) {
 		case Item.FIRE_WAND:
@@ -163,18 +172,23 @@ function inRangeSpecial(item, x, y) {
 //items map array
 let items = Array.from({ length: 256 }, () => new Array(256).fill(null));
 
-//place 1to5 items in each room
+//function that places items in each room
 function itemInRoom() {
 	for (let i = 0; i < rooms.length; i++) {
+		//number of items that be placed in rooms is random + depends on room area
 		const number = randint(1, 1 + Math.floor(rooms[i].w*rooms[i].h / 61)); 
 		for (let k = 0; k < number; k++) {
 			let x = randint(rooms[i].x + 1, rooms[i].x + rooms[i].w-1);
 			let y = randint(rooms[i].y + 1 , rooms[i].y + rooms[i].h-1);
+			//place items in this range of items - inculdes (potion + attack and defense multplier)
 			items[y][x] = randint(Item.POTION_RED, Item.POTION_PURPLE+1);
 		}
 	}
 }
 
+/* Inventory class
+- allow the player to store items and selet them when needed
+*/
 class Inventory {
 	constructor() {
 		this.items = [];
@@ -183,34 +197,36 @@ class Inventory {
 		this.equipped = [];
 	}
 
+	//open if invernotry closed, close if inventory open
 	toggle() {
 		this.open = !this.open;
 	}
-
-	add(item) {
+	// add item to inventory when picked up
+	add(item) { 
 		if (this.items.length <= 6*3)
 			this.items.push(item);
 	}
-
+	//delet items form inventory
 	remove_selected() {
 		return this.items.splice(inventory.selected, 1)[0];
 	}
-
+	//move throught the inventory using arrow keys
+	//move up through the inventory table
 	selection_up() {
 		if (this.selected > 5)
 			this.selected -= 6;
 	}
-
+	//move down through the inventory table
 	selection_down() {
 		if (this.selected < 12)
 			this.selected += 6;
 	}
-	
+	//move left through the inventory table
 	selection_left() {
 		if (this.selected > 0)
 			this.selected -= 1;
 	}
-
+	//move right through the inventory table
 	selection_right() {
 		if (this.selected < 17)
 			this.selected += 1;
@@ -220,13 +236,16 @@ class Inventory {
 
 let inventory = new Inventory();
 
+//Shop can be accessed when the player interacts with the merchant
+// allows the player ot buy equipement and other items
 class Shop {
 	constructor(items) {
 		this.items = items;
 		this.selected = 0;
 		this.open = false
 	}
-
+	// check if player have enought coins to buy desired items
+	// if so then player get the items
 	buy() {
 		if (player.coins >= itemStats[this.items[this.selected]].cost) {
 			player.coins -= itemStats[this.items[this.selected]].cost
@@ -234,16 +253,16 @@ class Shop {
 		}
 		
 	}
-
+	// 
 	sell() {
 
 	}
-
+	// surf up throught the colunm
 	selection_up() {
 		if (this.selected > 0)
 			this.selected--;
 	}
-
+	// surf down throught the colunm
 	selection_down() {
 		if (this.selected < 5 && this.selected < this.items.length-1)
 			this.selected++;
