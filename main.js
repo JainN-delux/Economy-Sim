@@ -58,6 +58,8 @@ function updateWorld() {
 
 //-------------------------KEYBOARD KEYS-------------------------
 window.keyPressed = () => {
+	//home screen 
+	//PLAYER SELECTION
 	if (intro) {
 		if (keyCode == ENTER) {
 			if (intro_selected == 0)
@@ -69,12 +71,15 @@ window.keyPressed = () => {
 			generateWorld();
 			intro = false;
 		}
+		//right and left arrow keys to surf though
 		if (keyCode == LEFT_ARROW && intro_selected > 0)
 			intro_selected--;
 		if (keyCode == RIGHT_ARROW && intro_selected < 2)
 			intro_selected++;
 		return;
 	}
+
+	//PLAYER DIEs then reload
 	if (player.health <= 0)
 		window.location.reload();
 	// Key X / Inventory
@@ -83,12 +88,17 @@ window.keyPressed = () => {
 		inventory.toggle();
 	}
 
+	//SHOP NAVIGATION
+	//move through the inventory (based on the arrow kets)
 	if (shop.open) {
 		if (keyCode == UP_ARROW)
 			shop.selection_up();
 		else if (keyCode == DOWN_ARROW)
 			shop.selection_down();
 	}
+
+	//INVENTORY NAVIGATION
+	//move through the inventory (based on the arrow kets)
 	else if (inventory.open) {
 		if (keyCode == UP_ARROW)
 			inventory.selection_up();
@@ -99,8 +109,11 @@ window.keyPressed = () => {
 		else if (keyCode == RIGHT_ARROW)
 			inventory.selection_right();
 	}
+
+	//player attack enemy if enemyis on player's next turun tile
 	else if (player.quickslot[player.selected]) {
 		if (itemStats[player.quickslot[player.selected]].directional) {
+			//check enemies within crossair for Ranged attacks
 			let arrow = true;
 			if (keyCode == UP_ARROW)
 				player.attackAt(entityAtTile(player.x, player.y-1), 0, -1, keyIsDown(SHIFT));
@@ -118,6 +131,7 @@ window.keyPressed = () => {
 				return;
 			}
 		}
+		//attack based on arrow keys for non-range attacks
 		else {
 			if (keyCode == UP_ARROW)
 				attack_y -= 1;
@@ -130,53 +144,61 @@ window.keyPressed = () => {
 		}
 	}
 
-	// move up
+	// MOVE UP
 	if ((key == 'w' || key == 'W') && isWalkable[tiles[player.y-1][player.x]]) {
 		let e = entityAtTile(player.x, player.y-1);
+		//check if entity is not on tile
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y -= 1
 		}
+		//if enemy on tile then attack
 		else
 			player.attackAt(e, 0, -1, key == 'W');
 		updateWorld();
 	}
-	// move down
+	// MOVE DOWN
 	if ((key == 's' || key == 'S') && isWalkable[tiles[player.y+1][player.x]]) {
 		let e = entityAtTile(player.x, player.y+1);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.y += 1
 		}
+		//if enemy on tile then attack
 		else
 			player.attackAt(e, 0, 1, key == 'S');
 		updateWorld();
 	}
-	// move left
+	// MOVE LEFT
 	if ((key == 'a' || key == 'A') && isWalkable[tiles[player.y][player.x-1]]) {
 		let e = entityAtTile(player.x-1, player.y);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x -= 1
 		}
+		//if enemy on tile then attack
 		else
 			player.attackAt(e, -1, 0, key == 'A');
 		updateWorld();
 	}
-	// move right
+	// MOVE RIGHT
 	if ((key == 'd' || key == 'D') && isWalkable[tiles[player.y][player.x+1]]) {
 		let e = entityAtTile(player.x+1, player.y);
 		if (e == null) {
 			if (player.effects[statusList.VINES] == 0 && player.effects[statusList.STUN] == 0)
 				player.x += 1
 		}
+		//if enemy on tile then attack
 		else
 			player.attackAt(e, 1, 0, key == 'D');
 		updateWorld();
 	}
 	let e = entityAtTile(player.x+attack_x, player.y+attack_y);
+
+	//OPEN SHOP
 	if (key == 'e' || key == 'E') {
 		if (e != null) {
+			//check if player is near merchant
 			if (e.type == EntityType.MERCHANT) {
 				shop = e.shop;
 				shop.open = !shop.open;
@@ -187,6 +209,7 @@ window.keyPressed = () => {
 			}
 		}
 	}
+	//ITEM PICKUP
 	if (key == 'o' || key == 'O') {
 		if (items[player.y][player.x] != null) {
 			inventory.add(items[player.y][player.x]);
@@ -194,6 +217,7 @@ window.keyPressed = () => {
 			updateWorld();
 		}
 	}
+	//WEAPON EQUIPMENT FROM QUICKSLOT
 	if (key == '1' || key == '!')
 		player.selected = 0;
 	else if (key == '2' || key == '@')
@@ -212,14 +236,17 @@ window.keyPressed = () => {
 		player.use(inventory.remove_selected());
 		updateWorld();
 	}
+	//buy item in shop
 	if (keyCode == ENTER && shop.open) {
 		shop.buy()
 		updateWorld();
 	}
+
 	if (keyCode == BACKSPACE && !inventory.open && player.quickslot[player.selected] != null) {
 		inventory.add(player.quickslot.splice(player.selected, 1)[0]);
 		updateWorld();
 	}
+	//delet item form inverntory
 	if (keyCode == BACKSPACE && inventory.open && inventory.items[inventory.selected] != null) {
 		items[player.y][player.x] = inventory.remove_selected();
 		updateWorld();
@@ -238,6 +265,7 @@ window.mouseClicked = () => {
 //DRAW
 window.draw = () => {
 	background(20);
+	//HOME SCREEN
 	if (intro) {
 		fill(0);
 		rect(150, 150, CANVAS_WIDTH-300, CANVAS_HEIGHT-300);
@@ -253,6 +281,7 @@ window.draw = () => {
 		strokeWeight(4);
 		rect(250 + 100*intro_selected, 300, 4*ENTITY_SRC_SIZE, 4*ENTITY_SRC_SIZE);
 	}
+	//GAME SCREEN
 	else
 		drawWorld(player.x, player.y);
 }
